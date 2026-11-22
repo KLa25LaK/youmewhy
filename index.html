@@ -48,8 +48,6 @@ button:disabled{opacity:.4;cursor:default}
 .pop-h h3{margin:2px 0}.pop-x{border-radius:50%;width:38px;height:38px;padding:0;flex:none}
 .pop-b{padding:10px 16px;overflow:auto;flex:1}
 .pop-f{display:flex;gap:8px;justify-content:space-between;padding:10px 16px;border-top:1px solid #e6e0d2;background:#fff}.pop-f button{flex:1}
-.fab{position:fixed;right:18px;bottom:18px;z-index:40;border-radius:999px;padding:12px 18px;box-shadow:0 6px 18px #0003;background:#fff6dd;border:2px solid #ecd59b;font-weight:700}
-.pane .fab{position:absolute}
 .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
 .excard{border:1.5px solid #d9e2dd;border-radius:14px;padding:10px 12px;margin:10px 0;background:#fff}.exhead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:4px}.exhead .whos i{margin-left:4px}.endbar small{flex-basis:100%}
 .steps{display:flex;gap:4px;margin:12px 0}
@@ -263,13 +261,6 @@ button.mini{padding:4px 10px;font-size:13px}
 .whochose .tl{display:inline;margin-left:4px}
 .ftype{display:block;font-size:12px;font-weight:700;color:#a0613f;margin-bottom:2px}
 .ftype .L{display:inline;margin-right:6px}
-.kit{background:#fffdf8;border:2px solid #ecd59b;border-radius:16px;padding:8px 14px;margin:12px 0;color:#263d43;font-size:15px}
-.kit>summary{font-weight:800;color:#8a6a2c;cursor:pointer;font-size:16px}
-.kitgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:8px}
-.kitgrid h4{margin:4px 0;font-size:14px;color:#8a6a2c}
-.kline{padding:5px 0;border-top:1px dashed #eee1bf}
-.kline b{display:block;font-size:15px;color:#1f5650}
-.kline small{display:block;color:#a0613f;font-size:12px}
 .notyet{background:#fbf1e8;border:1px solid #e9c9b0;border-radius:12px;padding:8px 12px;margin:8px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .notyet.done{background:#e8f4ec;border-color:#bfe0c9}
 .notyet small{width:100%}
@@ -287,7 +278,7 @@ body.lang-zh .kline .tl,body.lang-ja .kline .tl{font-size:15px;font-weight:700;c
 </style>
 </head>
 <body>
-<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 55</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 58</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
 <main id="app"></main>
 <script>
 /* ===== 設定 =====
@@ -309,7 +300,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 55;
+const VERSION = 58;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -1297,34 +1288,17 @@ function roomInner(){
         :`<small class="muted">${T(`台灣同學 ${pr.length} 人`,`台湾の生徒 ${pr.length}人`,`${pr.length} Taiwanese students`)}</small>`}</div>
   ${host&&s.live&&pr.length>onN?`<p class="muted" style="margin:6px 0 0">${T('○ 是離線的人。如果沒有回來，可以按 ✕ 刪除，新同學就能加入。','○ はオフラインの人です。戻ってこない場合は ✕ で削除できます（新しい人が入れるようになります）。','○ = offline. If they don’t come back, tap ✕ to remove them so a new student can join.')}</p>`:''}`;
  if(!s.live)return h+lobby(s,host,pr,onN)+'</section>';
- if(s.q<0)return h+topicPick(s,host)+'</section>'+(host?hostKit(s):'');
+ if(s.q<0)return h+topicPick(s,host)+'</section>';
  const q=Q[s.q];
  h+=`<div class="tag">Topic ${s.q+1}</div><h2 class="E">${esc(q.en)}</h2><p class="muted qsub">${T(esc(q.zh),esc(q.ja))}</p></section>`;
  h+=`<section class="panel">${[null,p1,pAsk,pEx,p2,p3][s.p]?.(s,q,host)??''}</section>`;
- if(host)h+=hostKit(s);
  if(host)h+=`<div class="bar endbar">${B(T('← 上一步','← 前へ','← Back'),'back','','',s.p<=1)}${B(T('⏹ 隨時可以結束這題，選下一題','⏹ いつでもこの話題を終えて次へ','⏹ End this topic anytime'),'finish','','',false,'再按一次確認結束 / もう一度押して終了')}<small class="muted">${T('台灣同學不會知道你跳過了哪些部分。','どこを飛ばしたかは台湾のみんなには分かりません。','The Taiwanese students won’t know what you skipped.')}</small></div>`;
  return h;
 }
-/* 主持人工具箱：任何時候都有話可以說 */
-let kitOpen=false;ACT.kit=()=>{kitOpen=!kitOpen;render()};
-document.addEventListener('toggle',e=>{if(e.target.dataset&&e.target.dataset.kit)kitOpen=e.target.open},true);
 /* 彈跳視窗：不用一直上下滑 */
 function POP(head,body,foot,close){return `<div class="pop-ov"><div class="pop-card"><div class="pop-h"><div>${head}</div>${B('✕',close,'','pop-x')}</div><div class="pop-b">${body}</div>${foot?`<div class="pop-f">${foot}</div>`:''}</div></div>`}
 function NAV(list,cur,act,close,closeTxt){const i=list.indexOf(cur),pv=list[i-1],nx=list[i+1];
  return `${B(T('◀ 上一個','◀ 前へ','◀ Previous'),act,pv??'','',pv==null)}${B(closeTxt||T('關閉','閉じる','Close'),close,'','')}${B(T('下一個 ▶','次へ ▶','Next ▶'),act,nx??'','primary',nx==null)}`}
-const KIT_LINE=en=>{const t=tr(en);return `<div class="kline"><b class="E">${esc(en)}</b>${t?TL(esc(t[0]),esc(t[1])):''}</div>`};
-function hostKit(s){
- const quiet=present(s).filter(k=>online(s,k));
- const rescue=[['對方只回 Yes / No','相手がYes/Noだけ','They only say yes/no','Oh really? Tell me more!'],['對方聽不懂','伝わっていない','They don’t understand','Sorry! Let me say it again, slowly.'],['大家都沒說話','みんな黙っている','Nobody is talking','What do you think? Anyone?'],['你不知道怎麼接','次に何を言うか分からない','You don’t know what to say','Interesting! Can I ask one more thing?'],['有人講很久','一人が長く話している','Someone talks a long time','Thank you! Let’s hear from someone else too.']];
- if(!kitOpen)return B(T('🧰 不知道說什麼？','🧰 何を言えばいい？','🧰 Stuck? Toolbox'),'kit','','fab');
- return POP(`<h3>${T('🧰 主持人工具箱','🧰 司会者の道具箱','🧰 Host toolbox')}</h3>`,`<div class="kitgrid">
-  <div><h4>${T('🔥 接話・反應','🔥 リアクション','🔥 React')}</h4>${['Really?','That’s interesting!','Me too!','I see.','That’s surprising!','I didn’t know that!'].map(KIT_LINE).join('')}</div>
-  <div><h4>${T('🙋 說說自己的','🙋 自分の話をする','🙋 Share yours')}</h4>${['In my case, ___ .','At my school, ___ .','In Japan, ___ .','In Japan, we ___ too.'].map(KIT_LINE).join('')}</div>
-  <div><h4>${T('🧯 卡住救援','🧯 困ったとき','🧯 Rescue')}</h4>${rescue.map(r=>`<div class="kline"><small>${T(r[0],r[1],r[2])}</small><b class="E">${esc(r[3])}</b>${tl(r[3])}</div>`).join('')}
-   ${quiet.length?`<div class="kline"><small>${T('想點名安靜的同學','静かな人に話を振りたい','Ask a quiet student')}</small><b class="E">${quiet.map(tw).join(' / ')}, what do you think?</b>${TL('（名字），你覺得呢？','（名前）、どう思う？')}</div>`:''}</div>
-  <div><h4>${T('⏭ 轉場','⏭ 次へ進む','⏭ Move on')}</h4>${['Who else wants to share?','Let’s hear from someone else.','Can I ask one more question?','Thank you! Let’s move on.'].map(KIT_LINE).join('')}</div>
- </div>`,'','kit');
-}
 function lobby(s,host,pr,onN){
  if(host)return `<div class="lobby"><h2>${T('等台灣同學進來','台湾のみんなが入るのを待とう','Wait for the Taiwanese students to join')}</h2>
   <p class="muted">${T('所有號碼（TW1、TW2…）都出現後，按「開始」。走錯房間的人可以按 ✕ 刪除。','全員の名前（TW1, TW2…）が出たら「スタート」を押してください。間違えて入った人は ✕ で削除できます。','When everyone (TW1, TW2…) is here, press Start. Tap ✕ to remove anyone in the wrong room.')}</p>
@@ -1794,11 +1768,41 @@ const EX=(()=>{const m={};`0|e|Which school rule do you think is good? Why?|你�
 9|d|What do you do when a younger student asks you for help?|學弟妹找你幫忙時，你會怎麼做？|後輩に助けを求められたら、どうしますか？`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===5)(m[p[0]]=m[p[0]]||[]).push([p[2],p[3],p[4],p[1]])});return m})();
 function fuq(q,i){return (FU[(i>=5?'x':q)+'-'+i]||[]).filter(f=>f[3]!=='me')}
 function fume(q,i){return (FU[(i>=5?'x':q)+'-'+i]||[]).find(f=>f[3]==='me')}
-ACT.aopen=a=>upd({ao:+a,aqi:-1});
-ACT.aq=a=>{const s=S();upd({aqi:+a,['asked/o'+s.ao]:true})};
-ACT.anav=a=>{const s=S();upd({['asked/o'+s.ao]:true,ao:+a,aqi:-1})};
+ACT.aopen=a=>upd({ao:+a,aqi:0});
+ACT.aq=a=>{const s=S(),i=+a;if(s.p===2&&s.ao>=0&&askQuestions(s,s.ao)[i])upd({aqi:i})};
+ACT.anav=a=>{const s=S();upd({['asked/o'+s.ao]:true,ao:+a,aqi:0})};
 ACT.aclose=()=>{const s=S();upd({['asked/o'+s.ao]:true,ao:-1,aqi:-1})};
 
+function askQuestions(s,i){
+ const questions=fuq(s.q,i);
+ if(i===5&&!present(s).some(k=>s.pk['s'+k]===i)){
+  return [
+   ['Did anyone think of an answer that wasn’t on the list?','剛才有沒有人想到選項上沒有的答案？','選択肢にない答えを思いついた人はいますか？'],
+   ...questions.slice(1)
+  ];
+ }
+ return questions;
+}
+function answerStarters(question){
+ const text=question.toLowerCase();
+ const has=pattern=>pattern.test(text);
+ if(has(/^why\b/))return ['Because ___ .'];
+ if(has(/^how many times\b/))return [['About ___ times.','大概＿＿次。','だいたい＿＿回です。']];
+ if(has(/^how many hours\b/))return [['About ___ hours.','大概＿＿小時。','だいたい＿＿時間です。']];
+ if(has(/^when can you\b/))return [['I can ___ during ___ .','我可以在＿＿的時候＿＿。','＿＿のときに＿＿できます。'],['Usually, ___ .','通常＿＿。','普段は＿＿。']];
+ if(has(/^when did\b/))return [['It was when ___ .','那是在＿＿的時候。','＿＿のときです。']];
+ if(has(/^when\b|^what time\b/))return [['Usually, ___ .','通常＿＿。','普段は＿＿。']];
+ if(has(/^(have you|has |did you|was |were |is |are |does |do |can you)\b/)&&!has(/^(can you tell|do you .+ or )/)){
+  return [['Yes. ___ .','有／會。＿＿。','はい。＿＿。'],['No. ___ .','沒有／不會。＿＿。','いいえ。＿＿。']];
+ }
+ if(has(/^where\b/))return [['At ___ .','在＿＿。','＿＿で。'],['I usually go to ___ .','我通常去＿＿。','普段は＿＿に行きます。']];
+ if(has(/^how (did|was)\b|^what (did|happened|were)\b/))return [['First, ___ . Then, ___ .','一開始＿＿，後來＿＿。','最初は＿＿。それから＿＿。']];
+ if(has(/^who\b/))return [['It was ___ .','是＿＿。','＿＿です。'],['Usually, it’s ___ .','通常是＿＿。','普段は＿＿です。']];
+ if(has(/^if\b|\bwould you\b/))return [['I’d ___ .','我會＿＿。','私なら＿＿します。']];
+ if(has(/^which\b|^what kind\b/))return [['I’d pick ___ .','我會選＿＿。','＿＿を選びます。'],['For me, it’s ___ .','對我來說是＿＿。','私なら＿＿です。']];
+ if(has(/^how do you\b|^what do you usually\b/))return [['I usually ___ .','我通常會＿＿。','普段は＿＿します。']];
+ return [['For me, ___ .','對我來說，＿＿。','私の場合は＿＿。'],['For example, ___ .','例如＿＿。','例えば＿＿。']];
+}
 function pAsk(s,q,host){
  const ord=order(room,s.q),who=i=>present(s).filter(k=>s.pk['s'+k]===i),ao=s.ao??-1;
  if(host){
@@ -1806,14 +1810,14 @@ function pAsk(s,q,host){
   const notAsked=present(s).filter(k=>{const v=s.pk['s'+k];return v!=null&&!s.asked['o'+v]&&ao!==v});
   if(notAsked.length)h+=`<div class="notyet"><b>${T('👀 還沒被問到的人','👀 まだ聞いていない人','👀 Not asked yet')}</b> ${notAsked.map(k=>B(`${tw(k)} → ${L(ord.indexOf(s.pk['s'+k]))}`,'aopen',s.pk['s'+k],'mini')).join(' ')}<small>${T('點一下直接打開他選的答案','タップでその人の答えを開く','Tap to open their answer')}</small></div>`;
   else if(present(s).length&&Object.keys(s.asked).length)h+=`<div class="notyet done">${T('✅ 每個人都問到了！可以再多聊，或進入下一步。','✅ 全員に聞けたよ！もっと話してもいいし、次へ進んでもOK。','✅ Everyone has been asked! Keep chatting or move on.')}</div>`;
-  let pop='';if(ao>=0){const o=opt(s.q,ao),ws=who(ao),names=ws.map(tw).join(', '),mine=s.hp===ao;
+  let pop='';if(ao>=0){const o=opt(s.q,ao),ws=who(ao),names=ws.map(i=>tw(i)).join(', '),mine=s.hp===ao;
+   const questions=askQuestions(s,ao),active=questions[s.aqi]?s.aqi:0;
+   const button=(f,k)=>`<button type="button" class="fq ${active===k?'active':''}" aria-pressed="${active===k}" data-act="aq" data-a="${k}"><b class="E">${esc(f[0])}</b>${TL(esc(f[1]),esc(f[2]))}</button>`;
    const nav=ord.filter(i=>who(i).length).sort((a,b)=>who(b).length-who(a).length).concat(ord.filter(i=>!who(i).length));
    pop=POP(`<div class="tag">${T('正在問的答案','質問中の答え','Asking about')} · ${ws.length?names:T('沒人選','誰も選ばず','nobody')}</div><h3><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</h3>`,`
     ${mine?`<div class="secret">${T('🤫 這是你的答案！先不要說 Me too，等一下讓大家猜。','🤫 これはあなたの答え！まだ Me too と言わずに、あとで予想してもらおう。','🤫 This is your answer! Don’t say “Me too” yet—let them guess later.')}</div>`:''}
-    <b>${T('① 從這個話題聊起','① この話題から話そう','① Start with this topic')}</b>${ws.length||ao!==5
-      ?SAY(esc(fuq(s.q,ao)[0][0]),'','', '',fuq(s.q,ao)[0].slice(1,3))
-      :SAY('Did anyone think of an answer that wasn’t on the list?','','','',['剛才有沒有人想到選項上沒有的答案？','選択肢にない答えを思いついた人はいますか？'])}
-    <b>${T('② 想接著聊，可以挑一句','② 話を続けたいときに一つ選ぼう','② Pick a follow-up')}</b>${chips(fuq(s.q,ao).slice(1).map(line=>line.slice(0,3)),'blank')}
+    <b>${T('① 從這個話題聊起','① この話題から話そう','① Start with this topic')}</b>${button(questions[0],0)}
+    <b>${T('② 點一句，學生畫面會跟著換','② タップすると相手の画面も切り替わります','② Tap a follow-up to show it to students')}</b>${questions.slice(1).map((f,k)=>button(f,k+1)).join('')}
     <b>${T('聽完可以這樣接','聞いたあとにこう返そう','How to respond')}</b>${chips([
       ['I hadn’t heard that before.','我以前沒聽過這個。','それは初めて聞きました。'],
       ['That reminds me of ___ .','這讓我想到＿＿。','それを聞いて、＿＿を思い出しました。'],
@@ -1834,12 +1838,12 @@ function pAsk(s,q,host){
  const v=s.pk['s'+me],o=v!=null?opt(s.q,v):null;
  let h=`<div class="say"><b class="E">The Japanese student will ask you questions.</b>${TL('日本同學會問大家問題，被問到就回答！','日本の生徒が質問します。聞かれたら答えよう！')}</div>
   ${o?`<p class="muted">${T('你選的是：','あなたの答え：','You chose:')} <b><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</b></p>`:''}`;
- if(ao<0)return h+`<h3>${T('等日本同學挑一個選項來問…','日本の生徒が選択肢を選ぶのを待とう…','Waiting for the host to pick an option…')}</h3>${v!=null?reasonBox(s.q,v):''}${checkBtns()}`;
- const ao_=opt(s.q,ao),asked=v===ao,cur=asked?fuq(s.q,ao)[0]:null;
+ if(ao<0)return h+`<h3>${T('等日本同學挑一個選項來問…','日本の生徒が選択肢を選ぶのを待とう…','Waiting for the host to pick an option…')}</h3>${checkBtns()}`;
+ const ao_=opt(s.q,ao),asked=v===ao,questions=askQuestions(s,ao),cur=questions[s.aqi]||questions[0];
  h+=`<div class="popup ${asked?'me':''}"><div class="tag">${T('日本同學正在問這個選項','日本の生徒が質問中の選択肢','Now asking about')}</div><h3 style="margin:2px 0"><span class="E">${esc(ao_.en)}</span>${TL(esc(ao_.zh),esc(ao_.ja))}</h3>
   ${asked?`<div class="callout">${T('🎤 你選的就是這個！日本同學在問你','🎤 あなたが選んだ答えです！質問されています','🎤 That’s your answer! You’re being asked')}</div>`:`<p class="muted">${T('👂 仔細聽，也可以補充一句','👂 よく聞いて、一言そえてもOK','👂 Listen, and add a line if you like')}</p>`}
   ${cur?`<div class="say"><small>${T('日本同學的問題：','質問：','The question:')}</small><b class="E">${esc(cur[0])}</b>${cur[1]?TL(esc(cur[1]),esc(cur[2])):''}</div>`:''}
-  ${asked?`${reasonBox(s.q,v)}<b>${T('回答用的句子','答えるための文','Sentences to answer')}</b>${chips(v===5?['My answer is ___ .','It is ___ .','For example, ___ .']:v===6?['I have never ___ .','Because ___ .','Maybe someday, I want to ___ .']:[[`I chose “${o.en}” because ___ .`,`我選「${o.zh}」，因為 ___。`,`「${o.ja}」を選びました。なぜなら___からです。`],'Let me think.','For example, ___ .','In Taiwan, ___ .','In my case, ___ .'],'blank')}<b>${T('提示字','ヒント','Hints')}</b>${chips(ao_.w)}<b>${T('說完反問 🔁','聞き返そう 🔁','Ask back 🔁')}</b>${chips(['What about you?','Is it the same in Japan?'],'blank')}`
+  ${asked?`<b>${T('回答用的句子','答えるための文','Sentences to answer')}</b>${chips(answerStarters(cur[0]),'blank')}<b>${T('說完反問 🔁','聞き返そう 🔁','Ask back 🔁')}</b>${chips(['What about you?','Is it the same in Japan?'],'blank')}`
     :chips(['Me too!','Really?','That’s interesting!','In my case, ___ .'],'blank')}
  </div>${checkBtns()}`;
  return h;
@@ -1874,17 +1878,282 @@ function pUnd(s,q,host){
 }
 /* 6 延伸聊天：主持人選方向，不強制輪流抽卡 */
 ACT.exq=a=>upd({ex:a});ACT.eopen=a=>upd({eo:+a});ACT.eclose=()=>upd({eo:-1});
+const EXTENDED_QUESTIONS = {
+ "0-0": [
+  ["Who cuts your hair?", "誰幫你剪頭髮？", "誰に髪を切ってもらいますか？"],
+  ["How long does it take you to do your hair in the morning?", "你早上整理頭髮要多久？", "朝、髪を整えるのに何分かかりますか？"],
+  ["What hairstyle did you have as a kid?", "你小時候是什麼髮型？", "小さいころはどんな髪型でしたか？"],
+ ],
+ "0-1": [
+  ["What do you change into after school?", "放學後你會換上什麼衣服？", "放課後は何に着替えますか？"],
+  ["Do you keep anything in your uniform pockets?", "你制服口袋會放什麼東西嗎？", "制服のポケットに何か入れていますか？"],
+  ["What shoes do you usually wear with your uniform?", "穿制服時你通常配什麼鞋？", "制服には普段どんな靴を合わせますか？"],
+ ],
+ "0-2": [
+  ["What was the last photo you took at school?", "你上次在學校拍了什麼？", "学校で最後に撮った写真は何ですか？"],
+  ["Who do you text first after class?", "下課後你第一個會傳訊息給誰？", "授業のあと、最初に誰にメッセージを送りますか？"],
+  ["Has your phone ever rung at a bad time?", "你的手機有沒有在尷尬的時候響過？", "気まずいタイミングでスマホが鳴ったことはありますか？"],
+ ],
+ "0-3": [
+  ["Have you ever helped out at a shop?", "你有在店裡幫忙過嗎？", "お店で手伝ったことはありますか？"],
+  ["What would you buy with your first paycheck?", "拿到第一份薪水，你會買什麼？", "初めてのお給料で何を買いたいですか？"],
+  ["Would you want to work with a friend?", "你會想跟朋友一起打工嗎？", "友達と一緒にバイトしたいですか？"],
+ ],
+ "0-4": [
+  ["How do you usually get home at night?", "你晚上通常怎麼回家？", "夜は普段どうやって帰りますか？"],
+  ["What do you do if you miss the last bus?", "如果沒搭到末班車，你會怎麼辦？", "最終バスに乗り遅れたら、どうしますか？"],
+  ["What’s your favorite thing to do on the way home?", "回家的路上你最喜歡做什麼？", "帰り道で何をするのが好きですか？"],
+ ],
+ "1-0": [
+  ["Who do you tell first when a test goes well?", "考得好時，你第一個告訴誰？", "テストがうまくいったら、最初に誰に話しますか？"],
+  ["What did you eat before your last test?", "上次考試前你吃了什麼？", "前のテストの前に何を食べましたか？"],
+  ["Do you check your answers with friends afterward?", "考完你會跟朋友對答案嗎？", "テストのあと、友達と答え合わせをしますか？"],
+ ],
+ "1-1": [
+  ["What do you keep on your desk when you study?", "讀書時你桌上會放什麼？", "勉強するとき、机に何を置きますか？"],
+  ["Do you listen to music while you study?", "讀書時你會聽音樂嗎？", "勉強しながら音楽を聴きますか？"],
+  ["What do you do when you get sleepy while studying?", "讀書讀到想睡時，你會做什麼？", "勉強中に眠くなったら、どうしますか？"],
+ ],
+ "1-2": [
+  ["What do you grab when you’re hungry after school?", "放學肚子餓時，你會先找什麼吃？", "放課後お腹がすいたら、何を食べますか？"],
+  ["What food makes you think of home?", "什麼食物會讓你想到家？", "何を食べると家を思い出しますか？"],
+  ["Do you ever send your family photos of your food?", "你會拍吃的東西傳給家人嗎？", "家族に食べ物の写真を送ることはありますか？"],
+ ],
+ "1-3": [
+  ["What’s the first thing you do when you get home?", "到家後你第一件事做什麼？", "家に着いたら、最初に何をしますか？"],
+  ["Do you ever stop somewhere for a snack on the way home?", "回家路上你會順路買點心嗎？", "帰り道でおやつを買うことはありますか？"],
+  ["What’s the nicest part of your usual walk or ride home?", "平常回家的路上，你最喜歡哪一段？", "いつもの帰り道で、一番好きな場所はどこですか？"],
+ ],
+ "1-4": [
+  ["Who usually makes plans in your friend group?", "你們那群朋友通常是誰揪團？", "友達の中で、誰がよく予定を立てますか？"],
+  ["What do you do when no one can pick a place to go?", "大家都決定不了去哪時，你會怎麼辦？", "行き先が決まらないとき、どうしますか？"],
+  ["What’s a place you only go to with friends?", "有哪個地方是你只跟朋友去的？", "友達としか行かない場所はありますか？"],
+ ],
+ "2-0": [
+  ["What snack takes you back to when you were little?", "什麼點心會讓你想到小時候？", "子どものころを思い出すおやつは何ですか？"],
+  ["Did you ever dress up for a special day as a kid?", "你小時候有為了特別的日子穿得很正式嗎？", "小さいころ、特別な日におしゃれをしたことはありますか？"],
+  ["What photo from your childhood would you show us?", "你想給我們看哪張小時候的照片？", "子どものころの写真を一枚見せるなら、どれですか？"],
+ ],
+ "2-1": [
+  ["What do you do with your red envelope money?", "你會怎麼用紅包錢？", "お年玉は何に使いますか？"],
+  ["Who stays up the latest in your family on New Year’s Eve?", "除夕夜你們家誰最晚睡？", "旧暦の大みそか、家族で誰が一番遅くまで起きていますか？"],
+  ["Do you help clean before the New Year?", "過年前你會幫忙打掃嗎？", "お正月の前に掃除を手伝いますか？"],
+ ],
+ "2-2": [
+  ["Which mooncake filling would you pick first?", "月餅你會先挑哪個口味？", "月餅なら、どの味を最初に選びますか？"],
+  ["Who’s the best at grilling in your family?", "你們家誰最會烤肉？", "家族で誰が一番焼くのが上手ですか？"],
+  ["What do you do if it rains during your barbecue?", "烤肉碰到下雨，你們會怎麼辦？", "バーベキューの途中で雨が降ったら、どうしますか？"],
+ ],
+ "2-3": [
+  ["Is there a family dish that reminds you of someone?", "有哪道家裡的菜會讓你想起某個人嗎？", "誰かを思い出す家庭料理はありますか？"],
+  ["Do you see any cousins on that day?", "那天你會見到表兄弟姊妹嗎？", "その日にいとこと会いますか？"],
+  ["What small part of the day do you look forward to?", "那一天有什麼小事會讓你期待？", "その日、ちょっと楽しみにしていることは何ですか？"],
+ ],
+ "2-4": [
+  ["Who first told you that food was lucky?", "最早是誰跟你說吃這個會帶來好運？", "その食べ物が縁起がいいと、最初に誰から聞きましたか？"],
+  ["Would you eat it even if you didn’t like the taste?", "如果你不喜歡那個味道，還會吃嗎？", "味が好きじゃなくても食べますか？"],
+  ["Have you ever made it yourself?", "你有自己做過那個食物嗎？", "それを自分で作ったことはありますか？"],
+ ],
+ "3-0": [
+  ["Did you hear that first at home or from a friend?", "你第一次聽到這個，是家人講的還是朋友講的？", "最初に聞いたのは家族からですか、友達からですか？"],
+  ["Have you ever told someone from another country about it?", "你有跟外國朋友說過這件事嗎？", "外国の友達に話したことはありますか？"],
+  ["Did you take it more seriously when you were younger?", "你小時候比較會相信這個嗎？", "小さいころのほうが信じていましたか？"],
+ ],
+ "3-1": [
+  ["Who in your group chat sends the funniest memes?", "你們群組誰傳的迷因最好笑？", "グループチャットで一番面白いミームを送るのは誰ですか？"],
+  ["What slang would you never use with your parents?", "哪一句流行語你絕對不會對爸媽說？", "親には絶対使わない流行り言葉は何ですか？"],
+  ["Have you ever sent a meme to the wrong chat?", "你有把迷因傳錯群組過嗎？", "ミームを違うチャットに送ったことはありますか？"],
+ ],
+ "3-2": [
+  ["Can you do the voice when you say it?", "你可以模仿原本的語氣說一次嗎？", "元の声をまねして言えますか？"],
+  ["Who in your family would get the joke?", "你家誰會聽得懂這個梗？", "家族なら誰にそのネタが通じますか？"],
+  ["What line do you and your friends say a lot?", "你跟朋友常掛在嘴邊的是哪一句？", "友達とよく言う決まり文句はありますか？"],
+ ],
+ "3-3": [
+  ["Did you talk about it in your group chat?", "你們有在群組聊過這件事嗎？", "グループチャットでその話をしましたか？"],
+  ["What detail still sticks in your mind?", "你現在還記得哪個小細節？", "今でも覚えている小さなことは何ですか？"],
+  ["Did anyone at home have a different reaction from yours?", "家裡有人跟你的反應不一樣嗎？", "家族に、自分と反応が違った人はいましたか？"],
+ ],
+ "3-4": [
+  ["Is there a name only your close friends call you?", "有沒有只有好朋友才會這樣叫你的名字？", "仲のいい友達だけが呼ぶ名前はありますか？"],
+  ["Who can call you by your nickname without making it awkward?", "誰叫你那個暱稱，你會覺得很自然？", "誰にそのあだ名で呼ばれると自然ですか？"],
+  ["Do you use the same name online and at school?", "你在網路上跟在學校用的名字一樣嗎？", "ネットと学校で同じ名前を使いますか？"],
+ ],
+ "4-0": [
+  ["Do you feel more relaxed when you know what a teacher expects?", "知道老師希望你做到什麼時，你會比較放鬆嗎？", "先生が何を求めているか分かると、安心しますか？"],
+  ["Have you ever changed your mind about a strict teacher?", "你有對一位很嚴格的老師改觀過嗎？", "厳しい先生への印象が変わったことはありますか？"],
+  ["Would you pick that teacher for a class trip?", "如果要班遊，你會想找那位老師一起去嗎？", "クラスの遠足なら、その先生に来てほしいですか？"],
+ ],
+ "4-1": [
+  ["Is it easier for you to ask that teacher after class?", "下課後去問那位老師，你會比較敢開口嗎？", "授業のあとなら、その先生に質問しやすいですか？"],
+  ["Has a teacher ever waited while you found the right words?", "你有遇過等你慢慢把話說完的老師嗎？", "うまく言葉が出ないとき、待ってくれた先生はいますか？"],
+  ["What could that teacher say to help you relax before a test?", "考試前，那位老師說什麼會讓你放鬆？", "テスト前にその先生に何と言ってもらえると、落ち着けますか？"],
+ ],
+ "4-2": [
+  ["After that class, could you explain the lesson to a friend?", "上完那堂課，你有辦法把內容講給朋友聽嗎？", "その授業のあと、友達に内容を説明できそうですか？"],
+  ["Do you write more or fewer notes in a class like that?", "上那種課時，你筆記會抄得比較多還是比較少？", "そういう授業では、ノートを多く取りますか、少なく取りますか？"],
+  ["When a teacher draws a picture, do you remember it later?", "老師畫圖解釋時，你之後會記得那張圖嗎？", "先生が絵を描くと、あとでその絵を思い出しますか？"],
+ ],
+ "4-3": [
+  ["Which assignment do you get out of the way first?", "你會先把哪種作業做掉？", "どの宿題を先に片づけますか？"],
+  ["What do you do if you get stuck on homework at night?", "晚上寫作業卡住時，你會怎麼辦？", "夜、宿題で行き詰まったら、どうしますか？"],
+  ["What’s your favorite thing to do once your homework is done?", "寫完作業後，你最想做什麼？", "宿題が終わったら、何をするのが一番好きですか？"],
+ ],
+ "4-4": [
+  ["Who do you talk to after a bad class?", "上完一堂讓你不開心的課，你會找誰聊？", "嫌な授業のあと、誰に話しますか？"],
+  ["Have you ever tried asking that teacher again after class?", "你有試過下課後再去找那位老師說一次嗎？", "授業のあとに、もう一度その先生に話してみたことはありますか？"],
+  ["Would you feel better writing a note than saying it out loud?", "用寫的會比當面說讓你自在一點嗎？", "直接言うより、メモに書くほうが気が楽ですか？"],
+ ],
+ "5-0": [
+  ["What song would you put on for a long bus ride?", "坐長途巴士時，你會想放哪首歌？", "長いバス移動なら、どの曲をかけたいですか？"],
+  ["Have you ever traded merch with a friend?", "你有跟朋友交換過偶像周邊嗎？", "友達と推しのグッズを交換したことはありますか？"],
+  ["What’s one thing you always bring to a concert?", "去演唱會時，有什麼東西你一定會帶？", "ライブに必ず持っていくものは何ですか？"],
+ ],
+ "5-1": [
+  ["Have you ever saved up for something in a game?", "你有為了買遊戲裡的東西存過錢嗎？", "ゲーム内のアイテムのためにお金を貯めたことはありますか？"],
+  ["Which thing you bought in a game do you still use?", "你在遊戲裡買過的東西，哪個現在還在用？", "ゲームで買ったものの中で、今も使っているのは何ですか？"],
+  ["Do you show your friends when you get a new item?", "拿到新道具時，你會拿給朋友看嗎？", "新しいアイテムを手に入れたら、友達に見せますか？"],
+ ],
+ "5-2": [
+  ["What’s one thing in your closet you wear all the time?", "衣櫃裡有哪一件你一直穿？", "クローゼットの中で、よく着る服は何ですか？"],
+  ["Do you ask a friend before buying something new to wear?", "買新衣服前，你會問朋友的意見嗎？", "新しい服を買う前に、友達に意見を聞きますか？"],
+  ["What have you bought but almost never worn?", "你買過什麼衣服，後來幾乎沒穿？", "買ったのにほとんど着ていない服は何ですか？"],
+ ],
+ "5-3": [
+  ["Which topping would you never put in your drink?", "飲料裡有什麼配料你絕對不會加？", "飲み物に絶対入れないトッピングは何ですか？"],
+  ["Do you share snacks or keep them all to yourself?", "買了點心，你會分著吃還是自己吃完？", "おやつは分けますか、それとも一人で食べますか？"],
+  ["What snack is worth waiting in line for?", "什麼點心值得你排隊？", "並んででも食べたいおやつは何ですか？"],
+ ],
+ "5-4": [
+  ["Where do you put your favorite anime item at home?", "你最喜歡的動漫周邊放在家裡哪裡？", "お気に入りのアニメグッズは家のどこに置いていますか？"],
+  ["Have you ever used an anime keychain on your school bag?", "你有在書包上掛過動漫鑰匙圈嗎？", "通学かばんにアニメのキーホルダーを付けたことはありますか？"],
+  ["What anime item would make a good gift for a friend?", "哪種動漫周邊適合送朋友？", "友達にあげるなら、どんなアニメグッズがいいですか？"],
+ ],
+ "6-0": [
+  ["Would you rather have a morning shift or an evening shift?", "你比較想打工上早班，還是晚班？", "バイトなら朝と夜、どちらのシフトがいいですか？"],
+  ["What would make you nervous on your first day at work?", "打工第一天，什麼會讓你緊張？", "バイト初日なら、何に緊張しそうですか？"],
+  ["Who would you tell after your first shift?", "打工第一天結束，你會跟誰聊？", "初めてのシフトが終わったら、誰に話したいですか？"],
+ ],
+ "6-1": [
+  ["What would you pack besides clothes?", "除了衣服，你行李會帶什麼？", "服のほかに、何を荷物に入れますか？"],
+  ["Do you like planning trips or deciding as you go?", "旅行你喜歡先排好，還是到了再決定？", "旅行は計画を立てる派ですか、その場で決める派ですか？"],
+  ["What would you bring home for your family?", "你會帶什麼回家送家人？", "家族にはどんなお土産を買いますか？"],
+ ],
+ "6-2": [
+  ["Would you rather learn from a video or in person?", "你比較想看影片學，還是找人當面教？", "動画で習うのと、直接教わるのと、どちらがいいですか？"],
+  ["Where could you practice when you have ten free minutes?", "有十分鐘空檔時，你可以去哪裡練習？", "10分空いたら、どこで練習できそうですか？"],
+  ["What would you like to show someone once you get better?", "練得更好之後，你想秀給別人看什麼？", "上達したら、誰かに何を見せたいですか？"],
+ ],
+ "6-3": [
+  ["How do you calm yourself down before it’s your turn?", "輪到你上場之前，你會怎麼讓自己冷靜？", "自分の番が来る前、どうやって落ち着きますか？"],
+  ["Who would you want cheering for you?", "你最想看到誰來幫你加油？", "誰に応援に来てほしいですか？"],
+  ["What would you do after it’s all over?", "比賽或活動結束後，你想做什麼？", "大会やイベントが終わったら、何をしたいですか？"],
+ ],
+ "6-4": [
+  ["What would you put in your room first?", "如果開始自己住，你想先在房間放什麼？", "一人暮らしを始めたら、部屋にまず何を置きたいですか？"],
+  ["Would you eat alone or invite a friend over?", "你會自己吃飯，還是約朋友來家裡吃？", "一人でご飯を食べますか、それとも友達を呼びますか？"],
+  ["Which chore would you keep putting off?", "哪一件家事你覺得自己會一直拖著不做？", "どの家事をつい後回しにしそうですか？"],
+ ],
+ "7-0": [
+  ["Do you have a group chat you always mute?", "你有哪個群組永遠開靜音嗎？", "いつも通知を切っているグループはありますか？"],
+  ["Whose posts do you always stop to read?", "滑到誰的貼文，你一定會停下來看？", "誰の投稿なら、いつも立ち止まって読みますか？"],
+  ["Have you ever deleted a post right after sharing it?", "你有發完貼文就馬上刪掉過嗎？", "投稿してすぐ消したことはありますか？"],
+ ],
+ "7-1": [
+  ["Have you ever tried a recipe from a short video?", "你有照短影音做過一道菜嗎？", "ショート動画のレシピを試したことはありますか？"],
+  ["Do you save videos and then forget to watch them?", "你會把影片存起來，然後忘了看嗎？", "動画を保存したまま、見るのを忘れることはありますか？"],
+  ["Where do you put your phone when you need to stop scrolling?", "想停止滑影片時，你會把手機放哪裡？", "動画を見るのをやめたいとき、スマホをどこに置きますか？"],
+ ],
+ "7-2": [
+  ["What makes you want to play just one more round?", "發生什麼事會讓你想再玩一場？", "どんなときに「もう一戦だけ」と思いますか？"],
+  ["What’s the funniest thing that happened while you were playing?", "你玩遊戲時碰過最好笑的事是什麼？", "ゲーム中に起きた一番面白いことは何ですか？"],
+  ["Who do you want on your team when the game gets hard?", "遊戲變難時，你最想找誰當隊友？", "ゲームが難しくなったとき、誰と組みたいですか？"],
+ ],
+ "7-3": [
+  ["Do you skip the opening song or listen to it every time?", "片頭曲你會跳過，還是每次都聽完？", "オープニング曲は飛ばしますか、毎回聴きますか？"],
+  ["Which character would you want to sit next to in class?", "你想跟哪個角色當同桌？", "教室で隣に座るなら、どのキャラクターがいいですか？"],
+  ["What snack do you like to have while watching?", "你追劇時喜歡吃什麼點心？", "ドラマやアニメを見ながら、何を食べるのが好きですか？"],
+ ],
+ "7-4": [
+  ["How many alarms do you set on school days?", "上學日你會設幾個鬧鐘？", "学校がある日は、アラームをいくつかけますか？"],
+  ["What gets you out of bed faster on a weekend?", "週末有什麼事能讓你快點起床？", "週末、何があるとすぐベッドから出られますか？"],
+  ["What do you do in bed when you’re already awake?", "已經醒了但還沒起床時，你會做什麼？", "目が覚めてもまだベッドにいるとき、何をしますか？"],
+ ],
+ "8-0": [
+  ["Have you ever apologized to AI for a typo?", "你有因為打錯字跟 AI 說過抱歉嗎？", "入力ミスでAIに謝ったことはありますか？"],
+  ["Do you type smiley faces when you talk to AI?", "你跟 AI 聊天會打笑臉嗎？", "AIと話すとき、顔文字を使いますか？"],
+  ["Have you ever given an AI a nickname?", "你有替 AI 取過暱稱嗎？", "AIにあだ名をつけたことはありますか？"],
+ ],
+ "8-1": [
+  ["Do you want advice or just someone to listen when you feel down?", "心情不好的時候，你想聽建議，還是只想有人聽？", "落ち込んだとき、アドバイスがほしいですか、それともただ聞いてほしいですか？"],
+  ["How can you tell when an AI reply feels too formal?", "你怎麼看出 AI 的回覆太客套？", "AIの返事がよそよそしいと、どんなときに感じますか？"],
+  ["What cheers you up away from the screen?", "離開螢幕後，做什麼會讓你心情好一點？", "画面から離れたあと、何をすると元気が出ますか？"],
+ ],
+ "8-2": [
+  ["Have you ever asked AI to give you a hint instead of the answer?", "你有請 AI 只給提示，先別給答案嗎？", "AIに答えではなく、ヒントだけを頼んだことはありますか？"],
+  ["What do you do if the AI explanation uses words you don’t know?", "AI 的解釋用了你不懂的字，你會怎麼辦？", "AIの説明に知らない言葉があったら、どうしますか？"],
+  ["Do you like using AI to practice speaking out loud?", "你喜歡用 AI 練習開口說話嗎？", "AIを使って声に出す練習をするのは好きですか？"],
+ ],
+ "8-3": [
+  ["What boring task would you happily let AI do for you?", "哪件無聊的事你很樂意交給 AI 做？", "面倒な作業のうち、AIに任せたいものは何ですか？"],
+  ["What do you do if AI gives you a very long answer?", "AI 回得太長時，你會怎麼做？", "AIの答えがとても長かったら、どうしますか？"],
+  ["Which app would you open first to check something AI said?", "要查 AI 講的話，你會先開哪個 App？", "AIが言ったことを確かめるなら、最初にどのアプリを開きますか？"],
+ ],
+ "8-4": [
+  ["Who do you text when you need a quick answer?", "急著想知道答案時，你會傳訊息問誰？", "すぐ答えが知りたいとき、誰にメッセージを送りますか？"],
+  ["Have you ever watched a video to fix something by yourself?", "你有看影片自己修好過什麼東西嗎？", "動画を見て、自分で何かを直したことはありますか？"],
+  ["What’s one thing you learned by just trying it?", "你有哪件事是直接動手試了才學會的？", "とりあえずやってみて覚えたことは何ですか？"],
+ ],
+ "9-0": [
+  ["What’s a habit you picked up from an older family member?", "你跟家裡的長輩學到什麼小習慣？", "年上の家族から身についた癖や習慣は何ですか？"],
+  ["What little thing do you always do at the dinner table?", "吃飯時，有什麼小事是你一定會做的？", "食卓でいつもするちょっとしたことは何ですか？"],
+  ["Do you and your siblings ever tease each other about habits?", "你跟兄弟姊妹會拿彼此的小習慣開玩笑嗎？", "きょうだい同士で、お互いの癖をからかうことはありますか？"],
+ ],
+ "9-1": [
+  ["Who showed you what to do when you first joined a club?", "你剛進社團時，是誰帶你熟悉的？", "部活に入ったばかりのころ、誰が教えてくれましたか？"],
+  ["Did you ever forget something you needed to bring to club practice?", "你有忘記帶社團練習要用的東西嗎？", "部活に必要なものを忘れたことはありますか？"],
+  ["Do you still talk to the older students who helped you?", "你現在還會跟以前幫過你的學長姐聊天嗎？", "前に助けてくれた先輩と、今でも話しますか？"],
+ ],
+ "9-2": [
+  ["What would make you jump up and say “Watch out”?", "看到什麼，你會急著喊「小心」？", "何を見たら、思わず「危ない！」と声が出ますか？"],
+  ["Have you ever grabbed someone’s hand to stop them?", "你有為了阻止別人，趕快拉住他的手嗎？", "誰かを止めようとして、とっさに手をつかんだことはありますか？"],
+  ["What helps you calm down after a scare?", "嚇到之後，什麼能讓你冷靜下來？", "ひやっとしたあと、何をすると落ち着けますか？"],
+ ],
+ "9-3": [
+  ["What do you do when you can feel yourself getting annoyed?", "發現自己開始不耐煩時，你會做什麼？", "イライラしてきたと気づいたら、どうしますか？"],
+  ["Would sending a message be easier than saying it again?", "比起再講一次，改傳訊息會比較容易嗎？", "もう一度口で言うより、メッセージを送るほうが楽ですか？"],
+  ["Is there someone you’re extra patient with?", "有沒有誰會讓你特別有耐心？", "普段より気長に付き合える相手はいますか？"],
+ ],
+ "9-4": [
+  ["What would you show a younger kid how to do for fun?", "你會想教小朋友做什麼好玩的事？", "年下の子に、何か楽しいことを教えるなら何ですか？"],
+  ["Was it easy for you to ask older kids for help growing up?", "你小時候會很自然地找年紀比較大的人幫忙嗎？", "小さいころ、年上の子に気軽に助けを頼めましたか？"],
+  ["What did you enjoy doing with older kids when you were little?", "小時候，你喜歡跟大一點的孩子一起做什麼？", "小さいころ、年上の子と何をして遊ぶのが好きでしたか？"],
+ ],
+ "x-5": [
+  ["When did you last do something like that?", "你上次做類似的事是什麼時候？", "最後に似たようなことをしたのはいつですか？"],
+  ["Who would you want there with you?", "你會想找誰一起？", "誰と一緒にいたいですか？"],
+  ["What part of your answer is most like you?", "你的答案裡，哪一部分最像你？", "答えのどの部分が一番自分らしいですか？"],
+ ],
+ "x-6": [
+  ["What do you usually do instead?", "你平常會做什麼別的事？", "代わりに普段は何をしますか？"],
+  ["Who would you ask to show you how?", "你會找誰示範給你看？", "誰にやり方を見せてもらいたいですか？"],
+  ["Would you try it once just for fun?", "你會想單純為了好玩試一次嗎？", "楽しそうだから一度だけ試してみたいですか？"],
+ ],
+};
+function extendedQuestions(q,i){
+ return EXTENDED_QUESTIONS[(i>=5?'x':q)+'-'+i]||[];
+}
 function pEx(s,q,host){
  const ord=order(room,s.q),who=i=>present(s).filter(k=>s.pk['s'+k]===i);
  const chosen=ord.filter(i=>who(i).length);
  const [ci,ck]=s.ex?s.ex.split('-').map(Number):[-1,-1];
- const cur=ci>=0?fuq(s.q,ci)[ck]:null,v=s.pk['s'+me];
+ const cur=extendedQuestions(s.q,ci)[ck],v=s.pk['s'+me];
  if(host){
-  const n=chosen.reduce((t,i)=>t+fuq(s.q,i).length,0);
+  const n=chosen.reduce((t,i)=>t+extendedQuestions(s.q,i).length,0);
   const eo=s.eo,cards=chosen.map(i=>{const o=opt(s.q,i),ws=who(i),k=ord.indexOf(i),done=s.ex&&+s.ex.split('-')[0]===i;return `<button class="opt acard ${eo===i?'active':''}" data-act="eopen" data-a="${i}"><strong>${L(k)}. <span class="E">${esc(o.en)}</span></strong><small class="sub">${T(esc(o.zh),esc(o.ja))}</small><span class="whos">${ws.map(x=>`<i>${tw(x)}</i>`).join('')}<span class="muted">${T('3 題','3問','3 Qs')}</span></span></button>`}).join('');
   let pop='';if(eo>=0){const o=opt(s.q,eo),ws=who(eo),m=fume(s.q,eo);
-   pop=POP(`<div class="tag">${T('問選這個答案的人','この答えを選んだ人に聞こう','Ask the students who chose this')} · ${ws.map(tw).join(', ')}</div><h3><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</h3>`,
-    `<b>${T('點一題問（對方畫面也會出現）','タップして質問（相手の画面にも出ます）','Tap to ask (it shows on their screen)')}</b>${fuq(s.q,eo).map((f,k)=>`<button class="fq ${s.ex===eo+'-'+k?'active':''}" data-act="exq" data-a="${eo}-${k}"><b class="E">${esc(ws.map(tw).join(', '))}, ${esc(/^I\b/.test(f[0])?f[0]:f[0][0].toLowerCase()+f[0].slice(1))}</b>${TL(esc(f[1]),esc(f[2]))}</button>`).join('')}
+   pop=POP(`<div class="tag">${T('問選這個答案的人','この答えを選んだ人に聞こう','Ask the students who chose this')} · ${ws.map(i=>tw(i)).join(', ')}</div><h3><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</h3>`,
+    `<b>${T('點一題問（對方畫面也會出現）','タップして質問（相手の画面にも出ます）','Tap to ask (it shows on their screen)')}</b>${extendedQuestions(s.q,eo).map((f,k)=>`<button class="fq ${s.ex===eo+'-'+k?'active':''}" data-act="exq" data-a="${eo}-${k}"><b class="E">${ws.map(i=>tw(i)).join(', ')}, ${esc(/^I\b/.test(f[0])?f[0]:f[0][0].toLowerCase()+f[0].slice(1))}</b>${TL(esc(f[1]),esc(f[2]))}</button>`).join('')}
     ${m?`<div class="say share"><small>${T('🙋 也說說你自己的','🙋 自分の話もしよう','🙋 Share yours too')}</small><b class="E">${esc(m[0])}</b>${TL(esc(m[1]),esc(m[2]))}<small class="ins">${T('說完可以接：What about you?','言ったあと：What about you?','Then ask: What about you?')}</small></div>`:''}
     <b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','That’s interesting!','I see.','That’s surprising!','Oh really? Tell me more!'],'blank')}`,
     NAV(chosen,eo,'eopen','eclose'),'eclose');}
