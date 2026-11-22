@@ -287,7 +287,7 @@ body.lang-zh .kline .tl,body.lang-ja .kline .tl{font-size:15px;font-weight:700;c
 </style>
 </head>
 <body>
-<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 26</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 52</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
 <main id="app"></main>
 <script>
 /* ===== 設定 =====
@@ -309,7 +309,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 51;
+const VERSION = 52;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -1306,27 +1306,27 @@ const choseTxt=v=>v!=null?T('✓ 已選。主持人換下一步之前都可以�
 /* 2 追問（新）：日本同學看到大家的答案，點選項 → 彈出追問視窗 */
 /* 追問題目：每個選項 3 題，分三種 —— 📖 說經驗、💭 想像、🤔 想法（格式：題號-選項|類型|英|中|日） */
 const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學校的頭髮規定是什麼？|あなたの学校の髪のルールは何ですか？
-0-0|p|Have you or your friends ever had a problem with this rule?|你或你的朋友有因為這個規定遇到麻煩嗎？|あなたや友達はこのルールで困ったことがありますか？
+0-0|p|What part of the hair rule do students talk about most?|同學最常討論頭髮規定的哪一部分？|髪のルールで、みんなが一番よく話すのはどの部分ですか？
 0-0|d|If there were no hair rule for one day, what hairstyle would you try?|如果有一天沒有頭髮規定，你想試什麼髮型？|もし一日だけ髪のルールがなかったら、どんな髪型にしてみたいですか？
 0-0|me|At my school, the hair rule is ___ .|我們學校的頭髮規定是 ___。|私の学校の髪のルールは___です。
 0-1|e|What does your school uniform look like?|你們的制服長什麼樣子？|あなたの学校の制服はどんな感じですか？
-0-1|p|Do you like wearing your uniform? Why or why not?|你喜歡穿制服嗎？為什麼？|制服を着るのは好きですか？どうしてですか？
+0-1|p|What would you change about your uniform for a hot day?|如果天氣很熱，你會想把制服的哪裡改一下？|暑い日に着るなら、制服のどこを変えたいですか？
 0-1|d|If you could design your school uniform, what would it look like?|如果可以自己設計制服，你會設計成什麼樣子？|もし制服を自分でデザインできたら、どんな制服にしますか？
 0-1|me|At my school, we wear ___ .|我們學校穿 ___。|私の学校では___を着ます。
 0-2|e|When can you use your phone at school?|在學校什麼時候可以用手機？|学校ではいつスマホを使えますか？
-0-2|p|What happens if a teacher sees your phone in class?|上課時被老師看到手機會怎樣？|授業中に先生にスマホを見られたらどうなりますか？
+0-2|p|When would a phone actually be useful in class?|上課時，什麼情況下手機真的會派上用場？|授業中、どんなときにスマホがあると便利ですか？
 0-2|d|If you could use your phone all day at school, what would you do with it?|如果在學校整天都能用手機，你會拿來做什麼？|もし学校で一日中スマホを使えたら、何をしますか？
 0-2|me|At my school, we can use phones ___ .|我們學校 ___ 可以用手機。|私の学校では___スマホを使えます。
 0-3|e|Do you or your friends have a part-time job?|你或你的朋友有在打工嗎？|あなたや友達はアルバイトをしていますか？
-0-3|p|What job would you like to try? Why?|你想試試什麼工作？為什麼？|どんな仕事をしてみたいですか？どうしてですか？
+0-3|p|What would make a part-time job worth doing after school?|什麼樣的打工會讓你覺得放學後去做也值得？|放課後にやるなら、どんなアルバイトに魅力を感じますか？
 0-3|d|If you could get paid for one hobby, which hobby would you choose?|如果你的一個興趣可以賺錢，你會選哪一個？|もし趣味でお金をもらえるなら、どの趣味を選びますか？
 0-3|me|At my school, part-time jobs are ___ .|我們學校打工是 ___ 的。|私の学校では、アルバイトは___です。
 0-4|e|What time do you have to come home?|你幾點前要回家？|何時までに家に帰らなければいけませんか？
-0-4|p|What happens if you come home late?|如果你晚回家會怎樣？|遅く帰るとどうなりますか？
+0-4|p|How do you decide what time to go home when you’re out with friends?|和朋友出去時，你怎麼決定幾點回家？|友達と出かけたとき、何時に帰るかどう決めますか？
 0-4|d|If you had no curfew for one night, what would you do with your friends?|如果有一個晚上沒有門禁，你想跟朋友做什麼？|もし一晩だけ門限がなかったら、友達と何をしたいですか？
 0-4|me|My curfew is ___ .|我的門禁是 ___。|私の門限は___です。
-1-0|e|How often do your parents ask about exams?|你爸媽多常問考試的事？|親はどのくらい試験のことを聞きますか？
-1-0|p|How do you feel when they ask about your score?|他們問分數時你有什麼感覺？|点数を聞かれたとき、どんな気持ちですか？
+1-0|e|What’s the first thing your parents say when you get home after an exam?|考完試回到家，你爸媽通常第一句說什麼？|試験が終わって家に帰ると、親は最初に何と言いますか？
+1-0|p|How would you like them to ask about your exam?|你希望他們怎麼問你考試的事？|試験のことを、どんなふうに聞いてほしいですか？
 1-0|d|After an exam, what do you do to relax?|考完試後，你會做什麼放鬆？|試験のあと、何をしてリラックスしますか？
 1-0|me|My parents ask about exams ___ .|我爸媽 ___ 會問考試的事。|私の親は___試験のことを聞きます。
 1-1|e|Where do you usually study?|你通常在哪裡讀書？|ふだんどこで勉強しますか？
@@ -1335,7 +1335,7 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 1-1|me|I usually study at ___ for ___ hours.|我通常在 ___ 讀 ___ 小時。|私はふだん___で___時間勉強します。
 1-2|e|Who usually cooks at your home?|你家通常誰煮飯？|家ではいつも誰が料理しますか？
 1-2|p|What is your favorite food that your family makes?|家人做的菜你最喜歡哪一道？|家族が作る料理で一番好きなものは何ですか？
-1-2|d|How do you show your friends that you care about them?|你會怎麼讓朋友知道你關心他？|友達のことを大切に思っているとき、どうやって伝えますか？
+1-2|d|When someone at home asks if you’ve eaten, what do you usually say?|家人問你吃飽沒時，你通常怎麼回答？|家の人に「ごはん食べた？」と聞かれたら、ふだん何と答えますか？
 1-2|me|In Japan, parents often ask ___ .|在日本，爸媽常常問 ___。|日本では、親はよく___と聞きます。
 1-3|e|What time do you usually get home?|你通常幾點到家？|ふだん何時に家に帰りますか？
 1-3|p|What do you usually do after school?|你放學後通常做什麼？|放課後はふだん何をしますか？
@@ -1343,30 +1343,30 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 1-3|me|I usually get home at ___ .|我通常 ___ 到家。|私はふだん___に家に帰ります。
 1-4|e|Where do you usually go with your friends?|你通常和朋友去哪裡？|友達とよくどこに行きますか？
 1-4|p|What did you do with your friends last weekend?|你上週末和朋友做了什麼？|先週末、友達と何をしましたか？
-1-4|d|Have your parents met your best friend? What did they say?|你爸媽見過你最好的朋友嗎？他們說了什麼？|親はあなたの親友に会ったことがありますか？何と言っていましたか？
+1-4|d|What’s one thing you’d tell your parents about the friends you hang out with?|如果要跟爸媽介紹常一起出去的朋友，你會說什麼？|よく一緒に出かける友達のことを親に話すなら、何を伝えますか？
 1-4|me|I usually go to ___ with my friends.|我通常和朋友去 ___。|私はよく友達と___に行きます。
 2-0|e|How did your family celebrate your birthday when you were small?|你小時候家人怎麼幫你過生日？|小さいころ、家族はどうやって誕生日を祝ってくれましたか？
-2-0|p|What did your family do on that day when you were small?|小時候那天你們家會做什麼？|小さいころ、その日に家族で何をしましたか？
+2-0|p|Was there a special day you used to look forward to as a kid?|小時候，有沒有哪個特別的日子讓你很期待？|小さいころ、楽しみにしていた特別な日はありますか？
 2-0|d|What special day from your childhood do you remember well?|小時候哪個特別的日子你記得很清楚？|子どものころの特別な日で、よく覚えている日はありますか？
 2-0|me|On Girls’ Day or Children’s Day, my family ___ .|女兒節或兒童節時，我家會 ___。|ひな祭りやこどもの日には、うちでは___。
 2-1|e|What food do you eat at New Year?|過年時你們吃什麼？|お正月（旧正月）には何を食べますか？
 2-1|p|What do you usually do during the New Year holiday?|過年假期你通常做什麼？|お正月の休みにはふだん何をしますか？
 2-1|d|What is your favorite thing to do at New Year?|過年時你最喜歡做什麼？|お正月に一番好きなことは何ですか？
 2-1|me|At New Year, my family eats ___ .|過年時我們家會吃 ___。|お正月、うちでは___を食べます。
-2-2|e|What do you eat at the Moon Festival?|你中秋節都吃什麼？|中秋節には何を食べますか？
-2-2|p|Who do you spend the Moon Festival with?|你中秋節都和誰一起過？|中秋節は誰と過ごしますか？
-2-2|d|What is your favorite thing to do with your family on this day?|這一天你最喜歡跟家人做什麼？|この日に家族とすることで、一番好きなことは何ですか？
+2-2|e|What did a typical Moon Festival look like for you growing up?|你小時候的中秋節通常是怎麼過的？|小さいころ、中秋節はふだんどう過ごしていましたか？
+2-2|p|If you had a barbecue last year, who did you cook with?|如果你去年有烤肉，你跟誰一起烤？|去年バーベキューをしたなら、誰と一緒に焼きましたか？
+2-2|d|If I joined you for the Moon Festival, what should I try first?|如果我跟你一起過中秋，你會先推薦我試什麼？|一緒に中秋節を過ごすなら、まず何をすすめてくれますか？
 2-2|me|In Japan, we look at the moon and eat ___ .|在日本，我們會賞月、吃 ___。|日本では、月を見ながら___を食べます。
-2-3|e|What food do you prepare for your ancestors?|你們會為祖先準備什麼食物？|ご先祖さまにどんな食べ物を用意しますか？
+2-3|e|Is there anything your family does to remember people who have passed away?|你們家會做什麼來紀念過世的親人嗎？|亡くなった家族をしのぶために、家で何かすることはありますか？
 2-3|p|What does your family do on that day?|那天你們家會做什麼？|その日、あなたの家族は何をしますか？
 2-3|d|When you are older, which tradition would you like to keep?|等你長大後，你想保留哪個傳統？|大人になったら、どの伝統を続けたいですか？
 2-3|me|In Japan, we have Obon. My family ___ .|日本有盂蘭盆節，我們家會 ___。|日本にはお盆があって、うちでは___。
-2-4|e|What lucky food does your family eat?|你家會吃什麼代表好運的食物？|あなたの家では、どんな縁起のいい食べ物を食べますか？
+2-4|e|Is there a food you eat on a special day because it means something?|有沒有一種食物，你會因為它有特別的意思，在某個日子吃？|特別な意味があって、決まった日に食べるものはありますか？
 2-4|p|Have you eaten something for luck before a test?|你考試前有吃過求好運的東西嗎？|テストの前に縁起のいいものを食べたことはありますか？
 2-4|d|Do you have a lucky food or a lucky item? What is it?|你有幸運食物或幸運物嗎？是什麼？|ラッキーな食べ物やお守りはありますか？何ですか？
 2-4|me|In Japan, students eat ___ before exams for luck.|在日本，學生考試前會吃 ___ 求好運。|日本では、受験生が試験の前に___を食べます。
 3-0|e|What is the belief? Can you explain it?|是什麼觀念？可以說明一下嗎？|どんな考え方ですか？説明してくれますか？
-3-0|p|Do you believe it? Why or why not?|你相信嗎？為什麼？|あなたは信じていますか？どうしてですか？
+3-0|p|Have you ever heard someone say this as a joke?|你有聽過誰拿這個開玩笑嗎？|これを冗談で言う人を見たことがありますか？
 3-0|d|Do you and your friends use it a lot? When?|你和朋友常用它嗎？什麼時候用？|友達とよく使いますか？どんなときですか？
 3-0|me|In Japan, many people talk about blood type. I am type ___ .|在日本很多人會聊血型，我是 ___ 型。|日本では血液型の話をよくします。私は___型です。
 3-1|e|What is the word or phrase?|那個詞或句子是什麼？|その言葉やフレーズは何ですか？
@@ -1378,7 +1378,7 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 3-2|d|When do you say it in your daily life?|你平常什麼時候會說它？|ふだん、どんなときに言いますか？
 3-2|me|In Japan, everyone knows the line “___” .|在日本，大家都知道「___」這句話。|日本では「___」というセリフをみんな知っています。
 3-3|e|What happened? Can you tell me simply?|發生了什麼事？可以簡單說說嗎？|何があったのですか？簡単に教えてくれますか？
-3-3|p|How old were you, and where were you then?|那時你幾歲？在哪裡？|そのとき何歳で、どこにいましたか？
+3-3|p|How did you first hear about it?|你第一次是怎麼知道這件事的？|そのことを最初にどうやって知りましたか？
 3-3|d|How did you feel when it happened?|那件事發生時你有什麼感覺？|それが起きたとき、どんな気持ちでしたか？
 3-3|me|In Japan, everyone remembers ___ .|在日本，大家都記得 ___。|日本では、みんな___を覚えています。
 3-4|e|What is the nickname? Who or what is it?|是什麼暱稱？指的是誰或什麼？|そのあだ名は何ですか？誰（何）のことですか？
@@ -1391,7 +1391,7 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 4-0|me|My favorite teacher is ___ because ___ .|我最喜歡的老師是 ___，因為 ___。|私の好きな先生は___です。なぜなら___からです。
 4-1|e|Which subject does that teacher teach?|那位老師教哪一科？|その先生は何の教科の先生ですか？
 4-1|p|Can you tell me about a time a teacher helped you?|可以說說一次老師幫你的經驗嗎？|先生に助けてもらったときのことを教えてくれますか？
-4-1|d|Do you like kind teachers or strict teachers more?|你比較喜歡溫柔的老師還是嚴格的老師？|優しい先生と厳しい先生、どちらが好きですか？
+4-1|d|What can a teacher say that makes it easier to ask for help?|老師說什麼，會讓你比較敢開口求助？|先生に何と言ってもらえると、相談しやすくなりますか？
 4-1|me|A teacher once helped me when ___ .|有一次 ___ 的時候，老師幫了我。|___とき、先生が助けてくれました。
 4-2|e|Which class is the easiest to understand?|哪一堂課最好懂？|一番わかりやすい授業はどれですか？
 4-2|p|What does that teacher do to make it clear?|那位老師怎麼讓課變得好懂？|その先生はどうやってわかりやすくしていますか？
@@ -1399,27 +1399,27 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 4-2|me|My easiest class is ___ because ___ .|我覺得最好懂的課是 ___，因為 ___。|一番わかりやすい授業は___です。なぜなら___からです。
 4-3|e|How many hours of homework do you have a day?|你一天大約有幾小時的作業？|一日に何時間くらい宿題がありますか？
 4-3|p|Which subject gives the most homework?|哪一科作業最多？|どの教科の宿題が一番多いですか？
-4-3|d|Which homework do you like most, and which do you like least?|你最喜歡和最不喜歡哪一種作業？|一番好きな宿題と一番苦手な宿題は何ですか？
+4-3|d|What’s one assignment you’d actually want to do again?|有哪一份作業是你真的願意再做一次的？|もう一度やってもいいと思える宿題は何ですか？
 4-3|me|I have about ___ hours of homework every day.|我每天大約有 ___ 小時的作業。|毎日だいたい___時間宿題があります。
 4-4|e|Does this happen often?|這種情況常發生嗎？|それはよくありますか？
-4-4|p|What do you do when a teacher does not listen?|老師不聽的時候你怎麼辦？|先生が話を聞いてくれないとき、どうしますか？
+4-4|p|What would make it easier for you to tell a teacher you disagree?|什麼情況下，你會比較敢跟老師說你有不同看法？|どんなときなら、先生に自分は違う意見だと言いやすいですか？
 4-4|d|Is there a teacher you can talk to easily? What do you talk about?|有沒有你可以輕鬆聊天的老師？你們都聊什麼？|気軽に話せる先生はいますか？どんなことを話しますか？
 4-4|me|I like teachers who ___ .|我喜歡會 ___ 的老師。|___してくれる先生が好きです。
 5-0|e|Who is your favorite singer or idol?|你最喜歡哪位歌手或偶像？|一番好きな歌手やアイドルは誰ですか？
 5-0|p|How did you become a fan?|你是怎麼變成粉絲的？|どうやってファンになりましたか？
-5-0|d|What do your parents say about the things you like?|爸媽對你喜歡的東西會說什麼？|あなたが好きなものについて、親は何と言いますか？
+5-0|d|Have you ever shown your parents a song or video you love? What did they say?|你有跟爸媽分享過一首很愛的歌或一支很喜歡的影片嗎？他們說了什麼？|大好きな曲や動画を親に見せたことはありますか？親は何と言いましたか？
 5-0|me|My favorite is ___ . I bought ___ .|我最喜歡 ___，我買過 ___。|私の推しは___です。___を買いました。
 5-1|e|What game do you play now?|你現在玩什麼遊戲？|今どんなゲームをしていますか？
 5-1|p|Do you spend money on games? What do you buy?|你會花錢在遊戲上嗎？買什麼？|ゲームにお金を使いますか？何を買いますか？
-5-1|d|Have you ever spent money on a game? What did you buy?|你有在遊戲上花過錢嗎？買了什麼？|ゲームにお金を使ったことはありますか？何を買いましたか？
+5-1|d|What makes something in a game worth paying for to you?|遊戲裡的東西要有什麼特色，你才會覺得值得花錢？|ゲームの中のものにお金を払うなら、どんなものに価値を感じますか？
 5-1|me|I play ___ . I usually play for ___ .|我玩 ___，通常玩 ___。|私は___をしています。だいたい___遊びます。
 5-2|e|Where do you usually buy clothes?|你通常在哪裡買衣服？|服はふだんどこで買いますか？
 5-2|p|What is your favorite thing you bought recently?|你最近買的東西中最喜歡哪個？|最近買ったもので一番気に入っているものは何ですか？
 5-2|d|What clothes or style do you like these days?|你最近喜歡什麼衣服或風格？|最近どんな服やスタイルが好きですか？
 5-2|me|I usually buy clothes at ___ .|我通常在 ___ 買衣服。|私はよく___で服を買います。
 5-3|e|What drink or snack do you buy most?|你最常買什麼飲料或零食？|一番よく買う飲み物やおやつは何ですか？
-5-3|p|How often do you buy it?|你多久買一次？|どのくらいの頻度で買いますか？
-5-3|d|What is your usual drink order?|你平常都點什麼飲料？|いつも頼む飲み物は何ですか？
+5-3|p|What do you order when you want to try something different?|想換個口味時，你會點什麼？|いつもと違うものを試したいとき、何を注文しますか？
+5-3|d|If we went to a drink shop after school, what would you order for me?|如果放學後我們一起去飲料店，你會幫我點什麼？|放課後に一緒にドリンク店に行くなら、私に何を注文してくれますか？
 5-3|me|In Japan, I often buy ___ at the convenience store.|在日本，我常在便利商店買 ___。|日本ではコンビニでよく___を買います。
 5-4|e|Which anime do you like?|你喜歡哪部動畫？|どのアニメが好きですか？
 5-4|p|What is your favorite item? Why is it special?|你最喜歡的周邊是什麼？為什麼特別？|一番好きなグッズは何ですか？どうして特別なのですか？
@@ -1427,15 +1427,15 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 5-4|me|I like ___ . My favorite character is ___ .|我喜歡 ___，最喜歡的角色是 ___。|私は___が好きで、好きなキャラクターは___です。
 6-0|e|What job do you want to try?|你想試試什麼工作？|どんな仕事をしてみたいですか？
 6-0|p|What stops you from trying it now?|是什麼讓你現在還不能試？|今それができないのはどうしてですか？
-6-0|d|What job would you like to try someday?|你以後想試試什麼工作？|いつかやってみたい仕事は何ですか？
+6-0|d|If you could try that job for one day, what would you want to do first?|如果可以做那份工作一天，你第一件想做什麼？|その仕事を一日だけ体験できるなら、最初に何をしてみたいですか？
 6-0|me|I want to work at ___ because ___ .|我想在 ___ 打工，因為 ___。|___で働いてみたいです。なぜなら___からです。
 6-1|e|Which country do you want to visit? Why?|你想去哪個國家？為什麼？|どの国に行きたいですか？どうしてですか？
 6-1|p|Have you traveled abroad before? Where?|你出過國嗎？去哪裡？|海外旅行をしたことはありますか？どこですか？
-6-1|d|Where would you like to travel with your friends?|你想跟朋友去哪裡旅行？|友達とどこに旅行したいですか？
+6-1|d|If we went there together, what would you want us to try first?|如果我們一起去那裡，你會想先一起試什麼？|一緒にそこへ行くなら、まず何をしてみたいですか？
 6-1|me|I want to go to ___ because ___ .|我想去 ___，因為 ___。|___に行きたいです。なぜなら___からです。
 6-2|e|What do you want to learn?|你想學什麼？|何を習いたいですか？
-6-2|p|Why haven’t you started yet?|你為什麼還沒開始？|どうしてまだ始めていないのですか？
-6-2|d|What is something new you want to learn this year?|今年你想學什麼新東西？|今年新しく学びたいことは何ですか？
+6-2|p|What would be a fun first step for you?|對你來說，怎麼開始會比較有趣？|どんなことから始めたら楽しそうですか？
+6-2|d|Who would you like to learn it with?|你會想跟誰一起學？|誰と一緒に習ってみたいですか？
 6-2|me|I want to learn ___ someday.|我有一天想學 ___。|いつか___を習いたいです。
 6-3|e|What competition or event do you want to join?|你想參加什麼比賽或活動？|どんな大会やイベントに出たいですか？
 6-3|p|Have you ever been on stage? How did you feel?|你上過台嗎？感覺怎麼樣？|ステージに立ったことはありますか？どんな気持ちでしたか？
@@ -1447,15 +1447,15 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 6-4|me|If I lived alone, I would ___ every day.|如果我一個人住，我每天會 ___。|一人暮らしなら、毎日___します。
 7-0|e|Which app do you use most?|你最常用哪個 App？|一番よく使うアプリは何ですか？
 7-0|p|How many hours a day do you use it?|你一天用幾個小時？|一日に何時間使いますか？
-7-0|d|Which app do you use most? What do you watch or post?|你最常用哪個 app？都看什麼或發什麼？|一番よく使うアプリは何ですか？何を見たり投稿したりしますか？
+7-0|d|What’s something on that app you’d send to a friend?|那個 App 上有什麼是你會想傳給朋友的？|そのアプリで、友達に送りたくなるのはどんな投稿ですか？
 7-0|me|I use ___ about ___ hours a day.|我一天用 ___ 大約 ___ 小時。|私は___を一日___時間くらい使います。
 7-1|e|What kind of short videos do you watch?|你看哪種短影片？|どんなショート動画を見ますか？
 7-1|p|When do you usually watch them?|你通常什麼時候看？|ふだんいつ見ますか？
-7-1|d|What kind of short videos do you watch most?|你最常看哪種短影片？|どんな短い動画をよく見ますか？
+7-1|d|What kind of video makes you stop scrolling?|滑到什麼樣的影片時，你會停下來看？|どんな動画が流れてくると、スクロールを止めて見ますか？
 7-1|me|I often watch ___ videos.|我常看 ___ 的影片。|私はよく___の動画を見ます。
 7-2|e|What game do you play these days?|你最近玩什麼遊戲？|最近どんなゲームをしていますか？
 7-2|p|Do you play alone or with friends?|你自己玩還是跟朋友玩？|一人で遊びますか、友達と遊びますか？
-7-2|d|What game are you playing these days?|你最近在玩什麼遊戲？|最近どんなゲームをしていますか？
+7-2|d|If I joined your game for the first time, what should I learn first?|如果我第一次加入你玩的遊戲，我應該先學什麼？|私が初めてそのゲームに参加するなら、まず何を覚えたらいいですか？
 7-2|me|I play ___ . I usually play for ___ .|我玩 ___，通常玩 ___。|私は___をしています。だいたい___遊びます。
 7-3|e|What are you watching now?|你現在在看什麼？|今何を見ていますか？
 7-3|p|Have you ever stayed up late to watch it?|你有熬夜看過嗎？|夜ふかしして見たことはありますか？
@@ -1467,7 +1467,7 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 7-4|me|On weekends, I get up at ___ .|週末我 ___ 起床。|週末は___に起きます。
 8-0|e|Which AI do you use?|你用哪個 AI？|どのAIを使っていますか？
 8-0|p|What do you usually talk to AI about?|你通常跟 AI 聊什麼？|AIとふだん何について話しますか？
-8-0|d|Have you ever talked to AI just for fun? What did you talk about?|你有只是好玩跟 AI 聊天過嗎？聊了什麼？|遊びでAIと話したことはありますか？何を話しましたか？
+8-0|d|What’s the funniest thing an AI has said to you?|AI 跟你說過最好笑的一句話是什麼？|AIに言われたことで、一番面白かったのは何ですか？
 8-0|me|I use ___ . I sometimes talk to it about ___ .|我用 ___，有時會跟它聊 ___。|私は___を使っていて、ときどき___について話します。
 8-1|e|When do you usually talk to AI?|你通常什麼時候跟 AI 聊？|ふだんいつAIと話しますか？
 8-1|p|Is it easier to talk to AI than to people? Why?|跟 AI 說話比跟人說話容易嗎？為什麼？|人よりAIのほうが話しやすいですか？どうしてですか？
@@ -1475,27 +1475,27 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 8-1|me|When I feel stressed, I usually ___ .|我壓力大的時候通常會 ___。|ストレスを感じたとき、私はよく___。
 8-2|e|Which subject do you use AI for?|你用 AI 做哪一科的功課？|どの教科でAIを使いますか？
 8-2|p|When did AI help you the most?|AI 什麼時候幫你最多？|AIが一番役に立ったのはいつですか？
-8-2|d|What school work do you use AI for?|你會用 AI 做哪些學校的事？|学校のどんなことにAIを使いますか？
+8-2|d|Has AI ever given you a school answer that looked right but was wrong?|AI 有沒有給過你一個看起來對、其實錯的功課答案？|AIが勉強の質問に、正しそうで実は間違った答えを出したことはありますか？
 8-2|me|At my school, we use AI for ___ .|我們學校會用 AI 來 ___。|私の学校では、AIを___に使います。
 8-3|e|What do you use AI for?|你用 AI 做什麼？|AIを何に使いますか？
 8-3|p|What is the most useful thing AI did for you?|AI 幫你做過最有用的事是什麼？|AIがしてくれた一番役に立ったことは何ですか？
 8-3|d|What job do you want in the future? Do you think AI can do it too?|你以後想做什麼工作？你覺得 AI 也做得到嗎？|将来どんな仕事をしたいですか？AIにもできると思いますか？
 8-3|me|I use AI to ___ .|我用 AI 來 ___。|私はAIを___ために使います。
-8-4|e|Why don’t you use AI very much?|你為什麼不太用 AI？|どうしてAIをあまり使わないのですか？
+8-4|e|When you get stuck on something, what do you usually try first?|遇到事情卡住時，你通常會先試什麼？|何かで行き詰まったとき、まず何を試しますか？
 8-4|p|Do your friends use AI a lot?|你的朋友常用 AI 嗎？|友達はよくAIを使いますか？
-8-4|d|How many times a day do you use AI?|你一天大概用幾次 AI？|一日に何回くらいAIを使いますか？
+8-4|d|Is there something you’d rather figure out on your own?|有沒有什麼事是你比較想自己想出答案的？|自分で考えて答えを出したいことはありますか？
 8-4|me|I use AI ___ .|我 ___ 用 AI。|私はAIを___使います。
 9-0|e|Who was it? A brother, sister, or cousin?|是誰？弟弟、妹妹還是表弟妹？|誰でしたか？弟、妹、それともいとこ？
 9-0|p|What did they do, and what did you say?|他做了什麼？你說了什麼？|その人は何をして、あなたは何と言いましたか？
 9-0|d|In your family, who taught you the most about manners?|在你家，誰教你最多禮貌？|家族の中で、誰が一番マナーを教えてくれましたか？
 9-0|me|I have a younger ___ . Sometimes I tell them ___ .|我有一個 ___，有時候我會跟他說 ___。|私には___がいて、ときどき___と言います。
 9-1|e|Was it in your club or in class?|是在社團還是在班上？|部活でのことですか、クラスでのことですか？
-9-1|p|What rule did they break, and how did you tell them?|他違反了什麼規定？你怎麼跟他說的？|どんなルールを破って、どうやって伝えましたか？
+9-1|p|How did you bring it up with them?|你那時是怎麼跟他開口的？|その話を、その人にどう切り出しましたか？
 9-1|d|Have you ever told a younger student they were wrong? How did it go?|你有跟學弟妹說過他們做錯了嗎？結果怎樣？|後輩にまちがいを伝えたことはありますか？どうなりましたか？
 9-1|me|In Japan, seniors and juniors in clubs ___ .|在日本，社團的學長姐和學弟妹 ___。|日本の部活では、先輩と後輩は___。
 9-2|e|What were they doing?|他那時在做什麼？|その人は何をしていましたか？
 9-2|p|What happened after you said something?|你說了之後發生什麼事？|あなたが言ったあと、どうなりましたか？
-9-2|d|Have you ever been scolded and later felt thankful? What happened?|你有被罵過但後來很感謝的經驗嗎？發生了什麼？|怒られたけど、あとで感謝したことはありますか？何がありましたか？
+9-2|d|What could someone say to make it easier for you to take their advice?|如果別人想給你建議，怎麼說你會比較聽得進去？|誰かにアドバイスをもらうとき、どんな言い方なら聞きやすいですか？
 9-2|me|Once, I told someone to stop because ___ .|有一次我叫人停下來，因為 ___。|一度、___ので「やめて」と言いました。
 9-3|e|How many times did you tell them?|你說了幾次？|何回言いましたか？
 9-3|p|How did you feel, and what happened in the end?|你那時感覺怎樣？最後結果如何？|どんな気持ちでしたか？最後はどうなりましたか？
@@ -1510,7 +1510,7 @@ x-5|p|Do you have an example from your life?|你有生活中的例子嗎？|生�
 x-5|d|Is there something like this in your life too?|你的生活中也有類似的事嗎？|あなたの生活にも似たことはありますか？
 x-5|me|That is new to me. In Japan, ___ .|這對我來說很新鮮。在日本，___。|初めて聞きました。日本では___。
 x-6|e|Is there someone in your family or class who has this experience?|你家人或同學中有人有這個經驗嗎？|家族やクラスに、この経験がある人はいますか？
-x-6|p|Do your friends have this experience?|你的朋友有這種經驗嗎？|友達にはこの経験がありますか？
+x-6|p|What comes to mind when you hear other people’s answers?|聽到其他人的答案，你想到什麼？|ほかのみんなの答えを聞いて、何を思い浮かべましたか？
 x-6|d|Would you like to try it someday? Why?|你以後想試試看嗎？為什麼？|いつかやってみたいですか？どうしてですか？
 x-6|me|For me, ___ .|對我來說，___。|私の場合は、___。`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===5)(m[p[0]]=m[p[0]]||[]).push([p[2],p[3],p[4],p[1]])});return m})();
 const FUTYPE={e:['🟢 簡單','🟢 かんたん','🟢 Easy'],p:['🔵 個人經驗','🔵 自分の経験','🔵 Personal'],d:['🟠 說說想法','🟠 気持ち・アイデア','🟠 Your ideas'],me:['🙋 換我說','🙋 自分の話','🙋 My turn']};
