@@ -40,6 +40,7 @@ button:disabled{opacity:.4;cursor:default}
 .chip.blank{background:#eef3f1;border-color:#cfdcd7}
 .notice{background:#fff0ce;padding:12px;border-radius:10px;font-size:14px;margin:10px 0}
 .signal{background:#fde5dc;border:2px solid #d58b6f;border-radius:12px;padding:10px;margin:6px 0}
+.endbar{align-items:center}.endbar small{flex-basis:100%}
 .steps{display:flex;gap:4px;margin:12px 0}
 .steps span{flex:1;text-align:center;border-top:5px solid #d9dfdb;font-size:12px;padding-top:5px}
 .steps .on{border-color:#348278;font-weight:bold}
@@ -297,7 +298,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 48;
+const VERSION = 49;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -428,9 +429,9 @@ const SIG = {
  mean:{hz:'聽不懂意思 → 用簡單的字、手勢或圖片',he:'doesn’t understand a word → use simple words, gestures or pictures',jb:'わからない言葉がある',zh:'聽不懂某個字',en:'What does that mean?',ja:'意味がわからない → 簡単な言葉・ジェスチャー・絵で'},
  ok:{hz:'聽懂了！👍',he:'understood! 👍',jb:'わかった',zh:'我聽懂了',en:'I got it! 👍',ja:'わかった！👍'}
 };
-const PH_ZH=['選題','選擇','猜測','揭曉・說明','聽懂了嗎','分享理由','延伸聊天'];
-const PH_EN=['Topic','Choose','Guess','Reveal','Understand?','Reasons','Explore'];
-const PH_JA=['話題選び','選ぶ','予想','答え合わせ・説明','理解チェック','理由を聞く','もっと話す'];
+const PH_ZH=['選題','選擇','問理由','延伸聊天','猜答案','揭曉・分享'];
+const PH_EN=['Topic','Choose','Reasons','Chat','Guess','Reveal'];
+const PH_JA=['話題選び','選ぶ','理由を聞く','もっと話す','予想','答え合わせ'];
 
 /* ===== 房間 =====
    正式 Room 1–6（r1–r6）、備用 Backup 1–6（b1–b6）、測試 Test 1–6（t1–t6，對應 Room 1–6） */
@@ -546,7 +547,8 @@ const ACT={
  hguess:a=>upd({hg:+a}),
  pick:a=>{const s=S();upd({[(s.p===1?'pk/s':'gs/s')+me]:+a})},   // 第1步選答案、第3步猜答案
  next:()=>{const s=S();upd({p:s.p+1,ao:-1,aqi:-1})},
- back:()=>{const s=S();if(s.p>1)upd({p:s.p-1})},
+ back:()=>{const s=S();if(s.p>1)upd({p:s.p-1,ao:-1,aqi:-1})},
+ goto:a=>upd({p:+a,ao:-1,aqi:-1}),
  sig:a=>{lastCheck=a;upd({['help/s'+me]:a})},
  clearSig:()=>upd({help:null}),
  retell:()=>{const s=S();const on=present(s).filter(i=>online(s,i));const ids=(on.length?on:present(s)).filter(i=>i!==s.rt);const pick=ids[Math.floor(Math.random()*ids.length)]??present(s)[0]??-1;upd({rt:pick,rtok:''})},
@@ -658,8 +660,7 @@ function simulate(){
  personas.forEach((p,idx)=>{if(p.role!=='tw'||p.me<0||idx<2)return;const k='s'+p.me;
   const rnd=()=>order(room,s.q)[Math.floor(Math.random()*7)];
   if(s.p===1&&s.pk[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===1&&S().pk[k]==null)ACT.pick(rnd())}),400+idx*250);
-  if(s.p===2&&s.gs[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===2&&S().gs[k]==null)ACT.pick(Math.random()<.5&&S().hp>=0?S().hp:rnd())}),400+idx*250);
-  if(s.p===4&&s.und[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===4&&S().und[k]==null)ACT.und(['all','all','some','none'][Math.floor(Math.random()*4)])}),400+idx*250);
+  if(s.p===4&&s.gs[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===4&&S().gs[k]==null)ACT.pick(Math.random()<.5&&S().hp>=0?S().hp:rnd())}),400+idx*250);
  });
 }
 ACT.addPane=()=>{const n=personas.filter(p=>p.role==='tw').length+1;personas.push(newTw(n));render()};
@@ -1175,6 +1176,8 @@ Who else wants to share?|還有誰想分享？|ほかに話したい人はいま
 Can I ask one more question?|我可以再問一個問題嗎？|もう一つ質問してもいいですか？
 Thank you! Let’s move on.|謝謝！我們繼續下一個。|ありがとう！次に進みましょう。
 Let me think.|讓我想想。|ちょっと考えさせてください。
+Do you have a story like this?|你有類似的故事嗎？|こんな話、ある？
+I see. Thank you!|原來如此，謝謝！|なるほど、ありがとう！
 What do you think?|你覺得呢？|どう思いますか？
 Can I ask you a question?|我可以問你一個問題嗎？|質問してもいいですか？
 In some schools in Japan, students with naturally brown hair have to submit a natural hair certificate. I think this rule is stupid.|在日本有些學校，天生頭髮是咖啡色的學生必須交「天生髮色證明書」。我覺得這條規定很蠢。|日本の一部の学校では、生まれつき髪が茶色い生徒は「地毛証明書」を出さなければなりません。このルールはばかげていると思います。
@@ -1221,11 +1224,10 @@ function roomInner(){
  if(!s.live)return h+lobby(s,host,pr,onN)+'</section>';
  if(s.q<0)return h+topicPick(s,host)+'</section>'+(host?hostKit(s):'');
  const q=Q[s.q];
- h+=`<div class="steps">${PH_ZH.slice(1).map((x,i)=>`<span class="${s.p>=i+1?'on':''}">${T(x,PH_JA[i+1],PH_EN[i+1])}</span>`).join('')}</div>
- <div class="tag">Topic ${s.q+1}</div><h2 class="E">${esc(q.en)}</h2><p class="muted qsub">${T(esc(q.zh),esc(q.ja))}</p></section>`;
- h+=`<section class="panel">${[null,p1,p2,p3,pUnd,pAsk,pEx][s.p](s,q,host)}</section>`;
+ h+=`<div class="tag">Topic ${s.q+1}</div><h2 class="E">${esc(q.en)}</h2><p class="muted qsub">${T(esc(q.zh),esc(q.ja))}</p></section>`;
+ h+=`<section class="panel">${[null,p1,pAsk,pEx,p2,p3][s.p]?.(s,q,host)??''}</section>`;
  if(host)h+=hostKit(s);
- if(host)h+=`<div class="bar">${B(T('← 上一步','← 前へ','← Back'),'back','','',s.p<=1)}${B(T('結束這題','この話題を終える','Finish this topic'),'finish')}</div>`;
+ if(host)h+=`<div class="bar endbar">${B(T('← 上一步','← 前へ','← Back'),'back','','',s.p<=1)}${B(T('⏹ 隨時可以結束這題，選下一題','⏹ いつでもこの話題を終えて次へ','⏹ End this topic anytime'),'finish','','',false,'再按一次確認結束 / もう一度押して終了')}<small class="muted">${T('台灣同學不會知道你跳過了哪些部分。','どこを飛ばしたかは台湾のみんなには分かりません。','The Taiwanese students won’t know what you skipped.')}</small></div>`;
  return h;
 }
 /* 主持人工具箱：任何時候都有話可以說 */
@@ -1719,19 +1721,19 @@ ACT.aclose=()=>{const s=S();upd({['asked/o'+s.ao]:true,ao:-1,aqi:-1})};
 function pAsk(s,q,host){
  const ord=order(room,s.q),who=i=>present(s).filter(k=>s.pk['s'+k]===i),ao=s.ao??-1;
  if(host){
-  let h=MC([['Thank you for your answers! Now I want to hear your reasons.','謝謝大家的答案！現在我想聽聽你們的理由。','答えてくれてありがとう！次はみんなの理由を聞きたいです。'],['I will ask you one by one. You can use the sentences on your screen.','我會一個一個問，你們可以用螢幕上的句子。','一人ずつ聞きます。画面の文を使ってもいいですよ。']]);
+  let h=MC([['Thank you! I want to know why you chose it.','謝謝！我想知道你們為什麼這樣選。','ありがとう！どうしてそれを選んだのか知りたいな。']])+`<div class="secret">${T('🤫 你的答案是祕密，先不要說出來！最後才讓大家猜。','🤫 あなたの答えはひみつ！まだ言わないで。最後にみんなが予想します。','🤫 Keep your answer secret for now! They will guess it at the end.')}</div>`;
   const notAsked=present(s).filter(k=>{const v=s.pk['s'+k];return v!=null&&!s.asked['o'+v]&&ao!==v});
   if(notAsked.length)h+=`<div class="notyet"><b>${T('👀 還沒被問到的人','👀 まだ聞いていない人','👀 Not asked yet')}</b> ${notAsked.map(k=>B(`${tw(k)} → ${L(ord.indexOf(s.pk['s'+k]))}`,'aopen',s.pk['s'+k],'mini')).join(' ')}<small>${T('點一下直接打開他選的答案','タップでその人の答えを開く','Tap to open their answer')}</small></div>`;
   else if(present(s).length&&Object.keys(s.asked).length)h+=`<div class="notyet done">${T('✅ 每個人都問到了！可以再多聊，或進入下一步。','✅ 全員に聞けたよ！もっと話してもいいし、次へ進んでもOK。','✅ Everyone has been asked! Keep chatting or move on.')}</div>`;
   let pop='';if(ao>=0){const o=opt(s.q,ao),ws=who(ao),names=ws.map(tw).join(', '),mine=s.hp===ao;
    pop=`<div class="popup" style="grid-column:1/-1"><div class="bar" style="justify-content:space-between"><div><div class="tag">${T('正在問的選項','質問中の選択肢','Asking about')}</div><h3 style="margin:2px 0"><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</h3></div>${B(T('問完了，關閉 ✕','質問おわり・閉じる ✕','Done, close ✕'),'aclose','','mini')}</div>
-    ${mine?`<div class="secret">${T('🇯🇵 你也選了這個！可以說：Me too!','🇯🇵 あなたもこれを選んだ！Me too! と言おう','🇯🇵 You chose this too! Say: Me too!')}</div>`:''}
+    ${mine?`<div class="secret">${T('🤫 這是你的答案！先不要說 Me too，等一下讓大家猜。','🤫 これはあなたの答え！まだ Me too と言わずに、あとで予想してもらおう。','🤫 This is your answer! Don’t say “Me too” yet—let them guess later.')}</div>`:''}
     <b>${T('① 先問理由','① まず理由を聞く','① First, ask why')}</b>${ws.length?SAY(`${names}, you chose “${esc(o.en)}”. Why did you choose it?`,'先問選這個的人理由','まず、これを選んだ人に理由を聞こう','First ask why they chose it',[`${names}，你選了「${esc(o.zh)}」。為什麼選這個？`,`${names}、「${esc(o.ja)}」を選んだね。どうしてそれを選んだの？`])
       :SAY(`Nobody chose “${esc(o.en)}”. Is it not common in Taiwan?`,'沒人選的選項也可以問','誰も選ばなかった選択肢も聞いてみよう','You can ask about options nobody chose',[`沒有人選「${esc(o.zh)}」。在台灣不常見嗎？`,`「${esc(o.ja)}」は誰も選ばなかったね。台湾ではあまりないの？`])}
     <b>${T('② 再挑一題問下去（點一下，對方畫面也會出現這題）','② 続けて一つ選んで聞こう（タップすると相手の画面にも出ます）','② Then pick a follow-up (tap to show it on their screen)')}</b>
     ${fuq(s.q,ao).map((f,k)=>`<button class="fq ${s.aqi===k?'active':''}" data-act="aq" data-a="${k}"><span class="ftype">${T(...FUTYPE[f[3]])}</span><b class="E">${esc(f[0])}</b>${TL(esc(f[1]),esc(f[2]))}</button>`).join('')}
     ${(()=>{const m=fume(s.q,ao);return m?`<b>${T('③ 🙋 換你說說自己的（台灣同學會很想聽！）','③ 🙋 自分の話もしよう（台湾のみんなも聞きたいはず！）','③ 🙋 Share your own story (they want to hear it!)')}</b><div class="say share"><b class="E">${esc(m[0])}</b>${TL(esc(m[1]),esc(m[2]))}<small class="ins">${T('說完可以接：What about you?','言ったあと：What about you?','Then ask: What about you?')}</small></div>`:''})()}
-    <b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','That’s interesting!','Me too!','I see.','That’s surprising!','Oh really? Tell me more!'],'blank')}
+    <b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','That’s interesting!','I see.','That’s surprising!','Oh really? Tell me more!'],'blank')}
    </div>`;}
   const chosen=ord.filter(i=>who(i).length).sort((a,b)=>who(b).length-who(a).length),empty=ord.filter(i=>!who(i).length);
   h+=`<div class="howto"><b>${T('這一步要做什麼？','このステップでやること','What to do now')}</b>
@@ -1740,10 +1742,10 @@ function pAsk(s,q,host){
    <h3>${T('有人選的答案（點一下開始追問）','選ばれた答え（タップして質問）','Answers people chose (tap to ask)')}</h3>
    <div class="grid">${chosen.map(i=>{const k=ord.indexOf(i);const o=opt(s.q,i),ws=who(i);return `<button class="opt acard ${ao===i?'active':''} ${ws.length?'':'empty'}" data-act="aopen" data-a="${i}">
      <strong>${L(k)}. <span class="E">${esc(o.en)}</span></strong><small class="sub">${T(esc(o.zh),esc(o.ja))}</small>
-     <span class="whos">${ws.length?ws.map(x=>`<i>${tw(x)}</i>`).join(''):`<span class="muted">${T('沒人選','誰も選ばず','nobody')}</span>`}${s.hp===i?'<span class="sec">🇯🇵</span>':''}${s.asked['o'+i]?'<span class="okm">✓</span>':''}</span></button>${ao===i?pop:''}`}).join('')}</div>
+     <span class="whos">${ws.length?ws.map(x=>`<i>${tw(x)}</i>`).join(''):`<span class="muted">${T('沒人選','誰も選ばず','nobody')}</span>`}${s.hp===i?'<span class="sec">🤫</span>':''}${s.asked['o'+i]?'<span class="okm">✓</span>':''}</span></button>${ao===i?pop:''}`}).join('')}</div>
    ${empty.length?`<details data-k="empty" ${openDetails.has('empty')||empty.includes(ao)?'open':''}><summary>${T(`沒人選的答案（${empty.length}）── 也可以問「為什麼沒人選？」`,`誰も選ばなかった答え（${empty.length}）──「どうして誰も選ばなかったの？」と聞いてもOK`,`Answers nobody chose (${empty.length}) — you can ask why`)}</summary>
     <div class="grid">${empty.map(i=>{const o=opt(s.q,i),k=ord.indexOf(i);return `<button class="opt acard empty ${ao===i?'active':''}" data-act="aopen" data-a="${i}"><strong>${L(k)}. <span class="E">${esc(o.en)}</span></strong><small class="sub">${T(esc(o.zh),esc(o.ja))}</small>${s.hp===i?'<span class="whos"><span class="sec">🤫</span></span>':''}</button>${ao===i?pop:''}`}).join('')}</div></details>`:''}
-   ${B(T('理由都聽完了 → 下一步：延伸聊天 ▶','理由を聞き終わった → 次へ：もっと話す ▶','Done → Next: Explore ▶'),'next','','primary')}`;
+   <div class="bar">${B(T('還想多聊 → 延伸聊天 ▶','もっと話したい → もっと話す ▶','Chat more ▶'),'next','','primary')}${B(T('不用了 → 直接讓大家猜我的答案 ▶','もういい → 私の答えを予想してもらう ▶','Skip → Guess my answer ▶'),'goto','4','')}</div>`;
   return h;
  }
  const v=s.pk['s'+me],o=v!=null?opt(s.q,v):null;
@@ -1791,35 +1793,35 @@ function pUnd(s,q,host){
 ACT.exp=a=>upd({ex:+a});
 function pEx(s,q,host){
  const ex=EX[s.q]||[],cur=s.ex>=0?ex[s.ex]:null,v=s.pk['s'+me];
- if(host)return `${MC([['Thank you for sharing your reasons!','謝謝大家分享理由！','理由を話してくれてありがとう！'],['Do you want to talk a little more, or try another topic?','你們想再多聊一點，還是換下一題？','もう少し話しますか？それとも次の話題にしますか？']])}
-  <h3>${T('🧭 想多聊的話，選一個方向問（可以問好幾個，也可以都不問）','🧭 もっと話すなら、方向を選んで聞こう（いくつ聞いてもいいし、聞かなくてもOK）','🧭 To keep talking, pick a direction (ask any or none)')}</h3>
+ if(host)return `${MC([['Thank you! Can I ask one more question?','謝謝！我可以再問一個問題嗎？','ありがとう！もう一つ聞いてもいい？']])}
+  <h3>${T('🧭 想問哪個就點哪個（想聊多久都可以）','🧭 聞きたいものをタップ（どれだけ話してもOK）','🧭 Tap any question you like (chat as long as you want)')}</h3>
   ${ex.map((f,k)=>`<button class="fq ${s.ex===k?'active':''}" data-act="exp" data-a="${k}"><span class="ftype">${T(...FUTYPE[f[3]])}</span><b class="E">${esc(f[0])}</b>${TL(esc(f[1]),esc(f[2]))}</button>`).join('')}
   ${cur?`<b>${T('問完之後，也說說日本的情況','聞いたあと、日本のことも話そう','After asking, share about Japan too')}</b>${chips(['In Japan, ___ .','In my case, ___ .','At my school, ___ .','What do you think?'],'blank')}`:''}
-  <div class="decide"><div>${SAY('Thank you, everyone! Shall we choose the next topic?','聊夠了就說這句','話し終わったらこう言おう','When you are done, say this',['謝謝大家！我們來選下一題好嗎？','みんなありがとう！次の話題を選びましょうか？'])}</div>
-   ${B(T('結束這題，選下一題 ▶','この話題を終えて次を選ぶ ▶','Finish and choose the next topic ▶'),'finish','','primary')}</div>`;
+  <div class="decide"><div>${SAY('OK! Now, can you guess my answer?','聊夠了就說這句','話し終わったらこう言おう','When you are done, say this',['好！現在你們可以猜猜我的答案嗎？','よし！じゃあ、私の答えを予想してみて！'])}</div>
+   ${B(T('聊夠了 → 讓大家猜我的答案 ▶','話し終わった → 私の答えを予想してもらう ▶','Done → Guess my answer ▶'),'next','','primary')}</div>`;
  return `<h3>${T('💬 延伸聊天','💬 もっと話そう','💬 Keep talking')}</h3>
   ${cur?`<div class="say"><small>${T('日本同學的問題：','質問：','The question:')}</small><b class="E">${esc(cur[0])}</b>${TL(esc(cur[1]),esc(cur[2]))}</div>
    <b>${T('回答用的句子','答えるための文','Sentences to answer')}</b>${chips(['I think ___ because ___ .','In my case, ___ .','For example, ___ .','In Taiwan, ___ .'],'blank')}
    <b>${T('說完反問 🔁','聞き返そう 🔁','Ask back 🔁')}</b>${chips(['What about you?','Is it the same in Japan?'],'blank')}`
-   :`<p class="muted">${T('日本同學會決定要不要再多聊，或換下一題。你也可以主動問他：','日本の生徒が、もっと話すか次の話題にするか決めます。あなたから聞いてもOK：','The host decides whether to keep talking. You can also ask:')}</p>${chips(['What about you?','Is it the same in Japan?','Can I ask you a question?'],'blank')}`}
+   :`<p class="muted">${T('日本同學可能會再問你們問題。你也可以主動問他：','日本の生徒がまた質問するかも。あなたから聞いてもOK：','The Japanese student may ask more. You can also ask:')}</p>${chips(['What about you?','Is it the same in Japan?','Can I ask you a question?'],'blank')}`}
   ${checkBtns()}`;
 }
 /* 1 選擇 */
 function p1(s,q,host){
- if(host)return `${MC([['Let’s start! Please look at your screen.','開始囉！請看你們的螢幕。','始めましょう！画面を見てください。'],['Scroll down, and you can see the answers A to G.','往下滑，就可以看到 A 到 G 的答案。','下にスクロールすると、AからGの答えが見えます。'],['Please choose your own answer. There is no right or wrong answer.','請選你自己的答案。沒有對錯喔。','自分の答えを選んでください。正解はありません。']])}
-  <p class="muted">${T('你自己也偷偷選一個答案（台灣同學看不到）。','あなたも自分の答えをこっそり選んでね（台湾の人には見えません）。','Secretly choose your own answer too (they can’t see it).')}</p>
+ if(host)return `${MC([['Please choose your answer on your screen.','請在螢幕上選你的答案。','画面で自分の答えを選んでね。'],['There is no right or wrong answer.','沒有對錯喔。','正解はないよ。']])}
+  <p class="muted">${T('你的答案只要在這裡選一次（台灣同學看不到）。等一下他們會猜你的答案。','あなたの答えはここで一回選ぶだけ（台湾の人には見えません）。あとでみんなが予想します。','Choose your answer here once (they can’t see it). Later they will guess it.')}</p>
   ${preset(room,s.q)?`<div class="notice">${T('已經選好你事先寫的答案，可以更改。','事前に書いた答えが選ばれています。変えてもOK。','Your prepared answer is already selected. You can change it.')}</div>`:''}
   ${optGrid(s,'hpick',s.hp,true)}<h3>${T('作答狀況','回答状況','Answer status')}</h3><p>${status(s,s.pk)}</p>
-  ${B(T('下一步：猜猜我的答案 ▶','次へ：私の答えを予想 ▶','Next: Guess my answer ▶'),'next','','primary',s.hp<0)}`;
+  ${B(T('大家都選好了 → 問問大家為什麼 ▶','みんな選んだ → 理由を聞く ▶','Everyone chose → Ask why ▶'),'next','','primary',s.hp<0)}`;
  const v=s.pk['s'+me];
  return `<h3>${T('選出「你自己」的答案','「自分の」答えを選ぼう','Choose YOUR own answer')}</h3><p class="muted">${T('沒有對錯。等一下要說說為什麼喔。','正解はありません。あとで理由を話します。','No right or wrong. You will explain why later.')}</p>${SCROLL()}${optGrid(s,'pick',v,false)}
   <p>${choseTxt(v)}</p>`;
 }
 /* 2 猜測 */
 function p2(s,q,host){
- if(host)return `${MC([['Thank you, everyone!','謝謝大家！','みなさん、ありがとう！'],['Now, can you guess MY answer? Scroll down and choose one.','現在，你們可以猜猜「我的」答案嗎？往下滑選一個。','では、私の答えを当ててみて！下にスクロールして一つ選んでね。']])}
-  <h3>${T('你也猜猜看：台灣同學最多人選哪一個？','あなたも予想：台湾のみんなで一番多かった答えは？','Your guess: which answer did most Taiwanese students choose?')}</h3>${optGrid(s,'hguess',s.hg,true)}
-  <h3>${T('猜測狀況','予想状況','Guess status')}</h3><p>${status(s,s.gs)}</p>${s.hg<0?`<p class="muted">${T('（你也可以不猜，直接下一步）','（予想しなくても次へ進めます）','(You can skip your guess and go next.)')}</p>`:''}${B(T('下一步：揭曉答案 ▶','次へ：答え合わせ ▶','Next: Reveal ▶'),'next','','primary')}`;
+ if(host)return `${MC([['Can you guess my answer? Please choose one on your screen.','你們可以猜猜我的答案嗎？請在螢幕上選一個。','私の答えを予想してみて！画面で一つ選んでね。']])}
+  <p class="muted">${T('你不用再選。等大家猜完就揭曉。','あなたは選ばなくてOK。みんなが予想したら答え合わせ。','You don’t choose here. Reveal when everyone has guessed.')}</p>
+  <h3>${T('猜測狀況','予想状況','Guess status')}</h3><p>${status(s,s.gs)}</p>${B(T('大家都猜了 → 揭曉我的答案 ▶','みんな予想した → 答え合わせ ▶','Everyone guessed → Reveal ▶'),'next','','primary')}`;
  const v=s.gs['s'+me];
  return `<h3>${T('猜猜看：日本同學選了哪一個？','予想しよう：日本の生徒はどれを選んだ？','Guess: which one did the Japanese student choose?')}</h3><p class="muted">${T('猜對猜錯都沒關係，等一下都會有話聊。','当たっても外れても大丈夫。どちらでも話すことがあります。','Right or wrong, both lead to a conversation.')}</p>${SCROLL()}${optGrid(s,'pick',v,false)}
   <p>${v!=null?T('✓ 已猜。','✓ 予想しました。','✓ Guessed.'):T('請選一個。','一つ選んでください。','Please choose one.')}</p>`;
@@ -1830,16 +1832,16 @@ function p3(s,q,host){
  let h=`<div class="big"><div class="tag">🇯🇵 ${T('日本同學的答案','日本の生徒の答え','Answer')}</div><h2 class="E">${esc(ans.en)}</h2><p class="muted qsub">${T(esc(ans.zh),esc(ans.ja))}</p></div>`;
  if(host){
   const p=preset(room,s.q);
-  h+=`${MC([['Let’s check the answers! My answer is…','我們來看答案！我的答案是……','答え合わせをしましょう！私の答えは…']])}<h3>${T('① 回應大家的猜測','① 予想にリアクションしよう','① React to their guesses')}</h3>${present(s).map(i=>{const g=s.gs['s'+i];if(g==null)return '';return g===s.hp
+  h+=`${MC([['My answer is…','我的答案是……','私の答えは…']])}<h3>${T('① 回應大家的猜測','① 予想にリアクションしよう','① React to their guesses')}</h3>${present(s).map(i=>{const g=s.gs['s'+i];if(g==null)return '';return g===s.hp
      ?SAY(`${tw(i)}, you got it! How did you know?`,'猜對了！問他怎麼知道的','当たった！どうしてわかったか聞こう','They got it! Ask how they knew.',[`${tw(i)}，你猜對了！你怎麼知道的？`,`${tw(i)}、当たり！どうしてわかったの？`])
      :SAY(`${tw(i)}, you guessed “${esc(label(s,g))}”. Why did you think so?`,'猜錯的人，問他為什麼這樣想','外れた人には、そう思った理由を聞こう','Ask why they thought so.',[`${tw(i)}，你猜「${esc(opt(s.q,g).zh)}」。為什麼這樣想？`,`${tw(i)}、「${esc(opt(s.q,g).ja)}」と予想したね。どうしてそう思ったの？`])}).join('')}
-   ${s.hg<0||!maj.length?'':SAY(hgRight?`I guessed right! Most of you chose “${esc(label(s,maj[0]))}”.`:`I guessed “${esc(label(s,s.hg))}”, but most of you chose “${esc(label(s,maj[0]))}”!`,
-     hgRight?'你也猜對了！':'你猜錯了，說說你的驚訝！',hgRight?'あなたの予想も当たり！':'あなたの予想は外れ。驚いた気持ちを伝えよう',hgRight?'Your guess was right too!':'Your guess was wrong. Share your surprise!',hgRight?[`我猜對了！你們大部分人選「${esc(opt(s.q,maj[0]).zh)}」。`,`当たった！みんなの多くは「${esc(opt(s.q,maj[0]).ja)}」を選んだね。`]:[`我猜「${esc(opt(s.q,s.hg).zh)}」，但你們大部分人選「${esc(opt(s.q,maj[0]).zh)}」！`,`私は「${esc(opt(s.q,s.hg).ja)}」と予想したけど、みんなの多くは「${esc(opt(s.q,maj[0]).ja)}」を選んだね！`])}
-   <h3>${T('② 說說你的答案','② 自分の答えを話そう','② Talk about your answer')}</h3>${MC([['Now, I will tell you about my answer. Please listen carefully.','現在我來說說我的答案，請仔細聽。','では、私の答えについて話します。よく聞いてください。'],['If you don’t understand, please tap the button on your screen.','聽不懂的話，請按螢幕上的按鈕。','わからなかったら、画面のボタンを押してね。']])}<p class="muted">${T('台灣同學的畫面不會出現你的句子。不要用唸的，看著關鍵字用自己的話說。','台湾の画面には答えの文は出ません。読まずに、キーワードを見ながら自分の言葉で話そう。','Your sentences are NOT on the Taiwanese screens. Don’t read—look at the keywords and speak in your own words.')}</p>
+   <h3>${T('② 分享你的想法','② 自分の考えを話そう','② Share your thoughts')}</h3>${MC([['I want to tell you why I chose it.','我想說說我為什麼這樣選。','どうしてそれを選んだか話すね。']])}<p class="muted">${T('台灣同學看不到你的句子。慢慢說就好，可以看著下面的短句說。','台湾の画面にはあなたの文は出ません。ゆっくり話せばOK。下の短い文を見ながら話そう。','Your sentences are NOT on their screens. Speak slowly; you can look at the short sentences below.')}</p>
    ${p?`<b>${T('你的筆記','あなたのメモ','Your notes')}</b>${chips(p.notes.split(';'))}`:''}${storyBox(s.q)}<b>${T('可以用的關鍵字','使えるキーワード','Useful keywords')}</b>${chips(ans.w)}
    <b>${T('句子開頭','文の始め方','Sentence starters')}</b>${chips([s.hp>=5?'My answer is ___ .':[`I chose “${ans.en}”.`,`我選了「${ans.zh}」。`,`「${ans.ja}」を選びました。`],'In Japan, ___ .','For example, ___ .','I think ___ because ___ .'],'blank')}
    ${p?`<details data-k="line" ${openDetails.has('line')?'open':''}><summary>${T('卡住的時候才打開：你寫的句子','こまったときだけ：自分が書いた文','Only if stuck: your written sentence')}</summary><p><span class="E">${esc(p.line)}</span>${tl(p.line)}</p></details>`:''}
-   <h3>${T('③ 台灣同學的訊號','③ 台湾のみんなからのサイン','③ Signals from Taiwanese students')}</h3>${helpPanel(s)}${B(T('下一步：聽懂了嗎 ▶','次へ：聞き取りチェック ▶','Next: Listening check ▶'),'next','','primary')}`;
+   <h3>${T('③ 說完可以問問大家','③ 話したあと、みんなに聞いてみよう','③ After sharing, ask them')}</h3>${chips(['What do you think?','Is it the same in Taiwan?','Do you have a story like this?'],'blank')}
+   <h3>${T('台灣同學的訊號（有人聽不懂時會出現）','台湾のみんなからのサイン（わからない時に出ます）','Signals (appear when someone doesn’t understand)')}</h3>${helpPanel(s)}
+   <div class="decide"><div>${SAY('Thank you for listening! Shall we choose the next topic?','聊完就說這句','話し終わったらこう言おう','When you are done, say this',['謝謝大家聽我說！我們來選下一題好嗎？','聞いてくれてありがとう！次の話題を選ぼうか？'])}</div>${B(T('這題結束，選下一題 ▶','この話題おわり、次を選ぶ ▶','Done → Next topic ▶'),'finish','','primary')}</div>`;
   return h;
  }
  const g=s.gs['s'+me];
@@ -1847,7 +1849,7 @@ function p3(s,q,host){
  h+=g===s.hp
   ?`<h3>${T('🎉 猜對了！','🎉 当たり！','🎉 You got it!')}</h3><p>${T('日本同學可能會問：','日本の生徒はこう聞くかも：','The Japanese student may ask:')}<b class="E">How did you know?</b>${tl('How did you know?')}</p><p class="muted">${T('用下面的句子回答：','下の文で答えよう：','Answer with these:')}</p>${chips(['I guessed it because ___ .','In Taiwan, ___ too.','I heard that ___ .','Just a lucky guess!'],'blank')}`
   :`<h3>${T('猜錯也很好！','外れてもOK！','A wrong guess is great too!')}</h3><p>${T(`你猜的是「${esc(opt(s.q,g).zh)}」。日本同學可能會問：`,`あなたの予想は「${esc(opt(s.q,g).ja)}」。日本の生徒はこう聞くかも：`,`You guessed “${esc(label(s,g))}”. The Japanese student may ask:`)}<b class="E">Why did you think so?</b>${tl('Why did you think so?')}</p>${chips(['I thought ___ because ___ .','In Taiwan, ___ is common.','I didn’t know that!','That’s surprising!'],'blank')}`;
- h+=`<h3>${T('👂 接著仔細聽日本同學說明','👂 日本の生徒の説明をよく聞こう','👂 Now listen carefully')}</h3><p class="muted">${T('答案的內容只有日本同學知道，一定要用聽的。聽不懂就按下面的按鈕，並且把英文大聲說出來。','答えの内容は日本の生徒しか知りません。聞いて理解しよう。わからなければボタンを押して、英語を声に出して言おう。','Only the Japanese student knows the details—you must listen. If you don’t understand, tap a button AND say the English out loud.')}</p>${checkBtns()}`;
+ h+=`<h3>${T('👂 接著仔細聽日本同學說明','👂 日本の生徒の説明をよく聞こう','👂 Now listen carefully')}</h3>${chips(['Really?','That’s interesting!','In Taiwan, ___ .','I see. Thank you!'],'blank')}<p class="muted">${T('答案的內容只有日本同學知道，一定要用聽的。聽不懂就按下面的按鈕，並且把英文大聲說出來。','答えの内容は日本の生徒しか知りません。聞いて理解しよう。わからなければボタンを押して、英語を声に出して言おう。','Only the Japanese student knows the details—you must listen. If you don’t understand, tap a button AND say the English out loud.')}</p>${checkBtns()}`;
  return h;
 }
 function helpPanel(s){
