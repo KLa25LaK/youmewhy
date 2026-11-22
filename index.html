@@ -223,6 +223,15 @@ button.mini{padding:4px 10px;font-size:13px}
 .mbox{background:#fff;border-radius:16px;padding:16px;width:min(720px,92vw);display:flex;flex-direction:column;gap:10px}
 .mbox textarea{height:50vh;font:13px/1.5 ui-monospace,monospace;border:1px solid #d9d3c4;border-radius:10px;padding:10px}
 .conn{font-size:13px;color:#8a7a5c}.conn.on{color:#2f8a4e;font-weight:700}
+.tlogin{max-width:360px;margin:12vh auto;background:#fffdf8;border:1px solid #e4e3d9;border-radius:20px;padding:28px;text-align:center}
+.tlogin input{width:100%;font:inherit;font-size:18px;padding:12px 14px;border:1px solid #cbd8d4;border-radius:12px;margin:8px 0 14px}
+.tlogin input.bad{border-color:#b4533b;background:#fdf0eb}
+.tname{font-size:20px}
+.tpick{max-width:860px;margin:6vh auto;background:#fffdf8;border:1px solid #e4e3d9;border-radius:20px;padding:28px;text-align:center}
+.tpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.tpgrid button{display:flex;flex-direction:column;gap:4px;padding:18px;border-radius:16px;font-size:15px}
+.tpgrid b{font-size:24px;color:#1d3c40}
+@media(max-width:600px){.tpgrid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -248,7 +257,9 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 37;   // 每次修改 +1
+const VERSION = 39;
+const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
+const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
 /* ===== 題庫 =====
    選項格式：英文|中文|日文|關鍵字（用 ; 分隔）|日本同學可以追問選這個選項的人的問題
@@ -451,7 +462,7 @@ function presence(){
 function online(s,i){const x=s.seats['s'+i];if(!x)return false;if(x.on===false)return false;return db?true:(Date.now()-(x.t||0)<25000)}
 function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
 async function init(){
- if(role==='test')initTest();
+ if(role==='test'&&TEST_CHOSEN)initTest();
  if(FIREBASE_CONFIG){
   try{
    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
@@ -474,7 +485,7 @@ async function init(){
 }
 function setURL(){if(EMBED)return;const u=new URLSearchParams();if(role!=='home'){u.set('role',role);if(role!=='teacher')u.set('r',room)}history.replaceState(null,'','?'+u)}
 function go(r,ro){
- if(ro==='test'||ro==='teacher'||ro==='home'){location.search=ro==='home'?'':`?role=${ro}${ro==='test'?'&r='+r:''}`;return}
+ if(ro==='test'||ro==='teacher'||ro==='home'){location.search=ro==='home'?'':`?role=${ro}${ro==='test'&&r?'&r='+r:''}`;return}
  location.search=`?role=${ro}&r=${r}`;   // 重新載入，確保座位與連線狀態正確
 }
 
@@ -534,8 +545,8 @@ function render(){
  if(role==='tw'&&me>=0&&!claiming){const x=rooms[room]?.seats?.['s'+me];if(!x||x.d!==devId()){me=-1;claim();return}}
  let h='';
  if(role==='home')h=home();
- else if(role==='teacher')h=teacher();
- else if(role==='test')h=testView();
+ else if(role==='teacher')h=tOK()?teacher():teacherLogin();
+ else if(role==='test')h=TEST_CHOSEN?testView():testPick();
  else h=roomView();
  if(role!=='home'&&role!=='test'&&role!=='teacher'&&!EMBED)h+=`<footer>${db?'🟢 Firebase 即時同步中':'🟡 單機試用模式（同一瀏覽器的分頁之間同步）'} · You, Me &amp; Why version ${VERSION} ${role==='teacher'?'':' · '+B('⌂','go','r1,home','linkish')}</footer>`;
  document.body.classList.toggle('home',role==='home');
@@ -576,7 +587,7 @@ function home(){
   <button data-act="enterAs" data-a="host" ${no?'disabled':''}><div><b>🇯🇵 司会 · Host</b><span>日本の生徒・会話をリードする<br>日本同學・主持人</span></div><em>→</em></button>
   <button data-act="enterAs" data-a="tw" ${no?'disabled':''}><div><b>🇹🇼 台灣同學 · Taiwan</b><span>進入後自動編號<br>Your number is assigned automatically</span></div><em>→</em></button>
  </div></div>
- <div class="homefoot"><span class="conn ${db?'on':''}">${db?'🟢 已連線・接続中・Live（Firebase）':'🟡 單機試用・デモ・Demo mode'}</span><span class="bar">${B('Test rooms · 測試房間','go','t1,test','linkish')}${B('Teacher’s desk · 教師總覽','go','r1,teacher','linkish')}</span></div>`;
+ <div class="homefoot"><span class="conn ${db?'on':''}">${db?'🟢 已連線・接続中・Live（Firebase）':'🟡 單機試用・デモ・Demo mode'}</span><span class="bar">${B('Test rooms · 測試房間','go',',test','linkish')}${B('Teacher’s desk · 教師總覽','go','r1,teacher','linkish')}</span></div>`;
 }
 
 /* --- 測試房間：同一個畫面同時操作日本主持人與多台台灣裝置（不用 iframe，任何瀏覽器都能用） --- */
@@ -620,12 +631,27 @@ function testView(){
  const panes=personas.map((p,i)=>{const nm=p.role==='host'?p.label:`🇹🇼 ${p.label}${p.me>=0?' → '+tw(p.me):''}`;
    return `<div class="pane ${p.role}" data-pane="${i}"><div class="pl">${nm}</div><div class="inner" data-scroll="p${i}">${withPersona(p,roomView)}</div></div>`}).join('');
  const cols=Math.min(personas.length,4);setTimeout(simulate,0);
- return `<div class="testbar"><b>測試房間</b><small style="color:#cfe1dc">version ${VERSION}</small>${TEST.map(t=>B(roomName(t),'go',`${t},test`,t===room?'active':'')).join('')}
-  <span class="muted">對應 ${roomName('r'+room.slice(1))} 的答案與選項順序</span>
+ return `<div class="testbar">${B('← 換測試房間','go',',test','mini')}<b class="tname">🧪 ${roomName(room)}</b><span class="muted">對應 ${roomName('r'+room.slice(1))} 的答案與選項順序 · version ${VERSION}</span>
   <span style="margin-left:auto" class="bar">${triBtn()}${B(autoSim?'🤖 TW2 起自動作答：開':'🤖 TW2 起自動作答：關','sim','',autoSim?'active':'')}${B('＋ 台灣裝置','addPane')}${B('－ 最後一台離線','rmPane')}${B('重置這間','reset',room,'warn')}${B('教師總覽','go','r1,teacher')}${B('⌂ 主畫面','go','r1,home')}</span></div>
   <div class="tgrid" style="--cols:${cols}">${panes}</div>`;
 }
 
+function testPick(){
+ return `<div class="tpick"><div class="tag">Test rooms</div><h2>🧪 測試房間：先選一間</h2>
+  <p class="muted">每一間測試房間對應同號的正式房間（答案、選項順序都一樣）。選好之後，同一個畫面會同時出現日本主持人和台灣同學的視窗。<br>請和其他老師分開使用不同的測試房間，避免互相干擾。</p>
+  <div class="tpgrid">${TEST.map(t=>{const s=S(t),pr=present(s);return `<button data-act="go" data-a="${t},test"><b>${roomName(t)}</b><span>對應 ${roomName('r'+t.slice(1))}</span><small>${!s.live?'等待開始':s.q<0?'選題中':`第${s.q+1}題·${PH_ZH[s.p]}`} · 台灣 ${pr.length} 人</small></button>`}).join('')}</div>
+  <div class="bar" style="justify-content:center;margin-top:18px">${B('⌂ 回主畫面','go','r1,home')}${B('教師總覽','go','r1,teacher')}</div></div>`;
+}
+/* --- 教師密碼 --- */
+const tOK=()=>{try{return localStorage.getItem('ymw-teacher')===TEACHER_PW_HASH}catch(e){return false}};
+async function sha256(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+ACT.tlogin=async()=>{const el=document.getElementById('tpw');const h=await sha256(el.value);
+ if(h===TEACHER_PW_HASH){try{localStorage.setItem('ymw-teacher',h)}catch(e){}render()}else{el.value='';el.placeholder='密碼錯誤，請再試一次';el.classList.add('bad')}};
+ACT.tlogout=()=>{try{localStorage.removeItem('ymw-teacher')}catch(e){}go('r1','home')};
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='tpw')ACT.tlogin()});
+function teacherLogin(){return `<div class="tlogin"><h2>教師總覽</h2><p class="muted">請輸入密碼</p>
+ <input id="tpw" type="password" autocomplete="current-password" placeholder="密碼">
+ <div class="bar" style="justify-content:center">${B('進入','tlogin','','primary')}${B('⌂ 回主畫面','goHome')}</div></div>`}
 /* --- 教師總覽（一個畫面看完）：上方選分組與房間 → 中間一行狀態與操作 → 下方即時畫面 --- */
 let tSet='main',tSel='',tView='host';
 const TSETS={main:['正式',MAIN],backup:['備用',BACKUP],test:['測試',TEST]};
@@ -650,7 +676,7 @@ function teacher(){
  const pvHost=preview(tSel,'host',-1);
  const pvTw=tView!==''?preview(tSel,'tw',+tView):preview(tSel,'tw',0);
  return `<div class="tbar">
-   ${B('⌂','goHome','','mini')}<b class="ttl">教師總覽</b><small class="muted">v${VERSION}</small>
+   ${B('⌂','goHome','','mini')}<b class="ttl">教師總覽</b>${B('登出','tlogout','','mini')}<small class="muted">v${VERSION}</small>
    <span class="seg">${Object.entries(TSETS).map(([k,[n]])=>B(n,'tset',k,tSet===k?'on':'')).join('')}</span>
    <select data-chg="lang" class="sel">${LANGS.map(([k,n])=>`<option value="${k}" ${lang()===k?'selected':''}>🌐 ${n}</option>`).join('')}</select>
    <span class="sp"></span>
