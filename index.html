@@ -287,7 +287,7 @@ body.lang-zh .kline .tl,body.lang-ja .kline .tl{font-size:15px;font-weight:700;c
 </style>
 </head>
 <body>
-<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 53</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 55</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
 <main id="app"></main>
 <script>
 /* ===== 設定 =====
@@ -309,7 +309,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 53;
+const VERSION = 55;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -458,7 +458,8 @@ function opt(q,i){const a=(i<5?Q[q].o[i]:EXTRA[i-5]).split('|');return{en:a[0],z
 function shuffle(arr,seed){const a=arr.slice();let x=seed%2147483647||7;for(let i=a.length-1;i>0;i--){x=(x*16807)%2147483647;const j=x%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 const order=(r,q)=>shuffle([0,1,2,3,4],seedOf(r)*7919+(q+1)*104729).concat([5,6]);
 const L=i=>String.fromCharCode(65+i);
-const tw=i=>'TW'+(i+1);
+const studentName=(i,r=room)=>rooms[r]?.seats?.['s'+i]?.name||'TW'+(i+1);
+const tw=(i,r=room)=>esc((role==='host'&&calledNames.get(nameKey(rooms[r]?.seats?.['s'+i]?.d,r)))||studentName(i,r));
 const chips=(arr,cls='')=>`<div class="chips">${arr.map(w=>{const a=Array.isArray(w)?w:[w,...(TR[w]||[])];return `<span class="chip ${cls}"><span class="ce E">${esc(a[0])}</span>${a[1]?`<span class="tl"><span class="L zh">${esc(a[1])}</span><span class="L ja">${esc(a[2])}</span></span>`:''}</span>`}).join('')}</div>`;
 const B=(text,act,arg='',cls='',dis=false,cf='')=>`<button class="${cls}" data-act="${act}" data-a="${esc(arg)}" ${cf?`data-cf="${esc(cf)}"`:''} ${dis?'disabled':''}>${text}</button>`;
 function copyText(t,msg){const fb=()=>showText(t);try{navigator.clipboard.writeText(t).then(()=>toast(msg||'已複製'),fb)}catch(e){fb()}}
@@ -479,6 +480,18 @@ let role=P.get('role')||'home';          // home | host | tw | teacher | test
 let me=-1;                                // 台灣學生座位編號（自動分配）；-1 = 尚未分配
 let lastCheck=null;                       // 台灣學生剛按的求助鍵（本機顯示用）
 const openDetails=new Set();
+const nameKey=(device,r=room)=>JSON.stringify([r,device]);
+const nameDrafts=new Map(), calledNames=new Map(), confirmedNames=new Map();
+const cleanName=value=>String(value??'').trim().slice(0,40);
+function enteredName(device,r=room){
+ try{return cleanName(sessionStorage.getItem('ymw-name:'+nameKey(device,r)))}catch(e){return ''}
+}
+function rememberName(device,name){
+ try{sessionStorage.setItem('ymw-name:'+nameKey(device),name)}catch(e){}
+}
+function rosterKey(s){
+ return JSON.stringify(present(s).map(i=>[s.seats['s'+i].d,studentName(i)]));
+}
 
 function S(r=room){const s=rooms[r]||{};const seats=s.seats||{};return{seats,live:!!s.live,q:s.q??-1,p:s.p||0,hp:s.hp??-1,hg:s.hg??-1,pk:s.pk||{},gs:s.gs||{},help:s.help||{},rt:s.rt??-1,rtok:s.rtok||'',qzOn:!!s.qzOn,qz:s.qz||{},fc:s.fc??-1,sh:s.sh||{},turn:s.turn||0,card:s.card||'',used:s.used||{},rounds:s.rounds||0,done:s.done||{},tv:s.tv||{},und:s.und||{},ex:s.ex??'',eo:s.eo??-1,ao:s.ao??-1,aqi:s.aqi??-1,asked:s.asked||{}}}
 function setPath(obj,path,val){const k=path.split('/');let o=obj;for(let i=0;i<k.length-1;i++){if(typeof o[k[i]]!=='object'||o[k[i]]===null)o[k[i]]={};o=o[k[i]]}if(val===null)delete o[k.at(-1)];else o[k.at(-1)]=val}
@@ -497,14 +510,14 @@ function wipe(ids){
 function devId(){if(P.get('dev'))return P.get('dev');const st=db?localStorage:sessionStorage;let d=st.getItem('ymw-dev');if(!d){d='d'+Math.random().toString(36).slice(2,10);st.setItem('ymw-dev',d)}return d}
 
 /* 座位：不限人數，依進入順序編號；離開的號碼會由新進來的人補上 */
-function pickSeat(cur,dev){cur=cur||{};for(const k in cur)if(cur[k]&&cur[k].d===dev){cur[k].on=true;cur[k].t=Date.now();return cur}
- for(let i=0;;i++)if(!cur['s'+i]){cur['s'+i]={d:dev,on:true,t:Date.now()};return cur}}
+function pickSeat(cur,dev,name){cur=cur||{};for(const k in cur)if(cur[k]&&cur[k].d===dev){cur[k].on=true;cur[k].t=Date.now();cur[k].name=name;return cur}
+ for(let i=0;;i++)if(!cur['s'+i]){cur['s'+i]={d:dev,name,on:true,t:Date.now()};return cur}}
 function seatOf(seats,dev){for(const k in seats||{})if(seats[k]&&seats[k].d===dev)return +k.slice(1);return -1}
 let claiming=false;
 function claim(r=room,dev=devId()){
- if(claiming)return;claiming=true;me=-1;
- if(db){db.ref(`${BASE}/rooms/${r}/seats`).transaction(cur=>pickSeat(cur,dev)).then(res=>{claiming=false;me=seatOf(res.snapshot.val(),dev);presence();render()});return}
- rooms=fresh();const seats=pickSeat(JSON.parse(JSON.stringify(rooms[r]?.seats||{})),dev);me=seatOf(seats,dev);claiming=false;
+ const name=enteredName(dev,r);if(claiming||!name)return;claiming=true;me=-1;
+ if(db){db.ref(`${BASE}/rooms/${r}/seats`).transaction(cur=>pickSeat(cur,dev,name)).then(res=>{claiming=false;me=seatOf(res.snapshot.val(),dev);presence();render()});return}
+ rooms=fresh();const seats=pickSeat(JSON.parse(JSON.stringify(rooms[r]?.seats||{})),dev,name);me=seatOf(seats,dev);claiming=false;
  upd({['seats/s'+me]:seats['s'+me]},r);
 }
 function presence(){
@@ -553,7 +566,7 @@ const ACT={
  kick:a=>{const[r,i]=a.split(',');const s=S(r);
    const o={};['seats','pk','gs','qz','sh','help'].forEach(k=>o[`${k}/s${i}`]=null);if(s.rt===+i)o.rt=-1;if(s.fc===+i)o.fc=-1;upd(o,r)},
  live:()=>upd({live:true}),
- start:a=>{const q=+a,p=preset(room,q);upd({tv:null,und:null,ex:'',eo:-1,ao:-1,aqi:-1,asked:null,q,p:1,hp:p?p.pick:-1,hg:-1,pk:null,gs:null,help:null,rt:-1,rtok:'',qzOn:false,qz:null,fc:-1,sh:null,turn:0,card:'',used:null,rounds:0})},
+ start:a=>{if(role==='host'&&confirmedNames.get(room)!==rosterKey(S()))return;const q=+a,p=preset(room,q);upd({tv:null,und:null,ex:'',eo:-1,ao:-1,aqi:-1,asked:null,q,p:1,hp:p?p.pick:-1,hg:-1,pk:null,gs:null,help:null,rt:-1,rtok:'',qzOn:false,qz:null,fc:-1,sh:null,turn:0,card:'',used:null,rounds:0})},
  hpick:a=>upd({hp:+a}),
  hguess:a=>upd({hg:+a}),
  pick:a=>{const s=S();upd({[(s.p===1?'pk/s':'gs/s')+me]:+a})},   // 第1步選答案、第3步猜答案
@@ -591,6 +604,52 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.
 
 /* ===== 畫面 ===== */
 const app=document.getElementById('app');
+document.addEventListener('input',e=>{
+ const field=e.target;
+ if(field.dataset.nameDraft)nameDrafts.set(field.dataset.nameDraft,field.value);
+});
+document.addEventListener('submit',e=>{
+ const form=e.target;
+ if(form.matches('[data-join-name]')){
+  e.preventDefault();
+  const field=form.elements.namedItem('studentName'),name=cleanName(field.value);
+  if(!name){field.focus();return}
+  const pane=role==='test'?form.closest('[data-pane]'):null;
+  const student=pane?personas[+pane.dataset.pane]:null;
+  const device=student?student.dev:devId();
+  rememberName(device,name);
+  if(student){student.joinName=name;claimP(student);if(!db)render()}
+  else claim();
+ }else if(form.matches('[data-confirm-names]')){
+  e.preventDefault();
+  const s=S();
+  for(const i of present(s)){
+   const key=nameKey(s.seats['s'+i].d);
+   const field=form.elements.namedItem('pronunciation'+i);
+   if(field){const name=cleanName(field.value);calledNames.set(key,name);nameDrafts.delete(field.dataset.nameDraft)}
+  }
+  confirmedNames.set(room,rosterKey(s));
+  render();
+ }
+});
+function joinNamePanel(){
+ const pane=activePersona;
+ const device=pane?pane.dev:devId(),key='join:'+nameKey(device);
+ return `<section class="panel"><h2>先填名字再加入</h2><form data-join-name>
+ <label>你希望大家怎麼稱呼你？<br><input name="studentName" data-name-draft="${esc(key)}" value="${esc(nameDrafts.get(key)??'')}" maxlength="40" required autocomplete="off" placeholder="名字或暱稱"></label>
+ <button type="submit" class="primary">加入房間</button></form></section>`;
+}
+function confirmNamePanel(s){
+ const rows=present(s).map(i=>{
+  const key=nameKey(s.seats['s'+i].d),draft='host:'+key;
+  return `<div class="bar"><strong>${esc(studentName(i))}</strong><label>${T('主持人叫法','呼びやすい名前','Name you’ll say')}
+  <input name="pronunciation${i}" data-name-draft="${esc(draft)}" maxlength="40" value="${esc(nameDrafts.get(draft)??calledNames.get(key)??'')}" placeholder="${esc(studentName(i))}" autocomplete="off"></label></div>`;
+ }).join('');
+ return `<div class="say"><h3>${T('先確認大家的名字','みんなの名前を確認','Check everyone’s names')}</h3>
+ <p>${T('先請大家唸一下名字。你可以填假名或自己好念的寫法，留白就用同學原本填的名字。','まず一人ずつ名前の読み方を聞こう。呼びやすいようにカナなどで書いてもOK。空欄なら本人が入力した名前を使います。','Ask each person how to say their name. Add a spelling that helps you say it, or leave it blank to use their original name.')}</p>
+ <form data-confirm-names>${rows}<button type="submit" class="primary">${T('確認名字，準備選題','名前を確認して話題選びへ','Confirm names and choose a topic')}</button></form></div>`;
+}
+
 function render(){
  if(!loaded)return;
  if(inPersona){pendingRender=true;return}
@@ -644,10 +703,10 @@ function home(){
 }
 
 /* --- 測試房間：同一個畫面同時操作日本主持人與多台台灣裝置（不用 iframe，任何瀏覽器都能用） --- */
-let personas=[], inPersona=false, pendingRender=false;
+let personas=[], inPersona=false, pendingRender=false, activePersona=null;
 function withPersona(p,fn){
- const sv=[role,me,lastCheck];role=p.role;me=p.me??-1;lastCheck=p.lc||null;inPersona=true;
- let out;try{out=fn()}finally{p.lc=lastCheck;role=sv[0];me=sv[1];lastCheck=sv[2];inPersona=false}
+ const sv=[role,me,lastCheck];role=p.role;me=p.me??-1;lastCheck=p.lc||null;inPersona=true;activePersona=p;
+ let out;try{out=fn()}finally{p.lc=lastCheck;role=sv[0];me=sv[1];lastCheck=sv[2];inPersona=false;activePersona=null}
  if(pendingRender){pendingRender=false;render()}
  return out;
 }
@@ -658,9 +717,9 @@ function initTest(){
  if(!FIREBASE_CONFIG)setInterval(()=>{rooms=fresh();let ch=false;personas.forEach(p=>{const x=p.role==='tw'&&p.me>=0&&rooms[room]?.seats?.['s'+p.me];if(x&&x.d===p.dev){x.t=Date.now();x.on=true;ch=true}});if(ch)saveLocal()},8000);
 }
 function claimP(p){
- if(p.claiming)return;p.claiming=true;
- if(db){db.ref(`${BASE}/rooms/${room}/seats`).transaction(cur=>pickSeat(cur,p.dev)).then(res=>{p.me=seatOf(res.snapshot.val(),p.dev);p.claiming=false;render()});return}
- rooms=fresh();const seats=pickSeat(JSON.parse(JSON.stringify(rooms[room]?.seats||{})),p.dev);p.me=seatOf(seats,p.dev);
+ const name=p.joinName||enteredName(p.dev);if(p.claiming||!name)return;p.claiming=true;
+ if(db){db.ref(`${BASE}/rooms/${room}/seats`).transaction(cur=>pickSeat(cur,p.dev,name)).then(res=>{p.me=seatOf(res.snapshot.val(),p.dev);p.claiming=false;render()});return}
+ rooms=fresh();const seats=pickSeat(JSON.parse(JSON.stringify(rooms[room]?.seats||{})),p.dev,name);p.me=seatOf(seats,p.dev);
  setPath(rooms,`${room}/seats/s${p.me}`,seats['s'+p.me]);try{localStorage.setItem(KEY,JSON.stringify(rooms))}catch(e){}
  p.claiming=false;
 }
@@ -737,8 +796,8 @@ function teacher(){
   <div class="rchips">${ids.map(chip).join('')}</div>
   <div class="tstrip">
    <b>${roomName(tSel)}</b><span class="ph">${phaseOf(s)}</span>
-   <span class="who-list">台灣 ${pr.length}：${pr.length?pr.map(i=>`<span class="who"><i class="dot ${online(s,i)?'on':''}"></i>${tw(i)}${B('✕','kick',`${tSel},${i}`,'xbtn','','刪除？')}</span>`).join(''):'<span class="muted">—</span>'}</span>
-   ${sig.length?`<span class="ng">⚠ ${sig.map(([k,v])=>tw(+k.slice(1))+' '+SIG[v].zh).join('、')}</span>`:''}
+   <span class="who-list">台灣 ${pr.length}：${pr.length?pr.map(i=>`<span class="who"><i class="dot ${online(s,i)?'on':''}"></i>${tw(i,tSel)}${B('✕','kick',`${tSel},${i}`,'xbtn','','刪除？')}</span>`).join(''):'<span class="muted">—</span>'}</span>
+   ${sig.length?`<span class="ng">⚠ ${sig.map(([k,v])=>tw(+k.slice(1),tSel)+' '+SIG[v].zh).join('、')}</span>`:''}
    <span class="muted">回合 ${s.rounds} · 完成 ${Object.keys(s.done).length} 題</span>
    <span class="sp"></span>
    ${B('重置這間','reset',tSel,'warn mini','',`再按一次：確定重置 ${roomName(tSel)}？`)}
@@ -747,7 +806,7 @@ function teacher(){
   <div class="tview2">
    <div class="pvcol"><div class="tvbar"><b>🇯🇵 主持人畫面</b><small class="muted">（即時・只能看）</small></div>
     <div class="pvbox" data-scroll="pvh"><div class="pv">${pvHost}</div></div></div>
-   <div class="pvcol"><div class="tvbar"><b>🇹🇼 台灣同學畫面</b>${pr.length?pr.map(i=>B(tw(i),'tview',String(i),`mini ${tView===String(i)?'active':''}`)).join(''):'<small class="muted">（還沒有人，先顯示範例）</small>'}</div>
+   <div class="pvcol"><div class="tvbar"><b>🇹🇼 台灣同學畫面</b>${pr.length?pr.map(i=>B(tw(i,tSel),'tview',String(i),`mini ${tView===String(i)?'active':''}`)).join(''):'<small class="muted">（還沒有人，先顯示範例）</small>'}</div>
     <div class="pvbox" data-scroll="pvt"><div class="pv">${pvTw}</div></div></div>
   </div>`;
 }
@@ -1230,6 +1289,7 @@ function roster(s,host,canKickAll){
 function roomView(){return `<div class="v-${role}"><div class="langbar">${langSel()}</div>${roomInner()}</div>`}
 function roomInner(){
  const s=S(),host=role==='host';
+ if(role==='tw'&&me<0&&!activePersona?.joinName&&!enteredName(activePersona?.dev??devId()))return joinNamePanel();
  if(role==='tw'&&me<0)return `<section class="panel"><h2>${T(`正在加入 ${roomName(room)}…`,`${roomName(room)} に参加中…`,`Joining ${roomName(room)}…`)}</h2></section>`;
  const pr=present(s),onN=pr.filter(i=>online(s,i)).length;
  let h=`<section class="panel"><div class="bar" style="justify-content:space-between"><div class="bar"><span class="tag">${roomName(room)} · ${host?'🇯🇵 Host':'🇹🇼 '+tw(me)}</span></div>
@@ -1272,20 +1332,21 @@ function lobby(s,host,pr,onN){
   ${MC([['Hello, everyone! Welcome! I’m your host today. Nice to meet you!','大家好！歡迎！我是今天的主持人，很高興認識你們！','みなさん、こんにちは！ようこそ！今日の司会です。よろしくお願いします！'],['Is everyone here? Please wait a moment.','大家都到了嗎？請稍等一下。','全員そろったかな？少し待ってね。']])}
   <div class="chips" style="justify-content:center">${roster(s,true,true)}</div>
   ${B(T('大家都到了！開始 ▶','全員そろった！スタート ▶','Everyone is here! Start ▶'),'live','','primary bigbtn',!pr.length)}</div>`;
- return `<div class="lobby"><p class="muted">${T('你的號碼是','あなたの番号','Your number')}</p><div class="bignum">${tw(me)}</div>
+ return `<div class="lobby"><p class="muted">${T('你加入時用的名字','参加するときの名前','Your name')}</p><div class="bignum">${tw(me)}</div>
   <div class="countline">${T(`目前房間裡共 <b>${pr.length}</b> 位台灣同學`,`台湾の生徒 <b>${pr.length}</b>人`,`<b>${pr.length}</b> Taiwanese students in this room`)}</div>
   <div class="chips" style="justify-content:center">${pr.map(i=>`<span class="who ${i===me?'meTag':''}"><i class="dot ${online(s,i)?'on':''}"></i>${tw(i)}</span>`).join(' ')}</div>
   <h2>${T('等日本同學確認大家都到齊，按下開始…','日本の生徒が全員そろったのを確認して、スタートを押すのを待っています…','Waiting for the Japanese host to check everyone is here and press Start…')}</h2></div>`;
 }
 function topicPick(s,host){
  // 不投票：大家看同一份題目清單，用「說的」討論先聊哪一題；主持人決定。沒人決定就照順序。
+ if(host&&confirmedNames.get(room)!==rosterKey(s))return confirmNamePanel(s);
  const nextInOrder=Q.findIndex((_,i)=>!s.done['q'+i]),nio=nextInOrder<0?0:nextInOrder;
  const card=(x,i)=>{const d=s.done['q'+i];
   return `<div class="topic ${d?'done':''} ${i===nio?'nexto':''}">
    <div class="tbody"><span class="tn">${d?'✓':i+1}</span><span class="tri3"><b class="E">${esc(x.en)}</b><small class="sub">${T(esc(x.zh),esc(x.ja))}</small></span></div>
    ${host?`<div class="tfoot"><span class="muted">${d?T('聊過了','話した','Done'):i===nio?T('照順序就是這題','順番ならこれ','Next in order'):''}</span>${B(T('就這題 ▶','これにする ▶','This one ▶'),'start',i,'mini')}</div>`:''}</div>`};
  let h;
- if(host)h=`<div class="say"><b class="E">Which topic do you want to talk about first?</b>${tl('Which topic do you want to talk about first?')}
+ if(host)h=`<details data-k="names">${'<summary>'+T('查看或調整叫法','名前の読み方を確認・編集','Review or edit names')+'</summary>'}${confirmNamePanel(s)}</details><div class="say"><b class="E">Which topic do you want to talk about first?</b>${tl('Which topic do you want to talk about first?')}
    <small class="ins">${T('問問大家，一起討論決定。決定後按那一題的「就這題」。','みんなに聞いて、話し合って決めよう。決まったらその話題の「これにする」を押してね。','Ask everyone and decide together. Then press “This one” on that topic.')}</small></div>
   ${MC([['Please look at your screen. Scroll down, and you can see ten topics.','請看你們的螢幕。往下滑，就可以看到十個題目。','画面を見てください。下にスクロールすると、10個の話題が見えます。'],['Which topic do you want to talk about first? Let’s decide together!','你們想先聊哪一題？我們一起決定吧！','どの話題から話したいですか？一緒に決めましょう！']])}
   ${chips(['Which topic do you like?','Why?','Me too!','Let’s talk about number ___ !'],'blank')}
@@ -1329,7 +1390,7 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 1-0|p|How would you like them to ask about your exam?|你希望他們怎麼問你考試的事？|試験のことを、どんなふうに聞いてほしいですか？
 1-0|d|After an exam, what do you do to relax?|考完試後，你會做什麼放鬆？|試験のあと、何をしてリラックスしますか？
 1-0|me|My parents ask about exams ___ .|我爸媽 ___ 會問考試的事。|私の親は___試験のことを聞きます。
-1-1|e|Where do you usually study?|你通常在哪裡讀書？|ふだんどこで勉強しますか？
+1-1|e|When you’re about to start studying, what usually gets in the way?|你正要開始讀書時，通常會被什麼打斷？|勉強を始めようとするとき、何が気を散らすことが多いですか？
 1-1|p|How many hours do you study at home?|你在家讀幾個小時的書？|家で何時間勉強しますか？
 1-1|d|Do you study better alone or with friends?|你自己讀書還是跟朋友一起讀比較有效？|一人で勉強するのと友達とするのと、どちらが集中できますか？
 1-1|me|I usually study at ___ for ___ hours.|我通常在 ___ 讀 ___ 小時。|私はふだん___で___時間勉強します。
@@ -1337,11 +1398,11 @@ const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學
 1-2|p|What is your favorite food that your family makes?|家人做的菜你最喜歡哪一道？|家族が作る料理で一番好きなものは何ですか？
 1-2|d|When someone at home asks if you’ve eaten, what do you usually say?|家人問你吃飽沒時，你通常怎麼回答？|家の人に「ごはん食べた？」と聞かれたら、ふだん何と答えますか？
 1-2|me|In Japan, parents often ask ___ .|在日本，爸媽常常問 ___。|日本では、親はよく___と聞きます。
-1-3|e|What time do you usually get home?|你通常幾點到家？|ふだん何時に家に帰りますか？
+1-3|e|What usually makes you get home later than you planned?|通常是什麼事讓你比原本預計的時間晚回家？|予定より帰りが遅くなるのは、ふだんどんなときですか？
 1-3|p|What do you usually do after school?|你放學後通常做什麼？|放課後はふだん何をしますか？
 1-3|d|When you go out, do you tell your parents where you are? How?|你出門時會跟爸媽說你在哪裡嗎？怎麼說？|出かけるとき、親にどこにいるか伝えますか？どうやって？
 1-3|me|I usually get home at ___ .|我通常 ___ 到家。|私はふだん___に家に帰ります。
-1-4|e|Where do you usually go with your friends?|你通常和朋友去哪裡？|友達とよくどこに行きますか？
+1-4|e|If your family asks who you’re going out with, what do you usually tell them about your plans?|如果家人問你跟誰出去，你通常會怎麼跟他們說你的安排？|家の人に「誰と出かけるの？」と聞かれたら、ふだん予定をどう伝えますか？
 1-4|p|What did you do with your friends last weekend?|你上週末和朋友做了什麼？|先週末、友達と何をしましたか？
 1-4|d|What’s one thing you’d tell your parents about the friends you hang out with?|如果要跟爸媽介紹常一起出去的朋友，你會說什麼？|よく一緒に出かける友達のことを親に話すなら、何を伝えますか？
 1-4|me|I usually go to ___ with my friends.|我通常和朋友去 ___。|私はよく友達と___に行きます。
