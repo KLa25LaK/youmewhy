@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>You, Me & Why｜岩ヶ崎高等學校 × 基隆中山高中</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&family=Huninn&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f3ec;color:#263d43;font:17px/1.6 "Nunito","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif}
+header{position:relative;background:#214c50;color:#fff;padding:18px max(20px,calc((100% - 980px)/2));padding-right:max(230px,calc((100% - 980px)/2 + 210px))}
+.homebtn{position:absolute;right:max(20px,calc((100% - 980px)/2));top:50%;transform:translateY(-50%);background:#f5efe3;color:#1d3c40;border:0;border-radius:99px;padding:8px 16px;font-weight:700}
+@media(max-width:700px){header{padding-right:20px}.homebtn{position:static;transform:none;float:right;margin:0 0 6px 8px;padding:6px 12px;font-size:14px}}
+header h1{margin:0;font:600 30px "Fredoka","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",sans-serif}
+header small{color:#d6e5e1}
+main{max-width:980px;margin:auto;padding:16px 20px 40px}
+button{font:inherit;border:1px solid #cbd8d4;border-radius:12px;padding:10px 15px;background:#fff;color:#24494b;cursor:pointer}
+button:hover{border-color:#427b76}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:#246660;color:#fff;border:0;font-weight:bold}
+.warn{background:#a8553a;color:#fff;border:0}
+.active{background:#dceee6;border:2px solid #398476}
+.panel{background:#fffdf9;border:1px solid #e4e3d9;border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 6px 22px #314d4610}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.opt{text-align:left;min-height:68px}
+.opt small{display:block;color:#657779}
+.opt.right{background:#e2f3e6;border:2px solid #3c9a5a}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#6b7776}
+.muted,small{color:#657779;font-size:13px}
+.say{background:#e8f1ec;border-left:5px solid #478578;padding:12px 15px;border-radius:9px;margin:10px 0;font-size:19px}
+.say b{color:#1f5650}
+.say small{display:block;font-size:13px}
+.big{background:#f9e7dc;padding:18px;border-radius:14px;margin:10px 0}
+.big h2{margin:4px 0}
+.card{background:#214c50;color:#fff;padding:22px;border-radius:16px;font-size:23px;margin:12px 0}
+.card small{color:#cfe1dc;display:block;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{background:#fff3d6;border:1px solid #ecd59b;border-radius:99px;padding:4px 12px;font-size:16px}
+.chip.blank{background:#eef3f1;border-color:#cfdcd7}
+.notice{background:#fff0ce;padding:12px;border-radius:10px;font-size:14px;margin:10px 0}
+.signal{background:#fde5dc;border:2px solid #d58b6f;border-radius:12px;padding:10px;margin:6px 0}
+.steps{display:flex;gap:4px;margin:12px 0}
+.steps span{flex:1;text-align:center;border-top:5px solid #d9dfdb;font-size:12px;padding-top:5px}
+.steps .on{border-color:#348278;font-weight:bold}
+h2{font-size:24px;line-height:1.3;margin:6px 0}
+h3{margin:16px 0 6px;font-size:18px}
+details{margin:10px 0;font-size:14px;color:#657779}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td,th{border-bottom:1px solid #e5e5df;padding:6px;text-align:left;vertical-align:top}
+.ok{color:#2f8a4e;font-weight:bold}.ng{color:#b4533b;font-weight:bold}
+footer{font-size:12px;color:#657779;margin-top:24px}
+body.home header{display:none}
+body.home{height:100dvh;overflow:hidden;background:#f5f1e8}
+body.home main{height:100dvh;max-width:1120px;padding:clamp(14px,3.2vh,44px) clamp(18px,4vw,52px);display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,2.6vh,30px)}
+.hero{position:relative}
+.eyebrow{font:800 clamp(9px,1.4vh,12px)/1.4 "Nunito","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#8a7a5c}
+.hero h1{font:500 clamp(38px,min(10.5vw,11vh),112px)/1 "Fredoka","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",sans-serif;margin:clamp(4px,1.2vh,14px) 0 clamp(6px,1.6vh,18px);color:#1d3c40;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:#a0613f}
+.tagline{display:flex;flex-wrap:wrap;gap:2px 30px;font:600 clamp(13px,min(2.4vh,4vw),19px)/1.5 "Nunito","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;color:#3c5559}
+.tagline span:first-child{color:#a0613f}
+.seal{position:absolute;right:0;top:4px;writing-mode:vertical-rl;font:400 clamp(12px,1.8vh,15px)/1.9 "Nunito","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;color:#a0613f;border-left:1px solid #d9b9a4;padding-left:10px;letter-spacing:.3em}
+.method{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #d9d3c4;padding-top:clamp(6px,1.2vh,12px)}
+.method b{font:600 clamp(16px,2.7vh,24px)/1 "Fredoka","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",sans-serif;color:#a0613f;margin-right:6px}
+.method span{font-size:clamp(12px,1.8vh,15px);color:#3c5559}
+.method small{display:block;font-size:clamp(10px,1.4vh,12px)}
+.sec{display:flex;align-items:baseline;gap:12px;margin-bottom:clamp(6px,1.3vh,12px)}
+.sec .no{font:600 clamp(18px,3.1vh,28px)/1 "Fredoka","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",sans-serif;color:#a0613f}
+.sec h2{font:700 clamp(16px,2.5vh,21px)/1.2 "Nunito","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;margin:0}
+.sec small{margin-left:auto;font-size:clamp(10px,1.4vh,13px)}
+.rooms{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid #d9d3c4;background:#fffdf8;border-radius:16px;overflow:hidden}
+.rooms button{border:0;border-right:1px solid #e6e0d2;border-radius:0;padding:clamp(6px,1.8vh,20px) 4px;background:transparent;text-align:center}
+.rooms button:last-child{border-right:0}
+.rooms i{display:block;font:500 clamp(22px,4.6vh,38px)/1 "Fredoka","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",sans-serif;font-style:normal;color:#1d3c40}
+.rooms small{display:block;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(9px,1.3vh,11px);margin-top:4px}
+.rooms button.sel{background:#1d3c40}
+.rooms button.sel i,.rooms button.sel small{color:#f5efe3}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.5vw,14px)}
+.roles button{border:1px solid #d9d3c4;border-radius:16px;background:#fffdf8;padding:clamp(10px,2.2vh,22px) clamp(12px,2vw,22px);text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.roles b{display:block;font:700 clamp(16px,2.7vh,22px)/1.25 "Nunito","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",system-ui,sans-serif;color:#1d3c40}
+.roles span{display:block;font-size:clamp(11px,1.6vh,13px);color:#657779;line-height:1.45;margin-top:3px}
+.roles em{font:600 clamp(20px,3.6vh,30px)/1 "Fredoka","Huninn","Zen Maru Gothic","Hiragino Maru Gothic ProN","Arial Rounded MT Bold",sans-serif;color:#a0613f}
+.roles button:not(:disabled):hover{border-color:#a0613f;background:#fbf1e8}
+.roles button:disabled{opacity:.38}
+.homefoot{margin-top:clamp(0px,2vh,24px);display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #d9d3c4;padding-top:clamp(6px,1.4vh,12px);font-size:12px;color:#8a8f88}
+.linkish{border:0;background:none;padding:0;color:#3c5559;text-decoration:underline;text-underline-offset:3px;font-size:13px}
+@media(max-width:700px){.rooms{grid-template-columns:repeat(3,1fr)}.rooms button:nth-child(3){border-right:0}.rooms button:nth-child(-n+3){border-bottom:1px solid #e6e0d2}.seal,.sec small{display:none}.tagline{flex-direction:column}.roles em{display:none}}
+@media(max-height:820px){.seal{display:none}}
+@media(max-height:560px){.tagline span:not(:first-child),.method small{display:none}}
+
+.rooms button{font:600 clamp(15px,2.6vh,22px)/1.2 "Fredoka","Huninn","Zen Maru Gothic",sans-serif;color:#1d3c40;letter-spacing:.02em}
+.rooms button.sel{color:#f5efe3}
+.seg{margin-left:auto;display:inline-flex;background:#fffdf8;border:1px solid #d9d3c4;border-radius:99px;overflow:hidden}
+.seg button{white-space:nowrap;border:0;border-radius:0;padding:4px 12px;font-size:12px;background:transparent;color:#657779}
+.seg button.on{background:#1d3c40;color:#f5efe3}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#c9c3b6;margin-right:4px;vertical-align:middle}
+.dot.on{background:#3c9a5a}
+.who{display:inline-flex;align-items:center;gap:2px;background:#f2efe7;border-radius:99px;padding:3px 6px 3px 9px;font-size:14px;margin:2px}
+.who button{border:0;background:transparent;padding:0 4px;color:#b4533b;font-size:13px}
+.who.meTag{background:#dceee6}
+.roster{gap:4px}
+.lobby{text-align:center;padding:24px 10px}
+.bignum{font:600 clamp(56px,12vw,110px)/1 "Fredoka","Huninn",sans-serif;color:#1d3c40;margin:10px 0}
+.bignum small{display:block;font-size:16px;color:#657779;font-weight:400}
+.bigbtn{font-size:20px;padding:16px 36px;margin-top:20px}
+body.test header,body.embed header{display:none}
+body.test main{max-width:none;padding:0;height:100dvh;display:flex;flex-direction:column}
+body.embed main{padding:8px}
+.testbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;background:#1d3c40;color:#f5efe3}
+.testbar .muted{color:#cfe1dc}
+.tgrid{flex:1;display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:6px;padding:6px;min-height:0}
+.pane{display:flex;flex-direction:column;border:1px solid #d9d3c4;border-radius:12px;overflow:hidden;background:#fff;min-height:0}
+.pl{font-size:12px;padding:4px 10px;background:#f2efe7;color:#3c5559}
+.pane .inner{flex:1;overflow:auto;padding:4px 8px;zoom:.78;min-height:0;background:#f7f3ec}
+.pane.host .pl{background:#f9e7dc}
+@media(max-width:900px){.tgrid{--cols:2!important;overflow:auto}.pane{min-height:75vh}.pane .inner{zoom:.7}}
+.schools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font:700 clamp(14px,min(2.5vh,4.2vw),20px)/1.3 "Huninn","Zen Maru Gothic","Nunito",sans-serif;color:#1d3c40;margin-bottom:clamp(4px,1vh,10px)}
+.schools i{font-style:normal;color:#a0613f}
+.schools span{white-space:nowrap}
+@media(max-width:700px){.hero .eyebrow{display:none}}
+.ver{position:absolute;top:0;right:0;font:700 11px/1 "Nunito",sans-serif;letter-spacing:.08em;color:#8a7a5c;border:1px solid #d9cdb4;border-radius:99px;padding:4px 9px;background:#fffdf8}
+header h1 .ver.hv{position:static;vertical-align:middle;margin-left:8px;background:transparent;color:#d6e5e1;border-color:#5f8a87}
+body.home .seal{top:30px}
+.countline{font-size:18px;margin:10px 0 6px}.countline b{font-size:26px;color:#a0613f}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin:12px 0}
+.topic{border:1px solid #d9d3c4;border-radius:14px;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+.topic.mine{border:2px solid #398476;background:#f1f8f4}
+.topic.top{box-shadow:0 0 0 3px #f0c7ae}
+.topic.done{opacity:.55}
+.tbody{border:0;border-radius:0;background:transparent;text-align:left;display:flex;gap:10px;padding:12px;flex:1}
+.tbody b{display:block;font-size:15px;line-height:1.35}
+.tbody small{display:block;margin-top:3px}
+.tn{flex:none;width:30px;height:30px;border-radius:50%;background:#1d3c40;color:#f5efe3;display:grid;place-items:center;font:600 15px "Fredoka",sans-serif}
+.tfoot{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 10px;border-top:1px solid #eee8dc;font-size:13px;min-height:38px}
+.votes{color:#a0613f;font-weight:700}
+.mini{padding:4px 10px;font-size:13px}
+.topic.nexto{border:2px dashed #d7a98b}
+.decide{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#fbf1e8;border-radius:12px;padding:10px 12px;margin:8px 0}
+.L{display:block}
+.L.x{display:none}
+body.lang-tri .L.x,body.lang-en .L.x{display:block}
+body.lang-zh .L.ja,body.lang-zh .L.en{display:none}
+body.lang-ja .L.zh,body.lang-ja .L.en{display:none}
+body.lang-en .L.zh,body.lang-en .L.ja{display:none}
+body.lang-tri .ins .L::before,body.lang-tri h2 .L::before,body.lang-tri h3 .L::before,body.lang-tri p .L::before{opacity:.45;font-size:.85em}
+body.lang-tri .ins .L.zh::before,body.lang-tri h3 .L.zh::before,body.lang-tri p .L.zh::before{content:"中｜"}
+body.lang-tri .ins .L.ja::before,body.lang-tri h3 .L.ja::before,body.lang-tri p .L.ja::before{content:"日｜"}
+body.lang-tri .ins .L.en::before,body.lang-tri h3 .L.en::before,body.lang-tri p .L.en::before{content:"EN｜"}
+.tl{display:block;font-size:.78em;font-weight:400;color:#5d7175;line-height:1.35;margin-top:2px}
+.say .tl{font-size:15px}
+.say .ins{display:block;margin-top:6px;padding-top:6px;border-top:1px dashed #b9d3c9}
+.chip .ce{display:block}
+.chip .tl{font-size:12px}
+.card .tl{color:#cfe1dc;font-size:15px}
+.langbar{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;padding:6px 0;margin-bottom:-4px}
+.langsel{display:inline-flex;align-items:center;gap:2px;background:#fffdf8;border:1px solid #d9d3c4;border-radius:99px;padding:3px 4px 3px 10px;box-shadow:0 4px 14px #314d4618;font-size:13px}
+.langsel button{border:0;border-radius:99px;padding:4px 10px;font-size:13px;background:transparent}
+.langsel button.on{background:#1d3c40;color:#fff}
+.tribtn{background:#eef3f1;border-color:#cfdcd7}
+body.tri .tribtn{background:#1d3c40;color:#fff}
+.mc{background:#fdf6e9;border:1px solid #ecd59b;border-radius:14px;padding:10px 14px;margin:10px 0}
+.mct{font-size:13px;font-weight:700;color:#8a6a2c;margin-bottom:4px}
+.mcl{padding:6px 0;border-top:1px dashed #ecd9ae}.mcl:first-of-type{border-top:0}
+.mcl b{font-size:18px;color:#1f5650}
+.scrollhint{display:inline-block;background:#1d3c40;color:#fff;border-radius:99px;padding:4px 14px;font-size:14px;margin:6px 0;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(4px)}}
+body.lang-zh .E,body.lang-ja .E{display:none!important}
+body.lang-zh .tl,body.lang-ja .tl{font-size:inherit;color:inherit;font-weight:inherit;margin-top:0}
+body.lang-zh .say .tl,body.lang-ja .say .tl,body.lang-zh .mcl .tl,body.lang-ja .mcl .tl{font-size:18px;font-weight:700;color:#1f5650}
+body.lang-zh .chip .tl,body.lang-ja .chip .tl{font-size:15px;color:#263d43}
+body.lang-zh .opt .sub,body.lang-ja .opt .sub,body.lang-zh .topic .sub,body.lang-ja .topic .sub{font-size:16px;font-weight:700;color:#263d43}
+body.lang-zh .qsub,body.lang-ja .qsub{font-size:22px;font-weight:700;color:#263d43}
+body.lang-zh .card .tl,body.lang-ja .card .tl{font-size:22px;color:#fff}
+button.armed{background:#b4533b!important;color:#fff!important;border-color:#b4533b!important}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1d3c40;color:#fff;padding:10px 18px;border-radius:99px;opacity:0;transition:.25s;z-index:99;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.xbtn{border:0;background:transparent;padding:0 4px;color:#b4533b;font-size:13px}
+.seg.big button{padding:7px 16px;font-size:15px}
+.tpanel{padding:14px 18px}
+.tgrid6{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}
+.ttile{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px 12px;border-radius:14px}
+.ttile.sel{border:2px solid #1d3c40;background:#eef5f2}
+.tt1{display:flex;justify-content:space-between;align-items:center}
+.tt2{font-size:13px;color:#1f5650;font-weight:700}
+.tt3{font-size:12px;color:#657779}
+.warnb{background:#b4533b;color:#fff;border-radius:99px;padding:0 7px;font-size:12px}
+.pbar{height:6px;background:#e6e0d2;border-radius:99px;overflow:hidden}.pbar i{display:block;height:100%;background:#3c9a5a}
+.tdetail{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start}
+.tdetail .panel{margin:0}
+.stp{font-size:12px;padding:3px 8px;border-radius:99px;background:#eee8dc;color:#8a8f88}.stp.on{background:#1d3c40;color:#fff}
+.pvbox{height:calc(100vh - 330px);min-height:360px;overflow:auto;border:1px solid #e4e3d9;border-radius:14px;background:#f7f3ec;margin-top:10px}
+.pv{zoom:.8;padding:6px 10px;pointer-events:none}
+.pv .langbar{display:none}
+body.teach main{max-width:1280px}
+@media(max-width:900px){.tgrid6{grid-template-columns:repeat(3,1fr)}.tdetail{grid-template-columns:1fr}}
+body.teach header{display:none}
+body.teach{height:100dvh;overflow:hidden}
+body.teach main{max-width:1400px;height:100dvh;padding:8px 12px;display:flex;flex-direction:column;gap:6px}
+.tbar,.tstrip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#fffdf8;border:1px solid #e4e3d9;border-radius:14px;padding:6px 10px}
+.tbar .ttl{font-size:18px}
+.tbar .seg{margin-left:4px}
+.sp{flex:1}
+.sel{font:inherit;font-size:13px;border:1px solid #d9d3c4;border-radius:99px;padding:4px 8px;background:#fff}
+button.mini{padding:4px 10px;font-size:13px}
+.rchips{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.rchip{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;padding:5px 8px;border-radius:12px;font-size:12px;text-align:left}
+.rchip b{font-size:14px}
+.rchip .rc{color:#3c9a5a;margin-left:auto}
+.rchip.sel{background:#1d3c40;color:#fff;border-color:#1d3c40}
+.rchip.sel .rc{color:#bfe7cb}
+.tstrip{font-size:13px}
+.tstrip .ph{background:#1d3c40;color:#fff;border-radius:99px;padding:2px 10px}
+.tstrip .who{font-size:13px;padding:1px 4px 1px 7px}
+.tview2{flex:1;min-height:0;display:flex;flex-direction:column;background:#fffdf8;border:1px solid #e4e3d9;border-radius:14px;padding:6px 8px}
+.tvbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:6px}
+.tview2 .pvbox{flex:1;height:auto;min-height:0;margin:0}
+@media(max-width:800px){.rchips{grid-template-columns:repeat(3,1fr)}.tbar .ttl{font-size:15px}}
+.tview2{flex-direction:row!important;gap:8px}
+.pvcol{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.pvcol .pvbox{flex:1;min-height:0;height:auto;margin:0;overflow:auto;border:1px solid #e4e3d9;border-radius:12px;background:#f7f3ec}
+.pvcol .pv{zoom:.62}
+#modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:100}
+.mbox{background:#fff;border-radius:16px;padding:16px;width:min(720px,92vw);display:flex;flex-direction:column;gap:10px}
+.mbox textarea{height:50vh;font:13px/1.5 ui-monospace,monospace;border:1px solid #d9d3c4;border-radius:10px;padding:10px}
+</style>
+</head>
+<body>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 26</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<main id="app"></main>
+<script>
+/* ===== 設定 =====
+   FIREBASE_CONFIG 為 null 時是「單機試用模式」：同一台電腦、同一個瀏覽器的分頁之間會同步，並顯示身分切換列。
+   正式使用時，把 Firebase 專案的設定物件貼進來（需要 Realtime Database），所有裝置就會即時同步。 */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyD5ThQCD1oypNzSOkhSa_yLYjPnrQuaWw4",
+  authDomain: "youmewhy-5e1f1.firebaseapp.com",
+  databaseURL: "https://youmewhy-5e1f1-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "youmewhy-5e1f1",
+  storageBucket: "youmewhy-5e1f1.firebasestorage.app",
+  messagingSenderId: "205745357966",
+  appId: "1:205745357966:web:2a8540bf8aa7c3c0df75df"
+};
+/* 例：
+const FIREBASE_CONFIG = {
+  apiKey: "...", authDomain: "...", databaseURL: "https://xxx-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "...", appId: "..."
+};
+*/
+const BASE = 'youmewhy';
+const VERSION = 36;   // 每次修改 +1
+
+/* ===== 題庫 =====
+   選項格式：英文|中文|日文|關鍵字（用 ; 分隔）|日本同學可以追問選這個選項的人的問題
+   jt = 日本同學問台灣的追問卡；tj = 台灣同學問日本的追問卡 */
+const EXTRA = [
+ 'Something else|其他答案|その他|something else;let me explain;for example|Oh, what is it? Tell me more!',
+ 'Nothing / No experience|沒有／沒經驗|特にない・経験なし|never;not yet;maybe someday|Why not? Would you like to try it someday?'
+];
+const Q = [
+{en:'Tell me about one stupid rule in your country, school, or family.',zh:'說說你的國家、學校或家裡一條很不合理的規定。',ja:'国・学校・家族にある、おかしなルールを一つ教えてください。',
+ o:['Hair color or hairstyle rules|髮色或髮型規定|髪色・髪型のルール|natural hair;dye;certificate;short hair|What hair rules does your school have?',
+    'School uniform rules|制服規定|制服のルール|skirt length;jacket;every day;winter|What is your school uniform like?',
+    'Phone rules|手機規定|スマホのルール|turn off;teacher takes it;during class|When can you use your phone at school?',
+    'Part-time job rules|打工規定|アルバイトのルール|not allowed;only in vacation;permission|Can students have part-time jobs in Taiwan?',
+    'Curfew / going-out rules|門禁或外出規定|門限・外出のルール|come home by ___;parents worry;late|What time do you have to go home?'],
+ jt:['Which school rule do you want to change?','What happens if you break a school rule?','Do you think school rules are necessary?'],
+ tj:['Are there rules about makeup at your school?','Can you use your phone at school?','Which rule do Japanese students hate most?']},
+{en:'What questions do your parents often ask you?',zh:'你爸媽常常問你什麼問題？',ja:'親によく聞かれる質問は何ですか？',
+ o:['When is your exam? How was it?|何時考試？考得怎樣？|試験はいつ？どうだった？|exam;score;again and again|What do you say when they ask about exams?',
+    'Did you study?|你讀書了嗎？|勉強した？|homework;every night;not yet|Do you study at home every day?',
+    'Have you eaten?|吃飯了沒？|ご飯食べた？|dinner;hungry;they care|Is “Have you eaten?” like “Hello” in Taiwan?',
+    'When will you come home?|你什麼時候回家？|いつ帰るの？|after school;late;text message|What time do you usually come home?',
+    'Who are you going out with?|你跟誰出去？|誰と出かけるの？|friends;where;worried|Do your parents want to know your friends?'],
+ jt:['Which question do you hear every day?','How do you usually answer your parents?','What question do you want your parents to ask you?'],
+ tj:['What do Japanese parents say when you get a bad score?','Do you talk with your parents at dinner?','Do your parents check your phone?']},
+{en:'Can you tell me about an event or custom in your culture where people eat or make food?',zh:'介紹一個會吃或做某種食物的節日或習俗。',ja:'食べ物を食べたり作ったりする行事や習慣を教えてください。',
+ o:['A festival for children’s growth|慶祝孩子成長的節日|子どもの成長を祝う行事|Girls’ Day;sushi;growth;happiness|Is there a festival for children in Taiwan?',
+    'New Year|過年|お正月|family;special food;red envelope|What do you eat at New Year?',
+    'Moon Festival / family reunion|中秋節／團圓|中秋節・家族の集まり|moon;BBQ;mooncake;family|What do people do at the Moon Festival?',
+    'Remembering ancestors|祭祖|先祖をしのぶ行事|ancestors;offer food;pray|How do people remember their ancestors?',
+    'Food for good luck|祈求好運的食物|縁起のいい食べ物|lucky;wish;exam;long noodles|Do you eat any food for good luck before exams?'],
+ jt:['What food do you eat at Chinese New Year?','Can you cook it?','What is your favorite festival food?'],
+ tj:['What does that food taste like?','What do you eat at New Year in Japan?','Do Japanese people eat mooncakes?']},
+{en:'What is a phrase that everyone in your country knows?',zh:'你的國家有什麼大家都知道的一句話？',ja:'あなたの国でみんなが知っている言葉は何ですか？',
+ o:['Blood type and personality|血型與個性|血液型と性格|blood type;type A;first meeting;personality|Do people in Taiwan care about blood type?',
+    'Star signs|星座|星座|star sign;personality;Leo|What is your star sign?',
+    'Internet slang|網路流行語|ネットスラング|SNS;young people;funny|What internet words are popular now?',
+    'Greetings|打招呼用語|あいさつ|every day;polite;“Have you eaten?”|How do you greet your friends?',
+    'Words before eating / polite words|用餐或禮貌用語|いただきます・丁寧な言葉|before eating;thank you;polite|Do you say something before eating?'],
+ jt:['Can you teach me a Chinese phrase?','What is your blood type?','What do people say when they first meet in Taiwan?'],
+ tj:['Can you teach me a Japanese phrase?','What does “itadakimasu” mean?','What words do young people use now in Japan?']},
+{en:'What kind of teacher do you find annoying or reliable?',zh:'你覺得哪種老師讓人討厭，或值得信賴？',ja:'どんな先生が苦手ですか？どんな先生が信頼できますか？',
+ o:['Strict but fair|嚴格但公平|厳しいけど公平|rules;same for everyone;trust|Do you like strict teachers?',
+    'Kind and patient|親切有耐心|優しくて忍耐強い|listen;smile;help|Who is your favorite teacher? Why?',
+    'Explains clearly|講解清楚|説明がわかりやすい|easy to understand;examples;slowly|What makes a class easy to understand?',
+    'Gives too much homework|作業太多|宿題が多すぎる|homework;every day;tired|How much homework do you have?',
+    'Doesn’t listen to students|不聽學生說話|生徒の話を聞かない|not fair;angry;only talks|What should a teacher do when students have problems?'],
+ jt:['Who is your favorite teacher?','What makes a teacher easy to talk to?','Do you like strict teachers?'],
+ tj:['How do Japanese students greet teachers?','Do you have a homeroom teacher?','What kind of teacher is popular in Japan?']},
+{en:'What is something you spend money on that your parents don’t understand?',zh:'你會花錢買什麼爸媽不懂的東西？',ja:'親に理解されないけど、お金を使っているものは何ですか？',
+ o:['Music, CDs or idols|音樂、CD 或偶像|音楽・CD・推し活|idol;same CD;handshake;photo|Who is your favorite idol or singer?',
+    'Games|遊戲|ゲーム|in-game items;gacha;skins|What games do you play?',
+    'Clothes or accessories|衣服或飾品|服・アクセサリー|fashion;brand;cute|Where do you buy clothes?',
+    'Food and drinks|食物和飲料|食べ物・飲み物|bubble tea;snacks;every day|What drink do you buy most?',
+    'Anime goods|動漫周邊|アニメグッズ|character;figure;keychain|Which anime character do you like?'],
+ jt:['How much is your favorite thing?','Do your parents give you pocket money?','What do you want to buy next?'],
+ tj:['How much is a CD in Japan?','Do you get pocket money?','What is popular to buy in Japan now?']},
+{en:'What is something you want to try but haven’t had the chance to do yet?',zh:'有什麼事你很想試試看，但還沒有機會？',ja:'やってみたいけど、まだ機会がないことは何ですか？',
+ o:['A part-time job|打工|アルバイト|money;experience;no time;school rule|What job do you want to try?',
+    'Travel abroad|出國旅行|海外旅行|country;plane;someday|Which country do you want to visit?',
+    'Learn a new skill|學新技能|新しいことを習う|guitar;dance;cooking|What do you want to learn?',
+    'Join a competition or event|參加比賽或活動|大会・イベントに出る|contest;stage;nervous|What competition would you like to join?',
+    'Live alone|一個人住|一人暮らし|freedom;cooking;university|Do you want to live alone in the future?'],
+ jt:['What job do you want in the future?','What stops you from trying it?','What do you want to do this winter vacation?'],
+ tj:['What do Japanese students do in summer vacation?','Can you work part-time?','Which country do you want to visit?']},
+{en:'What do you think is a waste of time, but you just can’t stop doing it in your daily life?',zh:'什麼事你覺得很浪費時間，卻每天都停不下來？',ja:'時間の無駄だと思うけど、毎日やめられないことは何ですか？',
+ o:['Social media|社群媒體|SNS|Instagram;TikTok;trendy;hours|Which app do you use most?',
+    'Short videos|短影音|ショート動画|one more;funny;scroll|What kind of short videos do you watch?',
+    'Games|遊戲|ゲーム|one more game;friends;level|How long do you play every day?',
+    'Dramas or anime|追劇或動畫|ドラマ・アニメ|next episode;midnight|What are you watching now?',
+    'Staying in bed|賴床|ゴロゴロ・二度寝|alarm;five more minutes;weekend|What time do you get up on weekends?'],
+ jt:['How many hours do you use your phone a day?','What is trendy in Taiwan now?','How can we stop?'],
+ tj:['What is trendy in Japan now?','Which app is popular in Japan?','Do you use your phone before sleeping?']},
+{en:'Do you talk to AI like you talk to your friends?',zh:'你會像跟朋友聊天一樣跟 AI 說話嗎？',ja:'友達と話すようにAIと話しますか？',
+ o:['Yes, without noticing|會，不知不覺就會|はい、無意識に|thank you;please;like a friend|Do you say “thank you” to AI?',
+    'Yes, I share my feelings|會，跟它聊心事|はい、気持ちを話す|feelings;at night;it listens|Is AI a good listener?',
+    'Only for schoolwork|只問功課|勉強のときだけ|homework;English;translate|What schoolwork do you use AI for?',
+    'No, it is just a tool|不會，只是工具|いいえ、ただの道具|tool;search;fast|What is AI good at?',
+    'I rarely use AI|很少用 AI|ほとんど使わない|not allowed;not interested|Does your school allow AI?'],
+ jt:['Which AI do you use?','What was the funniest answer AI gave you?','Can AI be a good friend?'],
+ tj:['Can you use AI at school?','Do you talk to AI in Japanese or English?','Do you use AI differently at school and at home?']},
+{en:'Have you ever scolded someone younger than you or told them off for doing something wrong?',zh:'你有沒有罵過比你小的人，或糾正他做錯的事？',ja:'年下の人を叱ったり、注意したりしたことはありますか？',
+ o:['Yes, for manners or habits|有，禮貌或習慣|はい、マナー・習慣|chopsticks;brother / sister;teach|What manners are important in your family?',
+    'Yes, for breaking rules|有，不守規定|はい、ルール違反|club;younger students;rules|Do you have younger members in your club?',
+    'Yes, for something dangerous|有，做危險的事|はい、危ないこと|road;be careful;worried|What did you say to them?',
+    'Yes, for not listening|有，不聽話|はい、言うことを聞かない|again and again;angry|Did they listen to you?',
+    'No, never|沒有過|いいえ、ない|kind;not my job|Who scolds you at home?'],
+ jt:['Do you have brothers or sisters?','Who scolds you most?','Do your parents teach you manners?'],
+ tj:['Are chopstick manners important in Japan?','Are you strict with younger students in your club?','What manners are important in Japan?']}
+];
+const MORE_JT=['Is it the same in Taiwan?','What do you like most about it?','Can you show me a picture?'];
+const MORE_TJ=['Is it the same for your friends?','How do you say it in Japanese?','Can you show me a picture?'];
+
+/* 已收到的日本學生答案（只有日本主持人自己看得到）。key = 房間編號(0起算)，再依題號(0起算)。
+   pick = 對應選項的原始編號；notes = 給主持人看的關鍵字；line = 原本寫的句子（藏起來，卡住才打開）；
+   quiz = 聽力確認小測驗（第一個選項是正解，畫面上會打亂）。沒有資料的題目，日本同學當天自己選。 */
+const PRESET = {
+ 0:{
+  0:{pick:0,notes:'some schools;brown hair;natural hair certificate;stupid',line:'In some schools in Japan, students with naturally brown hair have to submit a natural hair certificate. I think this rule is stupid.',
+     quiz:['What do some students with brown hair have to do?','Show a “natural hair” certificate','Dye their hair black','Wear a hat','Cut their hair short']},
+  1:{pick:0,notes:'my father;When is your exam?;How was it?;again and again',line:'My father often asks when my school exam is and how it went. I have told him before, but I tell him again and again.',
+     quiz:['What does their father often ask?','When is your exam?','Did you eat dinner?','Where are you going?','Who is your friend?']},
+  2:{pick:0,notes:'March 3;Girls’ Day;parents make chirashi sushi;growth;happiness',line:'March 3 is Girls’ Day in Japan. Parents make chirashi sushi. On this day, we wish for girls’ growth and happiness.',
+     quiz:['What do parents make on Girls’ Day?','Chirashi sushi','Rice cakes','Mooncakes','Noodles']},
+  3:{pick:0,notes:'What is your blood type?;first meeting;type A;likes clean',line:'In Japan, people often ask, “What is your blood type?” Some people think type A people like to keep things clean. People often ask this when they first meet.',
+     quiz:['What do people think type A people like?','Keeping things clean','Being loud','Sleeping a lot','Playing sports']},
+  5:{pick:0,notes:'idols;buy CDs;photos;handshake;same CD;mother: again?',line:'Some idols in Japan let fans take pictures or shake hands when they buy CDs. I bought several copies of the same CD. My mother asks, “Did you buy another CD?”',
+     quiz:['Why did they buy the same CD many times?','To take photos or shake hands with idols','Their mother asked them to','It was cheap','For a friend']},
+  6:{pick:0,notes:'part-time job;only in vacation;classes in vacation;no time',line:'I want to try a part-time job. My school only allows it during vacations, but we still have classes during vacations, so I have no time.',
+     quiz:['Why can’t they have a part-time job?','They have classes during vacations','Their parents say no','They are too young','There are no jobs nearby']},
+  7:{pick:0,notes:'SNS;much time;trendy things in Japan',line:'I spend a lot of time on social media. That is how I know many trendy things in Japan.',
+     quiz:['What do they learn from social media?','Trendy things in Japan','English words','Cooking','News about Taiwan']},
+  8:{pick:0,notes:'yes;without noticing;school iPad;my phone;different',line:'Yes, sometimes without noticing. I use my school iPad and my phone differently.',
+     quiz:['What do they use differently?','A school iPad and a phone','Two AI apps','A computer and a TV','Japanese and English']},
+  9:{pick:0,notes:'my brother;14 years old;chopsticks;parents don’t say;I teach him',line:'I often scold my 14-year-old brother because he does not hold his chopsticks correctly. My parents do not say anything, so I teach him.',
+     quiz:['Why do they scold their brother?','He doesn’t hold chopsticks correctly','He plays games too much','He is always late','He doesn’t study']}
+ }
+};
+/* 目前只收到一位日本同學的答案，所以 Room 1–6（以及對應的備用、測試房間）都先用同一份。
+   收到其他同學的答案後，依序填入 PRESET[1]～PRESET[5]（= Room 2～6），就會自動取代。 */
+for(let i=1;i<6;i++)if(!PRESET[i])PRESET[i]=PRESET[0];
+
+const SIG = {
+ again:{hz:'想要你再說一次 → 慢慢再說一次',he:'wants you to repeat → say it again slowly',jb:'もう一度',zh:'再說一次',en:'Could you say that again, please?',ja:'もう一度言ってほしい → ゆっくりもう一度'},
+ slow:{hz:'想要你說慢一點',he:'wants you to speak more slowly',jb:'ゆっくり',zh:'說慢一點',en:'Could you speak more slowly, please?',ja:'ゆっくり話してほしい'},
+ mean:{hz:'聽不懂意思 → 用簡單的字、手勢或圖片',he:'doesn’t understand a word → use simple words, gestures or pictures',jb:'わからない言葉がある',zh:'聽不懂某個字',en:'What does that mean?',ja:'意味がわからない → 簡単な言葉・ジェスチャー・絵で'},
+ ok:{hz:'聽懂了！👍',he:'understood! 👍',jb:'わかった',zh:'我聽懂了',en:'I got it! 👍',ja:'わかった！👍'}
+};
+const PH_ZH=['選題','選擇','猜測','揭曉・說明','聽懂了嗎','換你說','繼續聊'];
+const PH_EN=['Topic','Choose','Guess','Reveal','Listening check','Your turn','Keep talking'];
+const PH_JA=['話題選び','選ぶ','予想','答え合わせ・説明','聞き取りチェック','台湾の番','もっと話そう'];
+
+/* ===== 房間 =====
+   正式 Room 1–6（r1–r6）、備用 Backup 1–6（b1–b6）、測試 Test 1–6（t1–t6，對應 Room 1–6） */
+const MAIN=[1,2,3,4,5,6].map(n=>'r'+n), BACKUP=[1,2,3,4,5,6].map(n=>'b'+n), TEST=[1,2,3,4,5,6].map(n=>'t'+n);
+const ALL=[...MAIN,...BACKUP,...TEST];
+const roomName=id=>({r:'Room ',b:'Backup ',t:'Test '})[id[0]]+id.slice(1);
+const slotOf=id=>+id.slice(1)-1;        // Room n、Backup n、Test n 都使用第 n 份答案
+const seedOf=id=>+id.slice(1);           // 選項順序也和同號房間一樣
+
+/* ===== 工具 ===== */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function opt(q,i){const a=(i<5?Q[q].o[i]:EXTRA[i-5]).split('|');return{en:a[0],zh:a[1],ja:a[2],w:a[3].split(';'),ask:a[4]}}
+function shuffle(arr,seed){const a=arr.slice();let x=seed%2147483647||7;for(let i=a.length-1;i>0;i--){x=(x*16807)%2147483647;const j=x%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+const order=(r,q)=>shuffle([0,1,2,3,4],seedOf(r)*7919+(q+1)*104729).concat([5,6]);
+const L=i=>String.fromCharCode(65+i);
+const tw=i=>'TW'+(i+1);
+const chips=(arr,cls='')=>`<div class="chips">${arr.map(w=>{const a=Array.isArray(w)?w:[w,...(TR[w]||[])];return `<span class="chip ${cls}"><span class="ce E">${esc(a[0])}</span>${a[1]?`<span class="tl"><span class="L zh">${esc(a[1])}</span><span class="L ja">${esc(a[2])}</span></span>`:''}</span>`}).join('')}</div>`;
+const B=(text,act,arg='',cls='',dis=false,cf='')=>`<button class="${cls}" data-act="${act}" data-a="${esc(arg)}" ${cf?`data-cf="${esc(cf)}"`:''} ${dis?'disabled':''}>${text}</button>`;
+function copyText(t,msg){const fb=()=>showText(t);try{navigator.clipboard.writeText(t).then(()=>toast(msg||'已複製'),fb)}catch(e){fb()}}
+function showText(t){let m=document.getElementById('modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}
+ m.innerHTML=`<div class="mbox"><b>請全選後複製（Ctrl/⌘ + C）</b><textarea readonly>${esc(t)}</textarea><button class="primary" onclick="document.getElementById('modal').remove()">關閉</button></div>`;
+ const ta=m.querySelector('textarea');ta.focus();ta.select()}
+function toast(t){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';document.body.appendChild(el)}el.textContent=t;el.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>el.className='',2200)}
+const preset=(r,q)=>{const sl=slotOf(r);return PRESET[sl]&&PRESET[sl][q]};
+
+/* ===== 狀態與同步 ===== */
+let rooms={}, db=null, loaded=false;
+const KEY='ymw-v3';
+const P=new URLSearchParams(location.search);
+const EMBED=P.get('embed')==='1';
+function normId(v){v=String(v||'r1').toLowerCase();if(/^\d+$/.test(v))v='r'+v;return ALL.includes(v)?v:'r1'}
+let room=normId(P.get('r'));
+let role=P.get('role')||'home';          // home | host | tw | teacher | test
+let me=-1;                                // 台灣學生座位編號（自動分配）；-1 = 尚未分配
+let lastCheck=null;                       // 台灣學生剛按的求助鍵（本機顯示用）
+const openDetails=new Set();
+
+function S(r=room){const s=rooms[r]||{};const seats=s.seats||{};return{seats,live:!!s.live,q:s.q??-1,p:s.p||0,hp:s.hp??-1,hg:s.hg??-1,pk:s.pk||{},gs:s.gs||{},help:s.help||{},rt:s.rt??-1,rtok:s.rtok||'',qzOn:!!s.qzOn,qz:s.qz||{},fc:s.fc??-1,sh:s.sh||{},turn:s.turn||0,card:s.card||'',used:s.used||{},rounds:s.rounds||0,done:s.done||{},tv:s.tv||{}}}
+function setPath(obj,path,val){const k=path.split('/');let o=obj;for(let i=0;i<k.length-1;i++){if(typeof o[k[i]]!=='object'||o[k[i]]===null)o[k[i]]={};o=o[k[i]]}if(val===null)delete o[k.at(-1)];else o[k.at(-1)]=val}
+function fresh(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return rooms}}
+function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(rooms))}catch(e){}render()}
+function upd(obj,r=room){
+ if(db){const o={};for(const k in obj)o[`${BASE}/rooms/${r}/${k}`]=obj[k];db.ref().update(o);return}
+ rooms=fresh();   // 先讀最新資料再修改，避免多個分頁互相覆蓋
+ for(const k in obj)setPath(rooms,`${r}/${k}`,obj[k]);
+ saveLocal();
+}
+function wipe(ids){
+ if(db){const o={};ids.forEach(r=>o[`${BASE}/rooms/${r}`]=null);db.ref().update(o);return}
+ rooms=fresh();ids.forEach(r=>delete rooms[r]);saveLocal();
+}
+function devId(){if(P.get('dev'))return P.get('dev');const st=db?localStorage:sessionStorage;let d=st.getItem('ymw-dev');if(!d){d='d'+Math.random().toString(36).slice(2,10);st.setItem('ymw-dev',d)}return d}
+
+/* 座位：不限人數，依進入順序編號；離開的號碼會由新進來的人補上 */
+function pickSeat(cur,dev){cur=cur||{};for(const k in cur)if(cur[k]&&cur[k].d===dev){cur[k].on=true;cur[k].t=Date.now();return cur}
+ for(let i=0;;i++)if(!cur['s'+i]){cur['s'+i]={d:dev,on:true,t:Date.now()};return cur}}
+function seatOf(seats,dev){for(const k in seats||{})if(seats[k]&&seats[k].d===dev)return +k.slice(1);return -1}
+let claiming=false;
+function claim(r=room,dev=devId()){
+ if(claiming)return;claiming=true;me=-1;
+ if(db){db.ref(`${BASE}/rooms/${r}/seats`).transaction(cur=>pickSeat(cur,dev)).then(res=>{claiming=false;me=seatOf(res.snapshot.val(),dev);presence();render()});return}
+ rooms=fresh();const seats=pickSeat(JSON.parse(JSON.stringify(rooms[r]?.seats||{})),dev);me=seatOf(seats,dev);claiming=false;
+ upd({['seats/s'+me]:seats['s'+me]},r);
+}
+function presence(){
+ if(!db||me<0)return;const ref=db.ref(`${BASE}/rooms/${room}/seats/s${me}/on`);
+ ref.set(true);ref.onDisconnect().set(false);
+}
+function online(s,i){const x=s.seats['s'+i];if(!x)return false;if(x.on===false)return false;return db?true:(Date.now()-(x.t||0)<25000)}
+function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+async function init(){
+ if(role==='test')initTest();
+ if(FIREBASE_CONFIG){
+  try{
+   await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+   await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js');
+   firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();
+   db.ref(BASE+'/rooms').on('value',snap=>{rooms=snap.val()||{};loaded=true;render()});
+   db.ref('.info/connected').on('value',snap=>{if(snap.val()===true)presence()});
+   if(role==='tw')claim();
+   return;
+  }catch(e){alert('Firebase 連線失敗，改用單機試用模式。');db=null}
+ }
+ try{rooms=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){rooms={}}
+ loaded=true;
+ window.addEventListener('storage',e=>{if(e.key===KEY){try{rooms=JSON.parse(e.newValue)||{};render()}catch(_){}}});
+ if(role==='tw'){claim();
+  setInterval(()=>{rooms=fresh();if(me>=0&&rooms[room]?.seats?.['s'+me]?.d===devId()){rooms[room].seats['s'+me].t=Date.now();rooms[room].seats['s'+me].on=true;saveLocal()}},8000);
+  window.addEventListener('pagehide',()=>{rooms=fresh();if(me>=0&&rooms[room]?.seats?.['s'+me]?.d===devId()){rooms[room].seats['s'+me].on=false;try{localStorage.setItem(KEY,JSON.stringify(rooms))}catch(e){}}});}
+ if(role==='host'||role==='teacher'||role==='test')setInterval(render,10000);
+ render();
+}
+function setURL(){if(EMBED)return;const u=new URLSearchParams();if(role!=='home'){u.set('role',role);if(role!=='teacher')u.set('r',room)}history.replaceState(null,'','?'+u)}
+function go(r,ro){
+ if(ro==='test'||ro==='teacher'||ro==='home'){location.search=ro==='home'?'':`?role=${ro}${ro==='test'?'&r='+r:''}`;return}
+ location.search=`?role=${ro}&r=${r}`;   // 重新載入，確保座位與連線狀態正確
+}
+
+/* ===== 計算 ===== */
+function present(s){return Object.keys(s.seats).filter(k=>s.seats[k]).map(k=>+k.slice(1)).sort((a,b)=>a-b)}
+function majority(s){const c={};present(s).forEach(i=>{const v=s.pk['s'+i];if(v!=null)c[v]=(c[v]||0)+1});const m=Math.max(0,...Object.values(c));return m?Object.keys(c).filter(k=>c[k]===m).map(Number):[]}
+function shareOrder(s){return present(s).sort((a,b)=>Number(s.pk['s'+a]===s.hp)-Number(s.pk['s'+b]===s.hp))}
+function quizOf(r,q){const p=preset(r,q);if(!p||!p.quiz)return null;const opts=shuffle([0,1,2,3],(seedOf(r)+3)*31+q*17);return{q:p.quiz[0],o:opts.map(i=>p.quiz[i+1]),a:opts.indexOf(0)}}
+
+/* ===== 動作 ===== */
+const ACT={
+ go:a=>{const[r,ro]=a.split(',');go(r,ro)},
+ kick:a=>{const[r,i]=a.split(',');const s=S(r);
+   const o={};['seats','pk','gs','qz','sh','help'].forEach(k=>o[`${k}/s${i}`]=null);if(s.rt===+i)o.rt=-1;if(s.fc===+i)o.fc=-1;upd(o,r)},
+ live:()=>upd({live:true}),
+ start:a=>{const q=+a,p=preset(room,q);upd({tv:null,q,p:1,hp:p?p.pick:-1,hg:-1,pk:null,gs:null,help:null,rt:-1,rtok:'',qzOn:false,qz:null,fc:-1,sh:null,turn:0,card:'',used:null,rounds:0})},
+ hpick:a=>upd({hp:+a}),
+ hguess:a=>upd({hg:+a}),
+ pick:a=>{const s=S();upd({[(s.p===1?'pk/s':'gs/s')+me]:+a})},
+ next:()=>{const s=S();const o={p:s.p+1};if(s.p+1===5)o.fc=shareOrder(s)[0]??-1;upd(o)},
+ back:()=>{const s=S();if(s.p>1)upd({p:s.p-1})},
+ sig:a=>{lastCheck=a;upd({['help/s'+me]:a})},
+ clearSig:()=>upd({help:null}),
+ retell:()=>{const s=S();const on=present(s).filter(i=>online(s,i));const ids=(on.length?on:present(s)).filter(i=>i!==s.rt);const pick=ids[Math.floor(Math.random()*ids.length)]??present(s)[0]??-1;upd({rt:pick,rtok:''})},
+ rtok:a=>upd({rtok:a}),
+ quizOn:()=>upd({qzOn:true}),
+ quiz:a=>upd({['qz/s'+me]:+a}),
+ focus:a=>upd({fc:+a}),
+ shared:()=>{const s=S();const sh={...s.sh,['s'+s.fc]:true};const nx=shareOrder(s).find(i=>!sh['s'+i]);upd({['sh/s'+s.fc]:true,fc:nx??-1})},
+ draw:()=>{const s=S();const host=s.turn%(present(s).length+1)===0;const deck=host?Q[s.q].jt.concat(MORE_JT):Q[s.q].tj.concat(MORE_TJ);const pref=host?'j':'t';
+   let i=deck.findIndex((_,k)=>!s.used[pref+k]);if(i<0)i=Math.floor(Math.random()*deck.length);upd({card:deck[i],['used/'+pref+i]:true})},
+ pass:()=>{const s=S();upd({turn:(s.turn+1)%(present(s).length+1),card:'',rounds:s.rounds+1})},
+ finish:()=>{const s=S();upd({['done/q'+s.q]:true,q:-1,p:0,tv:null})},
+ reset:a=>{wipe([a]);toast(`已重置 ${roomName(a)}`)},
+ resetGroup:a=>{const ids=a==='main'?MAIN:a==='backup'?BACKUP:a==='test'?TEST:ALL;const nm={main:'所有正式房間 Room 1–6',backup:'所有備用房間 Backup 1–6',test:'所有測試房間 Test 1–6',all:'全部房間（正式＋備用＋測試）'}[a];
+   wipe(ids);toast(`已重置${nm}`)},
+ goHome:()=>go(room,'home'),
+ copy:a=>copyText(a,'已複製連結')
+};
+let armed='',armedUntil=0;
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
+ if(b.dataset.cf){const key=b.dataset.act+'|'+b.dataset.a;
+  if(!(armed===key&&Date.now()<armedUntil)){armed=key;armedUntil=Date.now()+4000;const orig=b.innerHTML;b.innerHTML=esc(b.dataset.cf);b.classList.add('armed');
+   setTimeout(()=>{if(b.isConnected&&b.classList.contains('armed')){b.innerHTML=orig;b.classList.remove('armed')}},4000);return}
+  armed='';}
+ const pane=role==='test'&&b.closest('[data-pane]');
+ if(pane)withPersona(personas[+pane.dataset.pane],()=>ACT[b.dataset.act](b.dataset.a));
+ else ACT[b.dataset.act](b.dataset.a)});
+document.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.k){d.open?openDetails.add(d.dataset.k):openDetails.delete(d.dataset.k)}},true);
+
+/* ===== 畫面 ===== */
+const app=document.getElementById('app');
+function render(){
+ if(!loaded)return;
+ if(inPersona){pendingRender=true;return}
+ // 台灣同學的座位被刪除（或房間被重置）時，自動重新取得號碼
+ if(role==='tw'&&me>=0&&!claiming){const x=rooms[room]?.seats?.['s'+me];if(!x||x.d!==devId()){me=-1;claim();return}}
+ let h='';
+ if(role==='home')h=home();
+ else if(role==='teacher')h=teacher();
+ else if(role==='test')h=testView();
+ else h=roomView();
+ if(role!=='home'&&role!=='test'&&role!=='teacher'&&!EMBED)h+=`<footer>${db?'🟢 Firebase 即時同步中':'🟡 單機試用模式（同一瀏覽器的分頁之間同步）'} · You, Me &amp; Why version ${VERSION} ${role==='teacher'?'':' · '+B('⌂','go','r1,home','linkish')}</footer>`;
+ document.body.classList.toggle('home',role==='home');
+ document.body.classList.toggle('test',role==='test');
+ document.body.classList.toggle('embed',EMBED);
+ document.body.classList.toggle('teach',role==='teacher');
+ const sc={};app.querySelectorAll('[data-scroll]').forEach(e=>sc[e.dataset.scroll]=e.scrollTop);
+ app.innerHTML=h;
+ app.querySelectorAll('[data-scroll]').forEach(e=>{if(sc[e.dataset.scroll])e.scrollTop=sc[e.dataset.scroll]});
+}
+
+/* --- 首頁 --- */
+let hsRoom='',hsSet='r';
+ACT.hsr=a=>{hsRoom=a;render()};
+ACT.hsSet=a=>{hsSet=a;hsRoom='';render()};
+ACT.enterAs=a=>{if(hsRoom)go(hsRoom,a)};
+function home(){
+ const no=!hsRoom,list=hsSet==='r'?MAIN:BACKUP;
+ return `<section class="hero">
+  <div class="ver">version ${VERSION}</div>
+  <div class="schools"><span>日本 宮城縣 岩ヶ崎高等學校</span><i>×</i><span>台灣 基隆 中山高中</span></div>
+  <div class="eyebrow">Iwagasaki High School × Keelung Zhongshan High School · A Conversation Exchange</div>
+  <h1>You, Me <em>&amp;</em> Why</h1>
+  <div class="tagline"><span>Same question, different stories.</span><span>同じ質問、ちがう物語。</span><span>同一個問題，不同的故事。</span></div>
+  <div class="seal">問而後知・聞而後言</div>
+ </section>
+ <div class="method">
+  <div><b>i.</b><span>Choose</span><small>選ぶ · 選擇</small></div>
+  <div><b>ii.</b><span>Guess</span><small>予想 · 猜測</small></div>
+  <div><b>iii.</b><span>Listen</span><small>聞く · 傾聽</small></div>
+  <div><b>iv.</b><span>Talk</span><small>話す · 對話</small></div>
+ </div>
+ <div><div class="sec"><span class="no">01</span><h2>Choose your room</h2>
+   <span class="seg">${B('Rooms','hsSet','r',hsSet==='r'?'on':'')}${B('Backup','hsSet','b',hsSet==='b'?'on':'')}</span></div>
+ <div class="rooms">${list.map(r=>`<button class="${hsRoom===r?'sel':''}" data-act="hsr" data-a="${r}">${roomName(r)}</button>`).join('')}</div></div>
+ <div><div class="sec"><span class="no">02</span><h2>Who are you?</h2><small>${no?'まずルームを選んでください · 請先選房間':'タップして入室 · 點選即進入'}</small></div>
+ <div class="roles">
+  <button data-act="enterAs" data-a="host" ${no?'disabled':''}><div><b>🇯🇵 司会 · Host</b><span>日本の生徒・会話をリードする<br>日本同學・主持人</span></div><em>→</em></button>
+  <button data-act="enterAs" data-a="tw" ${no?'disabled':''}><div><b>🇹🇼 台灣同學 · Taiwan</b><span>進入後自動編號<br>Your number is assigned automatically</span></div><em>→</em></button>
+ </div></div>
+ <div class="homefoot"><span>${db?'● Live':'○ Demo mode'}</span><span class="bar">${B('Test rooms · 測試房間','go','t1,test','linkish')}${B('Teacher’s desk · 教師總覽','go','r1,teacher','linkish')}</span></div>`;
+}
+
+/* --- 測試房間：同一個畫面同時操作日本主持人與多台台灣裝置（不用 iframe，任何瀏覽器都能用） --- */
+let personas=[], inPersona=false, pendingRender=false;
+function withPersona(p,fn){
+ const sv=[role,me,lastCheck];role=p.role;me=p.me??-1;lastCheck=p.lc||null;inPersona=true;
+ let out;try{out=fn()}finally{p.lc=lastCheck;role=sv[0];me=sv[1];lastCheck=sv[2];inPersona=false}
+ if(pendingRender){pendingRender=false;render()}
+ return out;
+}
+function newTw(n){return{role:'tw',dev:`${room}-dev${n}-${Math.random().toString(36).slice(2,6)}`,me:-1,lc:null,label:'台灣裝置 '+n}}
+function initTest(){
+ personas=[{role:'host',label:'🇯🇵 日本主持人 Host'}];
+ for(let n=1;n<=3;n++)personas.push({...newTw(n),dev:`${room}-dev${n}`});
+ if(!FIREBASE_CONFIG)setInterval(()=>{rooms=fresh();let ch=false;personas.forEach(p=>{const x=p.role==='tw'&&p.me>=0&&rooms[room]?.seats?.['s'+p.me];if(x&&x.d===p.dev){x.t=Date.now();x.on=true;ch=true}});if(ch)saveLocal()},8000);
+}
+function claimP(p){
+ if(p.claiming)return;p.claiming=true;
+ if(db){db.ref(`${BASE}/rooms/${room}/seats`).transaction(cur=>pickSeat(cur,p.dev)).then(res=>{p.me=seatOf(res.snapshot.val(),p.dev);p.claiming=false;render()});return}
+ rooms=fresh();const seats=pickSeat(JSON.parse(JSON.stringify(rooms[room]?.seats||{})),p.dev);p.me=seatOf(seats,p.dev);
+ setPath(rooms,`${room}/seats/s${p.me}`,seats['s'+p.me]);try{localStorage.setItem(KEY,JSON.stringify(rooms))}catch(e){}
+ p.claiming=false;
+}
+let autoSim=true;   // 測試房間：TW2 以後的裝置自動作答，只要操作主持人和 TW1 就能一路測試
+ACT.sim=()=>{autoSim=!autoSim;render()};
+function simulate(){
+ if(!autoSim)return;const s=S();if(!s.live||s.q<0)return;
+ personas.forEach((p,idx)=>{if(p.role!=='tw'||p.me<0||idx<2)return;const k='s'+p.me;
+  const rnd=()=>order(room,s.q)[Math.floor(Math.random()*7)];
+  if(s.p===1&&s.pk[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===1&&S().pk[k]==null)ACT.pick(rnd())}),400+idx*250);
+  if(s.p===2&&s.gs[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===2&&S().gs[k]==null)ACT.pick(Math.random()<.5&&S().hp>=0?S().hp:rnd())}),400+idx*250);
+  const qz=quizOf(room,s.q);if(s.p===4&&qz&&s.qzOn&&s.qz[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().qz[k]==null)ACT.quiz(Math.random()<.7?qz.a:0)}),400+idx*250);
+ });
+}
+ACT.addPane=()=>{const n=personas.filter(p=>p.role==='tw').length+1;personas.push(newTw(n));render()};
+ACT.rmPane=()=>{const p=personas.at(-1);if(!p||p.role!=='tw')return;personas.pop();
+ if(p.me>=0&&rooms[room]?.seats?.['s'+p.me]?.d===p.dev)upd({[`seats/s${p.me}/on`]:false});else render()};
+function testView(){
+ // 每台台灣裝置確認自己還有座位；被刪除或房間被重置時自動重新取號
+ personas.forEach(p=>{if(p.role!=='tw'||p.claiming)return;const x=rooms[room]?.seats?.['s'+p.me];if(p.me<0||!x||x.d!==p.dev){p.me=-1;p.lc=null;claimP(p)}});
+ const panes=personas.map((p,i)=>{const nm=p.role==='host'?p.label:`🇹🇼 ${p.label}${p.me>=0?' → '+tw(p.me):''}`;
+   return `<div class="pane ${p.role}" data-pane="${i}"><div class="pl">${nm}</div><div class="inner" data-scroll="p${i}">${withPersona(p,roomView)}</div></div>`}).join('');
+ const cols=Math.min(personas.length,4);setTimeout(simulate,0);
+ return `<div class="testbar"><b>測試房間</b><small style="color:#cfe1dc">version ${VERSION}</small>${TEST.map(t=>B(roomName(t),'go',`${t},test`,t===room?'active':'')).join('')}
+  <span class="muted">對應 ${roomName('r'+room.slice(1))} 的答案與選項順序</span>
+  <span style="margin-left:auto" class="bar">${triBtn()}${B(autoSim?'🤖 TW2 起自動作答：開':'🤖 TW2 起自動作答：關','sim','',autoSim?'active':'')}${B('＋ 台灣裝置','addPane')}${B('－ 最後一台離線','rmPane')}${B('重置這間','reset',room,'warn')}${B('教師總覽','go','r1,teacher')}${B('⌂ 主畫面','go','r1,home')}</span></div>
+  <div class="tgrid" style="--cols:${cols}">${panes}</div>`;
+}
+
+/* --- 教師總覽（一個畫面看完）：上方選分組與房間 → 中間一行狀態與操作 → 下方即時畫面 --- */
+let tSet='main',tSel='',tView='host';
+const TSETS={main:['正式',MAIN],backup:['備用',BACKUP],test:['測試',TEST]};
+ACT.tset=a=>{tSet=a;tSel='';tView='host';render()};
+ACT.tsel=a=>{tSel=a;tView='host';render()};
+ACT.tview=a=>{tView=a;render()};
+ACT.copyAll=()=>{const base=location.origin+location.pathname;
+ const blk=(title,ids)=>title+'\n'+ids.map(r=>`${roomName(r)}\n  🇯🇵 主持人 Host（日本の生徒）：${base}?role=host&r=${r}\n  🇹🇼 台灣同學（全組共用）：${base}?role=tw&r=${r}`).join('\n');
+ copyText(`You, Me & Why｜岩ヶ崎高等學校 × 基隆中山高中\n\n${blk('【正式房間 Room 1–6】',MAIN)}\n\n${blk('【備用房間 Backup 1–6（正式房間出問題時才用）】',BACKUP)}`,'已複製所有房間連結（正式＋備用）')};
+const CHG={tsel:v=>ACT.tsel(v),tview:v=>ACT.tview(v),lang:v=>ACT.lang(v)};
+document.addEventListener('change',e=>{const el=e.target.closest('[data-chg]');if(el)CHG[el.dataset.chg](el.value)});
+function phaseOf(s){return !s.live?'等待開始':s.q<0?'選題中':`第${s.q+1}題·${PH_ZH[s.p]}`}
+function preview(r,ro,seat){const sv=[room,role,me,lastCheck];room=r;role=ro;me=seat;lastCheck=null;let h;try{h=roomView()}finally{[room,role,me,lastCheck]=sv}return h}
+function teacher(){
+ const [setName,ids]=TSETS[tSet];
+ if(!ids.includes(tSel))tSel=ids[0];
+ const base=location.origin+location.pathname;
+ const chip=r=>{const s=S(r),pr=present(s),on=pr.filter(i=>online(s,i)).length,sig=Object.values(s.help).filter(v=>v!=='ok').length;
+  return `<button class="rchip ${tSel===r?'sel':''}" data-act="tsel" data-a="${r}"><b>${roomName(r).replace('Backup','B').replace('Test','T')}</b><span>${phaseOf(s)}</span><span class="rc">●${on}/${pr.length}</span>${sig?`<span class="warnb">⚠${sig}</span>`:''}</button>`};
+ const s=S(tSel),pr=present(s),sig=Object.entries(s.help).filter(([,v])=>v!=='ok');
+ if(!pr.includes(+tView))tView=pr.length?String(pr[0]):'';
+ const pvHost=preview(tSel,'host',-1);
+ const pvTw=tView!==''?preview(tSel,'tw',+tView):preview(tSel,'tw',0);
+ return `<div class="tbar">
+   ${B('⌂','goHome','','mini')}<b class="ttl">教師總覽</b><small class="muted">v${VERSION}</small>
+   <span class="seg">${Object.entries(TSETS).map(([k,[n]])=>B(n,'tset',k,tSet===k?'on':'')).join('')}</span>
+   <select data-chg="lang" class="sel">${LANGS.map(([k,n])=>`<option value="${k}" ${lang()===k?'selected':''}>🌐 ${n}</option>`).join('')}</select>
+   <span class="sp"></span>
+   ${B(`重置${setName}全部`,'resetGroup',tSet,'warn mini','',`再按一次：確定重置${setName}房間？`)}${B('🔗 複製所有房間連結','copyAll','','mini primary')}${B('重置所有房間','resetGroup','all','warn mini','','再按一次：確定全部重置？')}
+  </div>
+  <div class="rchips">${ids.map(chip).join('')}</div>
+  <div class="tstrip">
+   <b>${roomName(tSel)}</b><span class="ph">${phaseOf(s)}</span>
+   <span class="who-list">台灣 ${pr.length}：${pr.length?pr.map(i=>`<span class="who"><i class="dot ${online(s,i)?'on':''}"></i>${tw(i)}${B('✕','kick',`${tSel},${i}`,'xbtn','','刪除？')}</span>`).join(''):'<span class="muted">—</span>'}</span>
+   ${sig.length?`<span class="ng">⚠ ${sig.map(([k,v])=>tw(+k.slice(1))+' '+SIG[v].zh).join('、')}</span>`:''}
+   <span class="muted">回合 ${s.rounds} · 完成 ${Object.keys(s.done).length} 題</span>
+   <span class="sp"></span>
+   ${B('重置這間','reset',tSel,'warn mini','',`再按一次：確定重置 ${roomName(tSel)}？`)}
+   ${tSet==='test'?B('開測試畫面','go',`${tSel},test`,'mini'):`${B('主持人連結','copy',`${base}?role=host&r=${tSel}`,'mini')}${B('台灣連結','copy',`${base}?role=tw&r=${tSel}`,'mini')}`}
+  </div>
+  <div class="tview2">
+   <div class="pvcol"><div class="tvbar"><b>🇯🇵 主持人畫面</b><small class="muted">（即時・只能看）</small></div>
+    <div class="pvbox" data-scroll="pvh"><div class="pv">${pvHost}</div></div></div>
+   <div class="pvcol"><div class="tvbar"><b>🇹🇼 台灣同學畫面</b>${pr.length?pr.map(i=>B(tw(i),'tview',String(i),`mini ${tView===String(i)?'active':''}`)).join(''):'<small class="muted">（還沒有人，先顯示範例）</small>'}</div>
+    <div class="pvbox" data-scroll="pvt"><div class="pv">${pvTw}</div></div></div>
+  </div>`;
+}
+
+/* --- 房間 --- */
+/* 三語工具：T(中, 日, 英) = 說明文字。預設：主持人看日文、台灣同學看中文；按「三語」後全部顯示。
+   要說出口的英文句子一律用大字英文，下面附翻譯。 */
+const T=(zh,ja,en)=>`<span class="L zh">${zh}</span><span class="L ja">${ja}</span>${en?`<span class="L en x">${en}</span>`:''}`;
+/* 英文句子的中日翻譯（格式：英文|中文|日文） */
+const TR=(()=>{const m={};`Which school rule do you want to change?|你想改變哪一條校規？|どの校則を変えたいですか？
+What happens if you break a school rule?|違反校規會怎麼樣？|校則を破るとどうなりますか？
+Do you think school rules are necessary?|你覺得校規有必要嗎？|校則は必要だと思いますか？
+Are there rules about makeup at your school?|你們學校有化妝的規定嗎？|あなたの学校にはメイクのルールがありますか？
+Can you use your phone at school?|你在學校可以用手機嗎？|学校でスマホを使えますか？
+Which rule do Japanese students hate most?|日本學生最討厭哪條規定？|日本の生徒が一番嫌いなルールは何ですか？
+natural hair|天生的髮色|地毛
+dye|染髮|染める
+certificate|證明書|証明書
+short hair|短髮|短い髪
+What hair rules does your school have?|你們學校有什麼頭髮規定？|あなたの学校にはどんな髪のルールがありますか？
+skirt length|裙子長度|スカートの長さ
+jacket|外套|上着
+every day|每天|毎日
+winter|冬天|冬
+What is your school uniform like?|你們的制服長什麼樣子？|あなたの学校の制服はどんな感じですか？
+turn off|關機|電源を切る
+teacher takes it|老師沒收|先生に取り上げられる
+during class|上課時|授業中
+When can you use your phone at school?|在學校什麼時候可以用手機？|学校ではいつスマホを使えますか？
+not allowed|不准|禁止
+only in vacation|只有放假時|長期休みだけ
+permission|許可|許可
+Can students have part-time jobs in Taiwan?|台灣的學生可以打工嗎？|台湾の生徒はアルバイトができますか？
+come home by ___|___ 點前要回家|___時までに帰る
+parents worry|爸媽會擔心|親が心配する
+late|很晚／遲到|遅い・遅刻
+What time do you have to go home?|你幾點前要回家？|何時までに家に帰らなければいけませんか？
+Which question do you hear every day?|你每天都會聽到哪個問題？|毎日聞かれる質問はどれですか？
+How do you usually answer your parents?|你通常怎麼回答爸媽？|親にいつもどう答えますか？
+What question do you want your parents to ask you?|你希望爸媽問你什麼問題？|親にどんな質問をしてほしいですか？
+What do Japanese parents say when you get a bad score?|考不好的時候，日本的爸媽會說什麼？|点数が悪いとき、日本の親は何と言いますか？
+Do you talk with your parents at dinner?|你吃晚餐時會跟爸媽聊天嗎？|夕食のとき親と話しますか？
+Do your parents check your phone?|你爸媽會檢查你的手機嗎？|親はあなたのスマホをチェックしますか？
+exam|考試|試験
+score|分數|点数
+again and again|一次又一次|何度も何度も
+What do you say when they ask about exams?|他們問考試時，你怎麼回答？|試験のことを聞かれたら何と答えますか？
+homework|作業|宿題
+every night|每天晚上|毎晩
+not yet|還沒|まだ
+Do you study at home every day?|你每天在家讀書嗎？|毎日家で勉強しますか？
+dinner|晚餐|夕食
+hungry|肚子餓|おなかがすいた
+they care|他們很關心|気にかけてくれている
+Is “Have you eaten?” like “Hello” in Taiwan?|在台灣，「吃飽了沒？」就像「你好」嗎？|台湾では「ご飯食べた？」は「こんにちは」のような意味ですか？
+after school|放學後|放課後
+text message|傳訊息|メッセージ
+What time do you usually come home?|你通常幾點回家？|ふだん何時に家に帰りますか？
+friends|朋友|友達
+where|哪裡|どこ
+worried|擔心|心配
+Do your parents want to know your friends?|你爸媽想認識你的朋友嗎？|親はあなたの友達のことを知りたがりますか？
+What food do you eat at Chinese New Year?|你過年吃什麼？|旧正月には何を食べますか？
+Can you cook it?|你會做嗎？|自分で作れますか？
+What is your favorite festival food?|你最喜歡哪種節日食物？|一番好きな行事の食べ物は何ですか？
+What does that food taste like?|那個食物吃起來是什麼味道？|その食べ物はどんな味ですか？
+What do you eat at New Year in Japan?|日本過新年吃什麼？|日本のお正月には何を食べますか？
+Do Japanese people eat mooncakes?|日本人吃月餅嗎？|日本人は月餅を食べますか？
+Girls’ Day|女兒節|ひな祭り
+sushi|壽司|寿司
+growth|成長|成長
+happiness|幸福|幸せ
+Is there a festival for children in Taiwan?|台灣有慶祝孩子的節日嗎？|台湾には子どものためのお祭りがありますか？
+family|家人|家族
+special food|特別的食物|特別な食べ物
+red envelope|紅包|お年玉（赤い封筒）
+What do you eat at New Year?|你過年吃什麼？|お正月には何を食べますか？
+moon|月亮|月
+BBQ|烤肉|バーベキュー
+mooncake|月餅|月餅
+What do people do at the Moon Festival?|中秋節大家會做什麼？|中秋節にはみんな何をしますか？
+ancestors|祖先|先祖
+offer food|供奉食物|食べ物をお供えする
+pray|拜拜／祈禱|お祈りする
+How do people remember their ancestors?|大家怎麼紀念祖先？|人々はどうやって先祖をしのびますか？
+lucky|幸運的|縁起がいい
+wish|願望|願い
+long noodles|長壽麵|長い麺
+Do you eat any food for good luck before exams?|考試前你會吃什麼求好運的食物嗎？|試験の前に縁起のいい食べ物を食べますか？
+Can you teach me a Chinese phrase?|可以教我一句中文嗎？|中国語を一つ教えてくれますか？
+What is your blood type?|你是什麼血型？|血液型は何ですか？
+What do people say when they first meet in Taiwan?|在台灣，第一次見面時大家會說什麼？|台湾では初めて会ったとき何と言いますか？
+Can you teach me a Japanese phrase?|可以教我一句日文嗎？|日本語を一つ教えてくれますか？
+What does “itadakimasu” mean?|「いただきます」是什麼意思？|「いただきます」はどういう意味ですか？
+What words do young people use now in Japan?|現在日本年輕人用什麼流行語？|今、日本の若者はどんな言葉を使っていますか？
+blood type|血型|血液型
+type A|A 型|A型
+first meeting|第一次見面|初対面
+personality|個性|性格
+Do people in Taiwan care about blood type?|台灣人在意血型嗎？|台湾の人は血液型を気にしますか？
+star sign|星座|星座
+Leo|獅子座|しし座
+What is your star sign?|你是什麼星座？|星座は何ですか？
+SNS|社群媒體|SNS
+young people|年輕人|若者
+funny|好笑的|おもしろい
+What internet words are popular now?|現在流行什麼網路用語？|今どんなネット用語が流行っていますか？
+polite|有禮貌的|丁寧な
+“Have you eaten?”|「吃飽了沒？」|「ご飯食べた？」
+How do you greet your friends?|你怎麼跟朋友打招呼？|友達にどうあいさつしますか？
+before eating|吃飯前|食べる前
+thank you|謝謝|ありがとう
+Do you say something before eating?|你吃飯前會說什麼嗎？|食べる前に何か言いますか？
+Who is your favorite teacher?|你最喜歡哪位老師？|一番好きな先生は誰ですか？
+What makes a teacher easy to talk to?|怎樣的老師比較好說話？|どんな先生だと話しやすいですか？
+Do you like strict teachers?|你喜歡嚴格的老師嗎？|厳しい先生は好きですか？
+How do Japanese students greet teachers?|日本學生怎麼跟老師打招呼？|日本の生徒は先生にどうあいさつしますか？
+Do you have a homeroom teacher?|你們有班導嗎？|担任の先生はいますか？
+What kind of teacher is popular in Japan?|在日本，哪種老師最受歡迎？|日本ではどんな先生が人気ですか？
+rules|規定|ルール
+same for everyone|對每個人都一樣|みんなに同じ
+trust|信任|信頼
+listen|傾聽|話を聞く
+smile|微笑|笑顔
+help|幫忙|助ける
+Who is your favorite teacher? Why?|你最喜歡哪位老師？為什麼？|一番好きな先生は誰ですか？なぜですか？
+easy to understand|容易懂|わかりやすい
+examples|例子|例
+slowly|慢慢地|ゆっくり
+What makes a class easy to understand?|怎樣的課比較容易懂？|どんな授業がわかりやすいですか？
+tired|很累|疲れた
+How much homework do you have?|你的作業有多少？|宿題はどれくらいありますか？
+not fair|不公平|不公平
+angry|生氣|怒る
+only talks|只顧自己講|話してばかり
+What should a teacher do when students have problems?|學生有困難時，老師應該怎麼做？|生徒が困っているとき、先生はどうするべきですか？
+How much is your favorite thing?|你最喜歡的東西多少錢？|一番好きなものはいくらですか？
+Do your parents give you pocket money?|你爸媽會給你零用錢嗎？|親はおこづかいをくれますか？
+What do you want to buy next?|你下一個想買什麼？|次に何を買いたいですか？
+How much is a CD in Japan?|在日本一張 CD 多少錢？|日本ではCDはいくらですか？
+Do you get pocket money?|你有零用錢嗎？|おこづかいをもらっていますか？
+What is popular to buy in Japan now?|日本現在流行買什麼？|今日本で人気の買い物は何ですか？
+idol|偶像|アイドル
+same CD|同一張 CD|同じCD
+handshake|握手|握手
+photo|照片|写真
+Who is your favorite idol or singer?|你最喜歡哪個偶像或歌手？|一番好きなアイドルや歌手は誰ですか？
+in-game items|遊戲道具|ゲーム内アイテム
+gacha|轉蛋／抽卡|ガチャ
+skins|造型（外觀）|スキン
+What games do you play?|你玩什麼遊戲？|どんなゲームをしますか？
+fashion|時尚|ファッション
+brand|品牌|ブランド
+cute|可愛|かわいい
+Where do you buy clothes?|你在哪裡買衣服？|服はどこで買いますか？
+bubble tea|珍珠奶茶|タピオカミルクティー
+snacks|零食|おやつ
+What drink do you buy most?|你最常買什麼飲料？|一番よく買う飲み物は何ですか？
+character|角色|キャラクター
+figure|公仔|フィギュア
+keychain|鑰匙圈|キーホルダー
+Which anime character do you like?|你喜歡哪個動漫角色？|どのアニメキャラが好きですか？
+What job do you want in the future?|你以後想做什麼工作？|将来どんな仕事がしたいですか？
+What stops you from trying it?|是什麼讓你還沒去試？|何がそれを試すのをじゃましていますか？
+What do you want to do this winter vacation?|這個寒假你想做什麼？|この冬休みに何をしたいですか？
+What do Japanese students do in summer vacation?|日本學生暑假做什麼？|日本の生徒は夏休みに何をしますか？
+Can you work part-time?|你可以打工嗎？|アルバイトはできますか？
+Which country do you want to visit?|你想去哪個國家？|どの国に行きたいですか？
+money|錢|お金
+experience|經驗|経験
+no time|沒時間|時間がない
+school rule|校規|校則
+What job do you want to try?|你想試試看什麼工作？|どんな仕事をしてみたいですか？
+country|國家|国
+plane|飛機|飛行機
+someday|有一天|いつか
+guitar|吉他|ギター
+dance|跳舞|ダンス
+cooking|烹飪|料理
+What do you want to learn?|你想學什麼？|何を習いたいですか？
+contest|比賽|コンテスト
+stage|舞台|ステージ
+nervous|緊張|緊張する
+What competition would you like to join?|你想參加什麼比賽？|どんな大会に出てみたいですか？
+freedom|自由|自由
+university|大學|大学
+Do you want to live alone in the future?|你以後想一個人住嗎？|将来一人暮らしをしたいですか？
+How many hours do you use your phone a day?|你一天用手機幾個小時？|一日に何時間スマホを使いますか？
+What is trendy in Taiwan now?|台灣現在流行什麼？|今台湾で何が流行っていますか？
+How can we stop?|我們要怎麼停下來？|どうすればやめられるでしょう？
+What is trendy in Japan now?|日本現在流行什麼？|今日本で何が流行っていますか？
+Which app is popular in Japan?|日本流行哪個 App？|日本ではどのアプリが人気ですか？
+Do you use your phone before sleeping?|你睡前會用手機嗎？|寝る前にスマホを使いますか？
+Instagram|IG|インスタ
+TikTok|抖音／TikTok|TikTok
+trendy|流行的|流行っている
+hours|好幾個小時|何時間も
+Which app do you use most?|你最常用哪個 App？|一番よく使うアプリは何ですか？
+one more|再一個|もう一本
+scroll|滑手機|スクロール
+What kind of short videos do you watch?|你看哪種短影片？|どんなショート動画を見ますか？
+one more game|再一局|もう一回
+level|關卡|レベル
+How long do you play every day?|你每天玩多久？|毎日どれくらい遊びますか？
+next episode|下一集|次の話
+midnight|半夜|夜中
+What are you watching now?|你現在在看什麼？|今何を見ていますか？
+alarm|鬧鐘|目覚まし
+five more minutes|再五分鐘|あと5分
+weekend|週末|週末
+What time do you get up on weekends?|你週末幾點起床？|週末は何時に起きますか？
+Which AI do you use?|你用哪個 AI？|どのAIを使っていますか？
+What was the funniest answer AI gave you?|AI 給過你最好笑的回答是什麼？|AIの一番おもしろい答えは何でしたか？
+Can AI be a good friend?|AI 可以當好朋友嗎？|AIはいい友達になれますか？
+Can you use AI at school?|你在學校可以用 AI 嗎？|学校でAIを使えますか？
+Do you talk to AI in Japanese or English?|你跟 AI 說日文還是英文？|AIとは日本語で話しますか、英語で話しますか？
+Do you use AI differently at school and at home?|你在學校和在家用 AI 的方式不一樣嗎？|学校と家でAIの使い方は違いますか？
+please|請|お願いします
+like a friend|像朋友一樣|友達みたいに
+Do you say “thank you” to AI?|你會跟 AI 說「謝謝」嗎？|AIに「ありがとう」と言いますか？
+feelings|心情|気持ち
+at night|晚上|夜に
+it listens|它會聽我說|話を聞いてくれる
+Is AI a good listener?|AI 是好的傾聽者嗎？|AIは聞き上手ですか？
+English|英文|英語
+translate|翻譯|翻訳する
+What schoolwork do you use AI for?|你用 AI 做哪些功課？|どんな勉強にAIを使いますか？
+tool|工具|道具
+search|搜尋|検索
+fast|快|速い
+What is AI good at?|AI 擅長什麼？|AIは何が得意ですか？
+not interested|沒興趣|興味がない
+Does your school allow AI?|你們學校允許用 AI 嗎？|あなたの学校ではAIを使ってもいいですか？
+Do you have brothers or sisters?|你有兄弟姊妹嗎？|きょうだいはいますか？
+Who scolds you most?|誰最常罵你？|誰に一番よく叱られますか？
+Do your parents teach you manners?|你爸媽會教你禮貌嗎？|親はマナーを教えてくれますか？
+Are chopstick manners important in Japan?|在日本，拿筷子的禮儀很重要嗎？|日本では箸のマナーは大切ですか？
+Are you strict with younger students in your club?|你在社團對學弟妹很嚴格嗎？|部活の後輩に厳しいですか？
+What manners are important in Japan?|在日本哪些禮儀很重要？|日本ではどんなマナーが大切ですか？
+chopsticks|筷子|箸
+brother / sister|弟弟／妹妹|弟・妹
+teach|教|教える
+What manners are important in your family?|你們家重視哪些禮貌？|あなたの家ではどんなマナーが大切ですか？
+club|社團|部活
+younger students|學弟妹|後輩
+Do you have younger members in your club?|你的社團有學弟妹嗎？|部活に後輩はいますか？
+road|馬路|道路
+be careful|小心|気をつけて
+What did you say to them?|你對他說了什麼？|その人に何と言いましたか？
+Did they listen to you?|他有聽你的話嗎？|その人はあなたの言うことを聞きましたか？
+kind|溫和的|優しい
+not my job|不是我的事|自分の役目じゃない
+Who scolds you at home?|在家誰會罵你？|家では誰に叱られますか？
+something else|別的|ほかのこと
+let me explain|讓我說明|説明させて
+for example|例如|たとえば
+Oh, what is it? Tell me more!|喔，是什麼？多說一點！|へえ、何ですか？もっと教えて！
+never|從來沒有|一度もない
+maybe someday|也許有一天|いつかは
+Why not? Would you like to try it someday?|為什麼沒有？你以後想試試看嗎？|どうしてですか？いつかやってみたいですか？
+Is it the same in Taiwan?|在台灣也一樣嗎？|台湾でも同じですか？
+What do you like most about it?|你最喜歡它哪一點？|一番好きなところは何ですか？
+Can you show me a picture?|可以給我看照片嗎？|写真を見せてくれますか？
+Is it the same for your friends?|你的朋友也一樣嗎？|友達も同じですか？
+How do you say it in Japanese?|這個日文怎麼說？|それは日本語で何と言いますか？
+some schools|有些學校|一部の学校
+brown hair|咖啡色頭髮|茶色い髪
+natural hair certificate|天生髮色證明書|地毛証明書
+stupid|很蠢|ばかげている
+What do some students with brown hair have to do?|有些咖啡色頭髮的學生必須做什麼？|茶色い髪の生徒は何をしなければなりませんか？
+Show a “natural hair” certificate|交「天生髮色」證明書|地毛証明書を出す
+Dye their hair black|把頭髮染黑|髪を黒く染める
+Wear a hat|戴帽子|帽子をかぶる
+Cut their hair short|把頭髮剪短|髪を短く切る
+my father|我爸爸|父
+When is your exam?|你什麼時候考試？|試験はいつ？
+How was it?|考得怎麼樣？|どうだった？
+What does their father often ask?|他爸爸常常問什麼？|お父さんはよく何と聞きますか？
+Did you eat dinner?|你吃晚餐了嗎？|夕食食べた？
+Where are you going?|你要去哪裡？|どこに行くの？
+Who is your friend?|你的朋友是誰？|友達は誰？
+March 3|3 月 3 日|3月3日
+parents make chirashi sushi|爸媽做散壽司|親がちらし寿司を作る
+What do parents make on Girls’ Day?|女兒節時爸媽會做什麼？|ひな祭りに親は何を作りますか？
+Chirashi sushi|散壽司|ちらし寿司
+Rice cakes|年糕／麻糬|もち
+Mooncakes|月餅|月餅
+Noodles|麵|麺
+likes clean|愛乾淨|きれい好き
+What do people think type A people like?|大家認為 A 型的人喜歡什麼？|A型の人は何が好きだと思われていますか？
+Keeping things clean|保持乾淨|きれいにしておくこと
+Being loud|很吵|うるさくすること
+Sleeping a lot|睡很多|たくさん寝ること
+Playing sports|運動|スポーツをすること
+idols|偶像|アイドル
+buy CDs|買 CD|CDを買う
+photos|照片|写真
+mother: again?|媽媽：又買了？|母：また？
+Why did they buy the same CD many times?|他為什麼買了好幾張同樣的 CD？|なぜ同じCDを何枚も買ったのですか？
+To take photos or shake hands with idols|為了和偶像拍照或握手|アイドルと写真を撮ったり握手したりするため
+Their mother asked them to|媽媽叫他買的|お母さんに頼まれたから
+It was cheap|很便宜|安かったから
+For a friend|幫朋友買的|友達のため
+part-time job|打工|アルバイト
+classes in vacation|放假也要上課|休みにも授業がある
+Why can’t they have a part-time job?|他為什麼不能打工？|なぜアルバイトができないのですか？
+They have classes during vacations|放假時也要上課|休み中も授業があるから
+Their parents say no|爸媽不准|親がだめと言うから
+They are too young|年紀太小|まだ若すぎるから
+There are no jobs nearby|附近沒有工作|近くに仕事がないから
+much time|很多時間|たくさんの時間
+trendy things in Japan|日本流行的東西|日本の流行
+What do they learn from social media?|他從社群媒體知道了什麼？|SNSから何を知りますか？
+Trendy things in Japan|日本流行的東西|日本で流行っていること
+English words|英文單字|英単語
+Cooking|做菜|料理
+News about Taiwan|台灣的新聞|台湾のニュース
+yes|是的|はい
+without noticing|不知不覺|無意識に
+school iPad|學校的 iPad|学校のiPad
+my phone|我的手機|自分のスマホ
+different|不一樣|違う
+What do they use differently?|他用不同方式使用哪些東西？|何を使い分けていますか？
+A school iPad and a phone|學校的 iPad 和手機|学校のiPadとスマホ
+Two AI apps|兩個 AI 應用程式|2つのAIアプリ
+A computer and a TV|電腦和電視|パソコンとテレビ
+Japanese and English|日文和英文|日本語と英語
+my brother|我弟弟|弟
+14 years old|14 歲|14歳
+parents don’t say|爸媽不說|親は言わない
+I teach him|我來教他|私が教える
+Why do they scold their brother?|他為什麼罵弟弟？|なぜ弟を叱るのですか？
+He doesn’t hold chopsticks correctly|他筷子拿得不對|箸を正しく持てないから
+He plays games too much|他打電動太久|ゲームをしすぎるから
+He is always late|他總是遲到|いつも遅刻するから
+He doesn’t study|他不讀書|勉強しないから
+Which topic do you like?|你喜歡哪一題？|どの話題が好き？
+Why?|為什麼？|どうして？
+Me too!|我也是！|私も！
+Let’s talk about number ___ !|我們來聊第 ___ 題吧！|___番について話そう！
+I want to talk about number ___ .|我想聊第 ___ 題。|___番について話したいです。
+Number ___ looks fun!|第 ___ 題看起來很好玩！|___番はおもしろそう！
+How about number ___ ?|第 ___ 題怎麼樣？|___番はどう？
+I don’t mind. Let’s go in order.|我都可以，照順序吧。|どれでもいいよ。順番どおりにしよう。
+Which topic do you want to talk about first?|你們想先聊哪一題？|どの話題から話したい？
+Which topic do you want to talk about?|你想聊哪一題？|どの話題について話したい？
+My answer is ___ .|我的答案是 ___。|私の答えは___です。
+In Japan, ___ .|在日本，___。|日本では、___。
+For example, ___ .|例如，___。|たとえば、___。
+I think ___ because ___ .|我覺得 ___，因為 ___。|___だと思います。なぜなら___からです。
+I guessed it because ___ .|我會猜這個，是因為 ___。|___なので、そう予想しました。
+In Taiwan, ___ too.|在台灣也是 ___。|台湾でも___です。
+I heard that ___ .|我聽說 ___。|___と聞いたことがあります。
+Just a lucky guess!|只是運氣好猜到的！|ただのまぐれです！
+I thought ___ because ___ .|我以為 ___，因為 ___。|___だと思いました。なぜなら___からです。
+In Taiwan, ___ is common.|在台灣，___ 很常見。|台湾では___がよくあります。
+I didn’t know that!|我都不知道！|知らなかった！
+That’s surprising!|好意外！|びっくり！
+So, in Japan, ___ .|所以，在日本 ___。|つまり、日本では___。
+You said ___ .|你說 ___。|あなたは___と言いました。
+Is that right?|對嗎？|合っていますか？
+Really?|真的嗎？|本当？
+That’s interesting!|好有趣！|おもしろい！
+I see.|原來如此。|なるほど。
+Wow!|哇！|わあ！
+It is ___ .|是 ___。|それは___です。
+In Taiwan, ___ .|在台灣，___。|台湾では、___。
+In my family, ___ .|在我家，___。|私の家では、___。
+I have never ___ .|我從來沒有 ___。|___したことがありません。
+Because ___ .|因為 ___。|___からです。
+Maybe someday, I want to ___ .|也許有一天，我想 ___。|いつか___してみたいです。
+What about you?|那你呢？|あなたは？
+Is it the same in Japan?|在日本也一樣嗎？|日本でも同じですか？
+Have you ever ___ ?|你曾經 ___ 嗎？|___したことはありますか？
+In my case, ___ .|我的話，___。|私の場合は、___。
+I chose ___ because ___ .|我選 ___，因為 ___。|___を選びました。なぜなら___からです。
+How did you know?|你怎麼知道的？|どうしてわかったの？
+Why did you think so?|你為什麼這樣想？|どうしてそう思ったの？
+Please choose your answer.|請選你的答案。|答えを選んでください。
+Now, can you guess my answer?|現在，猜猜我的答案？|では、私の答えを当ててみて！
+That’s right! 👍|沒錯！👍|その通り！👍
+Almost! Let me say it again.|差一點！我再說一次。|おしい！もう一度言うね。
+Could you say that part again, please?|可以再說一次那個部分嗎？|そこをもう一度言ってもらえますか？
+Could you say that again, please?|可以再說一次嗎？|もう一度言ってもらえますか？
+Could you speak more slowly, please?|可以說慢一點嗎？|もう少しゆっくり話してもらえますか？
+What does that mean?|那是什麼意思？|それはどういう意味ですか？
+I got it! 👍|我懂了！👍|わかった！👍`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===3)m[p[0]]=[p[1],p[2]]});return m})();
+const tr=en=>TR[en];
+const TL=(zh,ja)=>`<span class="tl">${T(zh,ja)}</span>`;           // 翻譯（放在英文下面）
+const tl=en=>{const t=tr(en);return t?TL(esc(t[0]),esc(t[1])):''};
+/* SAY(要說的英文, 說明中, 說明日, 說明英, [翻譯中, 翻譯日]) */
+const SAY=(en,zh,ja,ins,trans)=>{const t=trans||tr(en);return `<div class="say"><b class="E">${en}</b>${t?TL(t[0],t[1]):''}${zh?`<small class="ins">${T(zh,ja,ins)}</small>`:''}</div>`};
+/* 主持人台詞（像司儀一樣帶台灣同學）：MC([[英文, 中譯, 日譯], ...]) */
+const MC=lines=>`<div class="mc"><div class="mct">${T('🎙 主持人台詞（照著說）','🎙 司会のセリフ（この順に言おう）','🎙 Host script (say these in order)')}</div>${lines.map(l=>`<div class="mcl"><b class="E">${l[0]}</b>${TL(l[1],l[2])}</div>`).join('')}</div>`;
+const SCROLL=()=>`<div class="scrollhint">${T('⬇ 往下滑，就會看到選項','⬇ 下にスクロールすると選択肢が見えます','⬇ Scroll down to see the choices')}</div>`;
+/* 語言切換：三語（預設）／中文／日本語／English */
+const LANGS=[['tri','三語'],['zh','中文'],['ja','日本語'],['en','EN']];
+const lang=()=>{try{return localStorage.getItem('ymw-lang')||'tri'}catch(e){return 'tri'}};
+function applyLang(){const l=lang();LANGS.forEach(([k])=>document.body.classList.toggle('lang-'+k,k===l))}
+ACT.lang=a=>{try{localStorage.setItem('ymw-lang',a)}catch(e){}applyLang();render()};
+const langSel=()=>`<span class="langsel">🌐 ${LANGS.map(([k,n])=>`<button class="${lang()===k?'on':''}" data-act="lang" data-a="${k}">${n}</button>`).join('')}</span>`;
+const triBtn=langSel;
+
+
+function roster(s,host,canKickAll){
+ const pr=present(s);
+ if(!pr.length)return `<span class="muted">${T('還沒有人','まだ誰もいません','No one yet')}</span>`;
+ return pr.map(i=>{const on=online(s,i);return `<span class="who ${!host&&i===me?'meTag':''}"><i class="dot ${on?'on':''}"></i>${tw(i)}${host&&(canKickAll||!on)?B('✕','kick',`${room},${i}`,'xbtn','','削除？刪除？'):''}</span>`}).join(' ');
+}
+function roomView(){return `<div class="v-${role}"><div class="langbar">${langSel()}</div>${roomInner()}</div>`}
+function roomInner(){
+ const s=S(),host=role==='host';
+ if(role==='tw'&&me<0)return `<section class="panel"><h2>${T(`正在加入 ${roomName(room)}…`,`${roomName(room)} に参加中…`,`Joining ${roomName(room)}…`)}</h2></section>`;
+ const pr=present(s),onN=pr.filter(i=>online(s,i)).length;
+ let h=`<section class="panel"><div class="bar" style="justify-content:space-between"><div class="bar"><span class="tag">${roomName(room)} · ${host?'🇯🇵 Host':'🇹🇼 '+tw(me)}</span></div>
+  ${host?`<div class="bar roster"><small>${T(`台灣 ${onN}/${pr.length} 在線`,`台湾 ${onN}/${pr.length}人`,`Taiwan ${onN}/${pr.length} online`)}</small>${roster(s,true,!s.live)}</div>`
+        :`<small class="muted">${T(`台灣同學 ${pr.length} 人`,`台湾の生徒 ${pr.length}人`,`${pr.length} Taiwanese students`)}</small>`}</div>
+  ${host&&s.live&&pr.length>onN?`<p class="muted" style="margin:6px 0 0">${T('○ 是離線的人。如果沒有回來，可以按 ✕ 刪除，新同學就能加入。','○ はオフラインの人です。戻ってこない場合は ✕ で削除できます（新しい人が入れるようになります）。','○ = offline. If they don’t come back, tap ✕ to remove them so a new student can join.')}</p>`:''}`;
+ if(!s.live)return h+lobby(s,host,pr,onN)+'</section>';
+ if(s.q<0)return h+topicPick(s,host)+'</section>';
+ const q=Q[s.q];
+ h+=`<div class="steps">${PH_ZH.slice(1).map((x,i)=>`<span class="${s.p>=i+1?'on':''}">${T(x,PH_JA[i+1],PH_EN[i+1])}</span>`).join('')}</div>
+ <div class="tag">Topic ${s.q+1}</div><h2 class="E">${esc(q.en)}</h2><p class="muted qsub">${T(esc(q.zh),esc(q.ja))}</p></section>`;
+ h+=`<section class="panel">${[null,p1,p2,p3,p4,p5,p6][s.p](s,q,host)}</section>`;
+ if(host)h+=`<div class="bar">${B(T('← 上一步','← 前へ','← Back'),'back','','',s.p<=1)}${B(T('結束這題','この話題を終える','Finish this topic'),'finish')}</div>`;
+ return h;
+}
+function lobby(s,host,pr,onN){
+ if(host)return `<div class="lobby"><h2>${T('等台灣同學進來','台湾のみんなが入るのを待とう','Wait for the Taiwanese students to join')}</h2>
+  <p class="muted">${T('所有號碼（TW1、TW2…）都出現後，按「開始」。走錯房間的人可以按 ✕ 刪除。','全員の名前（TW1, TW2…）が出たら「スタート」を押してください。間違えて入った人は ✕ で削除できます。','When everyone (TW1, TW2…) is here, press Start. Tap ✕ to remove anyone in the wrong room.')}</p>
+  <div class="bignum">${pr.length}<small>${T('人 已進入','人 入室','joined')}</small></div>
+  ${MC([['Hello, everyone! Welcome! I’m your host today. Nice to meet you!','大家好！歡迎！我是今天的主持人，很高興認識你們！','みなさん、こんにちは！ようこそ！今日の司会です。よろしくお願いします！'],['Is everyone here? Please wait a moment.','大家都到了嗎？請稍等一下。','全員そろったかな？少し待ってね。']])}
+  <div class="chips" style="justify-content:center">${roster(s,true,true)}</div>
+  ${B(T('大家都到了！開始 ▶','全員そろった！スタート ▶','Everyone is here! Start ▶'),'live','','primary bigbtn',!pr.length)}</div>`;
+ return `<div class="lobby"><p class="muted">${T('你的號碼是','あなたの番号','Your number')}</p><div class="bignum">${tw(me)}</div>
+  <div class="countline">${T(`目前房間裡共 <b>${pr.length}</b> 位台灣同學`,`台湾の生徒 <b>${pr.length}</b>人`,`<b>${pr.length}</b> Taiwanese students in this room`)}</div>
+  <div class="chips" style="justify-content:center">${pr.map(i=>`<span class="who ${i===me?'meTag':''}"><i class="dot ${online(s,i)?'on':''}"></i>${tw(i)}</span>`).join(' ')}</div>
+  <h2>${T('等日本同學確認大家都到齊，按下開始…','日本の生徒が全員そろったのを確認して、スタートを押すのを待っています…','Waiting for the Japanese host to check everyone is here and press Start…')}</h2></div>`;
+}
+function topicPick(s,host){
+ // 不投票：大家看同一份題目清單，用「說的」討論先聊哪一題；主持人決定。沒人決定就照順序。
+ const nextInOrder=Q.findIndex((_,i)=>!s.done['q'+i]),nio=nextInOrder<0?0:nextInOrder;
+ const card=(x,i)=>{const d=s.done['q'+i];
+  return `<div class="topic ${d?'done':''} ${i===nio?'nexto':''}">
+   <div class="tbody"><span class="tn">${d?'✓':i+1}</span><span class="tri3"><b class="E">${esc(x.en)}</b><small class="sub">${T(esc(x.zh),esc(x.ja))}</small></span></div>
+   ${host?`<div class="tfoot"><span class="muted">${d?T('聊過了','話した','Done'):i===nio?T('照順序就是這題','順番ならこれ','Next in order'):''}</span>${B(T('就這題 ▶','これにする ▶','This one ▶'),'start',i,'mini')}</div>`:''}</div>`};
+ let h;
+ if(host)h=`<div class="say"><b class="E">Which topic do you want to talk about first?</b>${tl('Which topic do you want to talk about first?')}
+   <small class="ins">${T('問問大家，一起討論決定。決定後按那一題的「就這題」。','みんなに聞いて、話し合って決めよう。決まったらその話題の「これにする」を押してね。','Ask everyone and decide together. Then press “This one” on that topic.')}</small></div>
+  ${MC([['Please look at your screen. Scroll down, and you can see ten topics.','請看你們的螢幕。往下滑，就可以看到十個題目。','画面を見てください。下にスクロールすると、10個の話題が見えます。'],['Which topic do you want to talk about first? Let’s decide together!','你們想先聊哪一題？我們一起決定吧！','どの話題から話したいですか？一緒に決めましょう！']])}
+  ${chips(['Which topic do you like?','Why?','Me too!','Let’s talk about number ___ !'],'blank')}
+  <div class="decide"><div><b>${T('決定不了的時候…','決まらないときは…','If no one can decide…')}</b>${SAY(`It’s hard to decide, right? If we can’t decide, let’s start from number ${nio+1}. Is that OK?`,'沒人決定的時候，溫和地提議照順序','誰も決められないときは、やさしく「順番どおり」を提案しよう','If no one decides, gently suggest going in order',[`很難決定對吧？如果決定不了，我們就從第 ${nio+1} 題開始，好嗎？`,`決めるのは難しいよね。決められなかったら、${nio+1}番から始めようか。いいですか？`])}</div>
+   ${B(T(`照順序：No.${nio+1} ▶`,`順番どおり：No.${nio+1} ▶`,`In order: No.${nio+1} ▶`),'start',nio,'primary')}</div>`;
+ else h=`<div class="say"><b class="E">Which topic do you want to talk about?</b>${tl('Which topic do you want to talk about?')}
+   <small class="ins">${T('用說的告訴日本同學你最想先聊哪一題，大家一起討論。決定不了的話，就請日本同學照順序。','どの話題を先に話したいか、日本の生徒に口で伝えよう。決まらなければ、順番どおりにしてもらおう。','Tell the Japanese student which topic you want to talk about first. If you can’t decide, ask to go in order.')}</small></div>
+  ${SCROLL()}${chips(['I want to talk about number ___ .','Number ___ looks fun!','How about number ___ ?','Me too!','I don’t mind. Let’s go in order.'],'blank')}`;
+ return h+`<div class="topics">${Q.map(card).join('')}</div>`;
+}
+function optGrid(s,act,sel,host,mark){
+ return `<div class="grid">${order(room,s.q).map((i,k)=>{const o=opt(s.q,i);return B(`<strong>${L(k)}. <span class="E">${esc(o.en)}</span></strong><small class="tri3 sub">${T(esc(o.zh),esc(o.ja))}</small>`,act,i,`opt ${sel===i?'active':''} ${mark===i?'right':''}`)}).join('')}</div>`;
+}
+const label=(s,i)=>i<0||i==null?'—':opt(s.q,i).en;
+const status=(s,obj)=>present(s).map(i=>`${tw(i)} ${obj['s'+i]!=null?'<span class="ok">✓</span>':online(s,i)?'…':'<span class="muted">(off)</span>'}`).join('　');
+const choseTxt=v=>v!=null?T('✓ 已選。主持人換下一步之前都可以改。','✓ 選びました。次に進むまで変更できます。','✓ Chosen. You can change it until the host moves on.'):T('請選一個。','一つ選んでください。','Please choose one.');
+
+/* 1 選擇 */
+function p1(s,q,host){
+ if(host)return `${MC([['Let’s start! Please look at your screen.','開始囉！請看你們的螢幕。','始めましょう！画面を見てください。'],['Scroll down, and you can see the answers A to G.','往下滑，就可以看到 A 到 G 的答案。','下にスクロールすると、AからGの答えが見えます。'],['Please choose your own answer. There is no right or wrong answer.','請選你自己的答案。沒有對錯喔。','自分の答えを選んでください。正解はありません。']])}
+  <p class="muted">${T('你自己也偷偷選一個答案（台灣同學看不到）。','あなたも自分の答えをこっそり選んでね（台湾の人には見えません）。','Secretly choose your own answer too (they can’t see it).')}</p>
+  ${preset(room,s.q)?`<div class="notice">${T('已經選好你事先寫的答案，可以更改。','事前に書いた答えが選ばれています。変えてもOK。','Your prepared answer is already selected. You can change it.')}</div>`:''}
+  ${optGrid(s,'hpick',s.hp,true)}<h3>${T('作答狀況','回答状況','Answer status')}</h3><p>${status(s,s.pk)}</p>
+  ${B(T('下一步：猜猜看 ▶','次へ：予想タイム ▶','Next: Guessing ▶'),'next','','primary',s.hp<0)}`;
+ const v=s.pk['s'+me];
+ return `<h3>${T('選出「你自己」的答案','「自分の」答えを選ぼう','Choose YOUR own answer')}</h3><p class="muted">${T('沒有對錯。等一下要說說為什麼喔。','正解はありません。あとで理由を話します。','No right or wrong. You will explain why later.')}</p>${SCROLL()}${optGrid(s,'pick',v,false)}
+  <p>${choseTxt(v)}</p>`;
+}
+/* 2 猜測 */
+function p2(s,q,host){
+ if(host)return `${MC([['Thank you, everyone!','謝謝大家！','みなさん、ありがとう！'],['Now, can you guess MY answer? Scroll down and choose one.','現在，你們可以猜猜「我的」答案嗎？往下滑選一個。','では、私の答えを当ててみて！下にスクロールして一つ選んでね。']])}
+  <h3>${T('你也猜猜看：台灣同學最多人選哪一個？','あなたも予想：台湾のみんなで一番多かった答えは？','Your guess: which answer did most Taiwanese students choose?')}</h3>${optGrid(s,'hguess',s.hg,true)}
+  <h3>${T('猜測狀況','予想状況','Guess status')}</h3><p>${status(s,s.gs)}</p>${s.hg<0?`<p class="muted">${T('（你也可以不猜，直接下一步）','（予想しなくても次へ進めます）','(You can skip your guess and go next.)')}</p>`:''}${B(T('下一步：揭曉答案 ▶','次へ：答え合わせ ▶','Next: Reveal ▶'),'next','','primary')}`;
+ const v=s.gs['s'+me];
+ return `<h3>${T('猜猜看：日本同學選了哪一個？','予想しよう：日本の生徒はどれを選んだ？','Guess: which one did the Japanese student choose?')}</h3><p class="muted">${T('猜對猜錯都沒關係，等一下都會有話聊。','当たっても外れても大丈夫。どちらでも話すことがあります。','Right or wrong, both lead to a conversation.')}</p>${SCROLL()}${optGrid(s,'pick',v,false)}
+  <p>${v!=null?T('✓ 已猜。','✓ 予想しました。','✓ Guessed.'):T('請選一個。','一つ選んでください。','Please choose one.')}</p>`;
+}
+/* 3 揭曉・說明 */
+function p3(s,q,host){
+ const ans=opt(s.q,s.hp),maj=majority(s),hgRight=maj.includes(s.hg);
+ let h=`<div class="big"><div class="tag">🇯🇵 Answer</div><h2 class="E">${esc(ans.en)}</h2><p class="muted qsub">${T(esc(ans.zh),esc(ans.ja))}</p></div>`;
+ if(host){
+  const p=preset(room,s.q);
+  h+=`${MC([['Let’s check the answers! My answer is…','我們來看答案！我的答案是……','答え合わせをしましょう！私の答えは…']])}<h3>${T('① 回應大家的猜測','① 予想にリアクションしよう','① React to their guesses')}</h3>${present(s).map(i=>{const g=s.gs['s'+i];if(g==null)return '';return g===s.hp
+     ?SAY(`${tw(i)}, you got it! How did you know?`,'猜對了！問他怎麼知道的','当たった！どうしてわかったか聞こう','They got it! Ask how they knew.',[`${tw(i)}，你猜對了！你怎麼知道的？`,`${tw(i)}、当たり！どうしてわかったの？`])
+     :SAY(`${tw(i)}, you guessed “${esc(label(s,g))}”. Why did you think so?`,'猜錯的人，問他為什麼這樣想','外れた人には、そう思った理由を聞こう','Ask why they thought so.',[`${tw(i)}，你猜「${esc(opt(s.q,g).zh)}」。為什麼這樣想？`,`${tw(i)}、「${esc(opt(s.q,g).ja)}」と予想したね。どうしてそう思ったの？`])}).join('')}
+   ${s.hg<0||!maj.length?'':SAY(hgRight?`I guessed right! Most of you chose “${esc(label(s,maj[0]))}”.`:`I guessed “${esc(label(s,s.hg))}”, but most of you chose “${esc(label(s,maj[0]))}”!`,
+     hgRight?'你也猜對了！':'你猜錯了，說說你的驚訝！',hgRight?'あなたの予想も当たり！':'あなたの予想は外れ。驚いた気持ちを伝えよう',hgRight?'Your guess was right too!':'Your guess was wrong. Share your surprise!',hgRight?[`我猜對了！你們大部分人選「${esc(opt(s.q,maj[0]).zh)}」。`,`当たった！みんなの多くは「${esc(opt(s.q,maj[0]).ja)}」を選んだね。`]:[`我猜「${esc(opt(s.q,s.hg).zh)}」，但你們大部分人選「${esc(opt(s.q,maj[0]).zh)}」！`,`私は「${esc(opt(s.q,s.hg).ja)}」と予想したけど、みんなの多くは「${esc(opt(s.q,maj[0]).ja)}」を選んだね！`])}
+   <h3>${T('② 說說你的答案','② 自分の答えを話そう','② Talk about your answer')}</h3>${MC([['Now, I will tell you about my answer. Please listen carefully.','現在我來說說我的答案，請仔細聽。','では、私の答えについて話します。よく聞いてください。'],['If you don’t understand, please tap the button on your screen.','聽不懂的話，請按螢幕上的按鈕。','わからなかったら、画面のボタンを押してね。']])}<p class="muted">${T('台灣同學的畫面不會出現你的句子。不要用唸的，看著關鍵字用自己的話說。','台湾の画面には答えの文は出ません。読まずに、キーワードを見ながら自分の言葉で話そう。','Your sentences are NOT on the Taiwanese screens. Don’t read—look at the keywords and speak in your own words.')}</p>
+   ${p?`<b>${T('你的筆記','あなたのメモ','Your notes')}</b>${chips(p.notes.split(';'))}`:''}<b>${T('可以用的關鍵字','使えるキーワード','Useful keywords')}</b>${chips(ans.w)}
+   <b>${T('句子開頭','文の始め方','Sentence starters')}</b>${chips([s.hp>=5?'My answer is ___ .':[`I chose “${ans.en}”.`,`我選了「${ans.zh}」。`,`「${ans.ja}」を選びました。`],'In Japan, ___ .','For example, ___ .','I think ___ because ___ .'],'blank')}
+   ${p?`<details data-k="line" ${openDetails.has('line')?'open':''}><summary>${T('卡住的時候才打開：你寫的句子','こまったときだけ：自分が書いた文','Only if stuck: your written sentence')}</summary><p>${esc(p.line)}</p></details>`:''}
+   <h3>${T('③ 台灣同學的訊號','③ 台湾のみんなからのサイン','③ Signals from Taiwanese students')}</h3>${helpPanel(s)}${B(T('下一步：聽懂了嗎 ▶','次へ：聞き取りチェック ▶','Next: Listening check ▶'),'next','','primary')}`;
+  return h;
+ }
+ const g=s.gs['s'+me];
+ h+=g===s.hp
+  ?`<h3>${T('🎉 猜對了！','🎉 当たり！','🎉 You got it!')}</h3><p>${T('日本同學可能會問：','日本の生徒はこう聞くかも：','The Japanese student may ask:')}<b class="E">How did you know?</b>${tl('How did you know?')}</p><p class="muted">${T('用下面的句子回答：','下の文で答えよう：','Answer with these:')}</p>${chips(['I guessed it because ___ .','In Taiwan, ___ too.','I heard that ___ .','Just a lucky guess!'],'blank')}`
+  :`<h3>${T('猜錯也很好！','外れてもOK！','A wrong guess is great too!')}</h3><p>${T(`你猜的是「${esc(opt(s.q,g).zh)}」。日本同學可能會問：`,`あなたの予想は「${esc(opt(s.q,g).ja)}」。日本の生徒はこう聞くかも：`,`You guessed “${esc(label(s,g))}”. The Japanese student may ask:`)}<b class="E">Why did you think so?</b>${tl('Why did you think so?')}</p>${chips(['I thought ___ because ___ .','In Taiwan, ___ is common.','I didn’t know that!','That’s surprising!'],'blank')}`;
+ h+=`<h3>${T('👂 接著仔細聽日本同學說明','👂 日本の生徒の説明をよく聞こう','👂 Now listen carefully')}</h3><p class="muted">${T('答案的內容只有日本同學知道，一定要用聽的。聽不懂就按下面的按鈕，並且把英文大聲說出來。','答えの内容は日本の生徒しか知りません。聞いて理解しよう。わからなければボタンを押して、英語を声に出して言おう。','Only the Japanese student knows the details—you must listen. If you don’t understand, tap a button AND say the English out loud.')}</p>${checkBtns()}`;
+ return h;
+}
+function helpPanel(s){
+ const e=Object.entries(s.help);
+ if(!e.length)return `<p class="muted">${T('還沒有訊號。','まだサインはありません。','No signals yet.')}</p>`;
+ return e.map(([k,v])=>`<div class="signal"><b>${tw(+k.slice(1))}：<span class="E">${esc(SIG[v].en)}</span></b>${tl(SIG[v].en)}<small class="ins">${T(SIG[v].hz,SIG[v].ja,SIG[v].he)}</small></div>`).join('')+B(T('清除訊號','サインを消す','Clear signals'),'clearSig');
+}
+function checkBtns(){
+ return `<div class="bar">${Object.entries(SIG).map(([k,v])=>B(T(v.zh,v.jb,v.en),'sig',k,lastCheck===k?'active':'')).join('')}</div>
+ ${lastCheck?`<div class="say"><small>${T('請大聲說：','声に出して言おう：','Say it out loud:')}</small><b class="E">${esc(SIG[lastCheck].en)}</b>${tl(SIG[lastCheck].en)}</div>`:''}`;
+}
+/* 4 聽懂了嗎 */
+function p4(s,q,host){
+ const ans=opt(s.q,s.hp),qz=quizOf(room,s.q);
+ if(host){
+  let h=`${MC([['Thank you for listening! Let’s check.','謝謝你們聽我說！我們來確認一下。','聞いてくれてありがとう！確認してみましょう。']])}<h3>${T('請一位同學說說你剛剛講了什麼','だれか一人に、あなたの話をまとめてもらおう','Ask someone to sum up what you said')}</h3>${B(T('🎲 隨機點一位','🎲 ランダムで一人指名','🎲 Pick someone at random'),'retell','','primary')}`;
+  if(s.rt>=0)h+=`${SAY(`${tw(s.rt)}, can you tell me what I said?`,`${tw(s.rt)} 的畫面會出現提示。聽完後按下面的按鈕。`,`${tw(s.rt)} の画面にヒントが出ます。聞き終わったら↓`,`Hints appear on ${tw(s.rt)}’s screen. After listening, tap below.`,[`${tw(s.rt)}，你可以說說我剛剛講了什麼嗎？`,`${tw(s.rt)}、私が言ったことを言ってみてくれる？`])}
+   <div class="bar">${B('<span class="E">That’s right! 👍</span>'+tl('That’s right! 👍'),'rtok','ok',s.rtok==='ok'?'active':'')}${B('<span class="E">Almost! Let me say it again.</span>'+tl('Almost! Let me say it again.'),'rtok','again',s.rtok==='again'?'active':'')}</div>
+   ${s.rtok==='again'?`<p class="muted">${T('再說一次，短一點、慢一點。之後也可以再點一位。','もう一度、短く、ゆっくり話そう。そのあと、もう一人指名してもOK。','Say it again—shorter and slower. You can pick another person after.')}</p>`:''}`;
+  if(qz){h+=`<h3>${T('小測驗（會出現在所有台灣同學畫面）','クイズ（台湾全員の画面に出ます）','Quiz (shown on all Taiwanese screens)')}</h3>`+(s.qzOn
+    ?`<p><span class="E">${esc(qz.q)}</span>${tl(qz.q)}</p><p>${present(s).map(i=>{const v=s.qz['s'+i];return `${tw(i)} ${v==null?'…':v===qz.a?'<span class="ok">✓</span>':'<span class="ng">✗</span>'}`}).join('　')}</p><p class="muted">${T('有人答錯的話，再說明一次。','✗の人がいたら、もう一度説明しよう。','If anyone got ✗, explain again.')}</p>`
+    :B(T('出題','クイズを出す','Start quiz'),'quizOn'))}
+  return h+`<h3>${T('訊號','サイン','Signals')}</h3>${helpPanel(s)}`+B(T('下一步：換台灣說 ▶','次へ：台湾の番 ▶','Next: Taiwan’s turn ▶'),'next','','primary');
+ }
+ let h='';
+ if(s.rt===me)h+=`<h3>${T('🎤 換你！用一句話說出日本同學剛剛說的內容','🎤 あなたの番！日本の生徒が話したことを一文で言おう','🎤 Your turn! Say what the Japanese student said in one sentence')}</h3>${chips(['So, in Japan, ___ .','You said ___ .','Is that right?'],'blank')}<b>${T('提示字','ヒント','Hints')}</b>${chips(ans.w)}`;
+ else if(s.rt>=0)h+=`<h3>${T(`👂 聽 ${tw(s.rt)} 說`,`👂 ${tw(s.rt)} の話を聞こう`,`👂 Listen to ${tw(s.rt)}`)}</h3><p class="muted">${T(`${tw(s.rt)} 卡住的話，可以幫忙補一個字。`,`${tw(s.rt)} が困ったら、一言助けてあげよう。`,`If ${tw(s.rt)} gets stuck, help with a word.`)}</p>`;
+ else h+=`<h3>${T('等日本同學點人…','日本の生徒が指名するのを待とう…','Waiting for the host to pick someone…')}</h3><p class="muted">${T('可能會點到你喔！先想想剛剛聽到了什麼。','あなたかも！聞いたことを思い出そう。','It might be you! Think about what you heard.')}</p>`;
+ if(s.rt>=0&&s.rtok)h+=`<p>${s.rtok==='ok'?`<span class="ok">👍 That’s right!</span>${tl('That’s right! 👍')}`:`<span class="ng">${T('日本同學會再說一次，仔細聽！','もう一度話してくれるよ。よく聞こう！','The host will say it again—listen carefully!')}</span>`}</p>`;
+ if(qz&&s.qzOn){const v=s.qz['s'+me];
+  h+=`<h3>${T('小測驗：','クイズ：','Quiz:')} <span class="E">${esc(qz.q)}</span>${tl(qz.q)}</h3><div class="grid">${qz.o.map((o,i)=>B(`<span class="E">${esc(o)}</span>`+tl(o),'quiz',i,`opt ${v===i?(i===qz.a?'right':'active'):''}`,v!=null)).join('')}</div>`;
+  if(v!=null)h+=v===qz.a?`<p class="ok">${T('✓ 答對了！','✓ 正解！','✓ Correct!')}</p>`:`<div class="say"><small>${T('答錯了沒關係，請大聲問：','まちがえても大丈夫。声に出して聞こう：','That’s OK! Ask out loud:')}</small><b class="E">Could you say that part again, please?</b>${tl('Could you say that part again, please?')}</div>`;}
+ return h+`<h3>${T('聽不懂？','わからない？','Didn’t understand?')}</h3>${checkBtns()}`;
+}
+/* 5 換你說 */
+function p5(s,q,host){
+ const ord=shareOrder(s);
+ if(host){
+  let h=`${MC([['Now it’s your turn! I want to hear your answers.','現在換你們了！我想聽聽你們的答案。','次はみなさんの番です！みなさんの答えを聞きたいです。'],['I will ask you one by one. Please look at your screen for help.','我會一個一個問。螢幕上有提示可以幫你。','一人ずつ聞きますね。画面にヒントがあります。']])}<h3>${T('台灣同學的答案','台湾のみんなの答え','Taiwanese students’ answers')}</h3><p class="muted">${T('先問答案不一樣的人。點一下就是點名。','違う答えの人から聞こう。タップで指名。','Start with people who chose differently. Tap to pick.')}</p><div class="grid">${ord.map(i=>{const v=s.pk['s'+i];
+    return B(`${s.sh['s'+i]?'✓ ':''}<strong>${tw(i)}</strong><small><span class="E">${esc(label(s,v))}</span>${v!=null?TL(esc(opt(s.q,v).zh),esc(opt(s.q,v).ja)):''}</small><small>${v===s.hp?T('相同','同じ','Same'):T('不同','違う','Different')}</small>`,'focus',i,`opt ${s.fc===i?'active':''}`)}).join('')}</div>`;
+  if(s.fc>=0){const v=s.pk['s'+s.fc],o=v!=null?opt(s.q,v):null,n=tw(s.fc);
+   h+=`<h3>${T(`問 ${n}`,`${n} に聞こう`,`Ask ${n}`)}</h3>`;
+   const more=o?SAY(esc(o.ask),'想再問一題的話','もう一つ聞くなら','One more question',tr(o.ask)):'';
+   if(v==null)h+=SAY(`${n}, what do you think?`,'問他的想法','考えを聞こう','Ask what they think.',[`${n}，你覺得呢？`,`${n}はどう思う？`]);
+   else if(v===s.hp)h+=SAY(`${n}, we chose the same answer! Why did you choose it?`,'答案一樣！問他理由','同じ答え！理由を聞こう','Same answer! Ask why.',[`${n}，我們選的一樣！你為什麼選這個？`,`${n}、同じ答えだね！どうしてそれを選んだの？`])+more;
+   else if(v===5)h+=SAY(`${n}, you chose “Something else”. What is it? Tell me!`,'選「其他」的人，問他是什麼','その他を選んだ人。何か聞こう','They chose “Something else”—ask what it is.',[`${n}，你選了「其他」。是什麼？告訴我！`,`${n}、「その他」を選んだね。何？教えて！`]);
+   else if(v===6)h+=SAY(`${n}, no experience? Why not? Would you like to try it someday?`,'沒有經驗的人，問他為什麼','経験がない人。理由を聞こう','No experience—ask why.',[`${n}，沒有經驗？為什麼？以後想試試看嗎？`,`${n}、経験なし？どうして？いつかやってみたい？`]);
+   else h+=SAY(`${n}, you chose “${esc(o.en)}”! Tell me about it.`,'答案不一樣！問清楚一點','違う答え！くわしく聞こう','Different answer! Ask for details.',[`${n}，你選了「${esc(o.zh)}」！說說看。`,`${n}、「${esc(o.ja)}」を選んだね！教えて。`])+more;
+   h+=`<b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','Me too!','That’s interesting!','I see.','Wow!','In Japan, ___ .'],'blank')}${B(T('這位結束・下一位 ▶','この人おわり・次の人 ▶','Done · Next person ▶'),'shared','','primary')}`;
+  }else h+=`<p class="ok">${T('大家都說完了！','全員話しました！','Everyone has spoken!')}</p>`;
+  return h+`<h3>${T('訊號','サイン','Signals')}</h3>${helpPanel(s)}`+B(T('下一步：繼續聊 ▶','次へ：もっと話そう ▶','Next: Keep talking ▶'),'next');
+ }
+ const v=s.pk['s'+me];
+ if(s.fc===me&&v!=null){const o=opt(s.q,v);
+  return `<h3>${T('🎤 換你說！','🎤 あなたの番！','🎤 Your turn!')}</h3><div class="big"><div class="tag">${T('你選的是','あなたが選んだ答え','You chose')}</div><h2 class="E">${esc(o.en)}</h2><p class="muted tri3 qsub">${T(esc(o.zh),esc(o.ja))}</p></div>
+  <b>${T('句子開頭','文の始め方','Sentence starters')}</b>${chips(v===5?['My answer is ___ .','It is ___ .','For example, ___ .','In Taiwan, ___ .']:v===6?['I have never ___ .','Because ___ .','Maybe someday, I want to ___ .']:[[`I chose “${o.en}” because ___ .`,`我選「${o.zh}」，因為 ___。`,`「${o.ja}」を選びました。なぜなら___からです。`],'For example, ___ .','In Taiwan, ___ .','In my family, ___ .'],'blank')}
+  <b>${T('提示字','ヒント','Hints')}</b>${chips(o.w)}
+  <h3>${T('說完後，反問日本同學 🔁','話したら、日本の生徒に聞き返そう 🔁','Then ask the Japanese student back 🔁')}</h3>${chips(v===5?['What about you?','Is it the same in Japan?']:v===6?['What about you?','Have you ever ___ ?']:['What about you?','Is it the same in Japan?',[`Do you have ${o.w[0]} in Japan?`,`日本也有「${(tr(o.w[0])||[o.w[0]])[0]}」嗎？`,`日本にも「${(tr(o.w[0])||[,o.w[0]])[1]}」はありますか？`]],'blank')}
+  <p class="muted">${T('想不到要說什麼？可以用 AI 查單字，但要用「說」的告訴對方。','言葉が出てこない？AIで単語を調べてもいいけど、相手には口で伝えよう。','Stuck? You may look up words with AI, but tell your partner by speaking.')}</p>`;}
+ const who=s.fc>=0?tw(s.fc):'';
+ return `<h3>${who?T(`👂 聽 ${who} 說`,`👂 ${who} の話を聞こう`,`👂 Listen to ${who}`):T('等日本同學點人…','日本の生徒が指名するのを待とう…','Waiting for the host to pick someone…')}</h3>
+  <p class="muted">${T(`你選的是「${v!=null?esc(opt(s.q,v).zh):'—'}」。被點到時要說說為什麼。`,`あなたの答えは「${v!=null?esc(opt(s.q,v).ja):'—'}」。指名されたら理由を話そう。`,`You chose “${esc(label(s,v))}”. Explain why when you’re picked.`)}</p>
+  <b>${T('別人說的時候，可以加一句','ほかの人が話しているとき、一言そえよう','Add a line while others talk')}</b>${chips(['Me too!','Really?','In my case, ___ .','I chose ___ because ___ .'],'blank')}${checkBtns()}`;
+}
+/* 6 繼續聊 */
+function p6(s,q,host){
+ const pr=present(s),t=s.turn%(pr.length+1),holder=t===0?'host':'s'+pr[t-1],mine=host?holder==='host':holder==='s'+me;
+ const name=t===0?'🇯🇵 Host':'🇹🇼 '+tw(pr[t-1]);
+ let h=`<div class="bar" style="justify-content:space-between"><h3>${T('💬 輪流問問題','💬 順番に質問','💬 Take turns asking')}</h3><span class="tag">rounds ${s.rounds}</span></div>
+  <p>${T('現在輪到：','今の番：','Now:')}<b>${name}</b></p>`;
+ if(host)h=MC([['Let’s talk more! We will take turns asking questions.','我們再多聊一點！大家輪流問問題。','もっと話しましょう！順番に質問します。'],['When it’s your turn, tap the button and ask the question on the card.','輪到你的時候，按按鈕，問卡片上的問題。','自分の番になったら、ボタンを押してカードの質問をしてね。']])+h;
+ if(s.card)h+=`<div class="card"><small>${esc(name)} asks:</small><span class="E">${esc(s.card)}</span>${tl(s.card)}</div>`;
+ if(mine){
+  h+=s.card?`<p>${T('↑ 大聲把這個問題問出來，聽完回應一句！','↑ 声に出して質問しよう。答えを聞いたらリアクション！','↑ Ask this out loud, then react to the answer!')}</p>${chips(['Really?','Me too!','That’s interesting!','Why?'],'blank')}${B(T('換下一個人 ▶','次の人へ ▶','Next person ▶'),'pass','','primary')}`
+   :B(T('🎴 抽一張問題卡','🎴 カードを引く','🎴 Draw a card'),'draw','','primary');
+ }else{
+  h+=s.card?`<p>${T('↓ 用這些句子回答','↓ このヒントを使って答えよう','↓ Answer with these')}</p>${chips(host?['In Japan, ___ .','In my case, ___ .','For example, ___ .','What about you?']:['In Taiwan, ___ .','In my case, ___ .','For example, ___ .','What about you?'],'blank')}`
+   :`<p class="muted">${T('等對方抽卡…','カードを引くのを待っています…','Waiting for a card…')}</p>`;
+ }
+ if(host)h+=`<p class="muted">${T('聊得起來的話，不抽卡也可以，自由聊！','話が続いたら、カードは引かなくてもOK。自由に話そう。','If the conversation flows, no need to draw—just talk!')}</p>`+B(T('跳過，下一個人','次の人へ（スキップ）','Skip to next person'),'pass')
+  +`<h3>${T('要結束這一題時','この話題を終えるとき','When you finish this topic')}</h3>`+MC([['Thank you, everyone! That was fun. Let’s choose the next topic!','謝謝大家！很好玩。我們來選下一題吧！','みなさん、ありがとう！楽しかったです。次の話題を選びましょう！']])+B(T('結束這題，選下一題 ▶','この話題を終えて、次を選ぶ ▶','Finish and choose the next topic ▶'),'finish','','primary');
+ return h;
+}
+applyLang();
+document.querySelectorAll('.hv').forEach(e=>e.textContent='version '+VERSION);
+init();
+</script>
+</body>
+</html>
