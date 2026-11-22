@@ -256,7 +256,7 @@ button.mini{padding:4px 10px;font-size:13px}
 </style>
 </head>
 <body>
-<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 26</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 44</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
 <main id="app"></main>
 <script>
 /* ===== 設定 =====
@@ -278,7 +278,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy-v43-preview';
-const VERSION = 43;
+const VERSION = 44;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -434,6 +434,11 @@ function copyText(t,msg){const fb=()=>showText(t);try{navigator.clipboard.writeT
 function showText(t){let m=document.getElementById('modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}
  m.innerHTML=`<div class="mbox"><b>請全選後複製（Ctrl/⌘ + C）</b><textarea readonly>${esc(t)}</textarea><button class="primary" onclick="document.getElementById('modal').remove()">關閉</button></div>`;
  const ta=m.querySelector('textarea');ta.focus();ta.select()}
+function showSyncWarning(message){
+ let e=document.getElementById('sync-warning');
+ if(!e){e=document.createElement('div');e.id='sync-warning';e.style.cssText='position:fixed;bottom:12px;left:12px;right:12px;max-width:720px;margin:auto;background:#fff0ce;border:2px solid #d58b6f;border-radius:12px;padding:12px 16px;z-index:999;font-size:15px;box-shadow:0 6px 20px #0002';document.body.appendChild(e)}
+ e.textContent=message;
+}
 function toast(t){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';document.body.appendChild(el)}el.textContent=t;el.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>el.className='',2200)}
 const preset=(r,q)=>{const sl=slotOf(r);return PRESET[sl]&&PRESET[sl][q]};
 
@@ -483,13 +488,22 @@ function presence(){
 function online(s,i){const x=s.seats['s'+i];if(!x)return false;if(x.on===false)return false;return db?true:(Date.now()-(x.t||0)<25000)}
 function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
 async function init(){
+ // Render a usable page immediately; Firebase's first snapshot may take time or fail.
+ try{rooms=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){rooms={}}
+ loaded=true;
+ render();
  if(role==='test'&&TEST_CHOSEN)initTest();
  if(FIREBASE_CONFIG){
   try{
    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js');
    firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();
-   db.ref(BASE+'/rooms').on('value',snap=>{rooms=snap.val()||{};loaded=true;render()});
+   db.ref(BASE+'/rooms').on('value',snap=>{rooms=snap.val()||{};loaded=true;render()}, err=>{
+      // Don't leave the main content blank if database permissions/network fail.
+      console.error('Firebase database read failed:',err);
+      db=null; loaded=true; render();
+      showSyncWarning('Firebase 無法讀取房間資料，已切換為本機試用模式。請確認資料庫規則及網路連線。');
+    });
    db.ref('.info/connected').on('value',snap=>{if(snap.val()===true)presence()});
    if(role==='tw')claim();
    return;
