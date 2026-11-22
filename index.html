@@ -251,17 +251,36 @@ button.mini{padding:4px 10px;font-size:13px}
 .whochose .tl{display:inline;margin-left:4px}
 .ftype{display:block;font-size:12px;font-weight:700;color:#a0613f;margin-bottom:2px}
 .ftype .L{display:inline;margin-right:6px}
-
-.reason-support,.topic4-box,.simple-story{background:#eef5f2;border:1px solid #c9dbd4;border-radius:14px;padding:14px;margin:12px 0}.reason-line,.story-line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #d9e7df}.story-line{display:block}.story-line small{display:block;font-size:14px}.reason-line .E{font-size:18px}.example-input{width:100%;font:inherit;border:1px solid #b8d3c9;border-radius:10px;padding:10px;margin-top:8px}.nav-help{background:#fff4e6;border:2px solid #d5aa82;border-radius:14px;padding:12px;margin:12px 0}.nav-help>summary{font-size:18px;font-weight:800;color:#805334;cursor:pointer}.navchoices details{background:white;border-radius:10px;padding:8px 12px;margin:8px 0}.navchoices summary{cursor:pointer}.level-grid{display:grid;gap:8px}.level-grid details{background:#f0f6f2;border-radius:12px;padding:10px 12px}.understand-grid{display:grid;gap:8px}.understand-grid button{text-align:left}.host-easy button{width:100%;text-align:left;margin:4px 0}.optional-fu{background:#faf2e7;padding:12px;border-radius:12px;margin:8px 0} 
+.kit{background:#fffdf8;border:2px solid #ecd59b;border-radius:16px;padding:8px 14px;margin:12px 0;color:#263d43;font-size:15px}
+.kit>summary{font-weight:800;color:#8a6a2c;cursor:pointer;font-size:16px}
+.kitgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:8px}
+.kitgrid h4{margin:4px 0;font-size:14px;color:#8a6a2c}
+.kline{padding:5px 0;border-top:1px dashed #eee1bf}
+.kline b{display:block;font-size:15px;color:#1f5650}
+.kline small{display:block;color:#a0613f;font-size:12px}
+.notyet{background:#fbf1e8;border:1px solid #e9c9b0;border-radius:12px;padding:8px 12px;margin:8px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.notyet.done{background:#e8f4ec;border-color:#bfe0c9}
+.notyet small{width:100%}
+.say.share{background:#fdf6e9;border-left-color:#d7a98b}
+body.lang-zh .kline .tl,body.lang-ja .kline .tl{font-size:15px;font-weight:700;color:#1f5650}
+.reasons,.story{background:#eef5f2;border:1px solid #c9dbd4;border-radius:12px;padding:10px 12px;margin:8px 0}
+.story{background:#fdf6e9;border-color:#ecd59b}
+.rline{padding:5px 0;border-top:1px dashed #cfe0d8}
+.rline b{display:block;font-size:16px;color:#1f5650}
+.undgrid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.ucell{border:1px solid #e4e3d9;border-radius:12px;padding:8px 12px;background:#fff;min-width:120px}
+.ucell.all{background:#e8f4ec}.ucell.some{background:#fff6d9}.ucell.none{background:#fde5dc}
+.ucell b{display:block}
+.undbtns{display:grid;gap:8px;margin:10px 0}
 </style>
 </head>
 <body>
-<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 44</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 26</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
 <main id="app"></main>
 <script>
 /* ===== 設定 =====
    FIREBASE_CONFIG 為 null 時是「單機試用模式」：同一台電腦、同一個瀏覽器的分頁之間會同步，並顯示身分切換列。
-   正式使用時需 Firebase Realtime Database。注意：前端內建的日本答案無法對有技術能力者真正保密，正式上線應改由權限保護的後端提供。 */
+   正式使用時，把 Firebase 專案的設定物件貼進來（需要 Realtime Database），所有裝置就會即時同步。 */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyD5ThQCD1oypNzSOkhSa_yLYjPnrQuaWw4",
   authDomain: "youmewhy-5e1f1.firebaseapp.com",
@@ -277,8 +296,8 @@ const FIREBASE_CONFIG = {
   projectId: "...", appId: "..."
 };
 */
-const BASE = 'youmewhy-v43-preview';
-const VERSION = 44;
+const BASE = 'youmewhy';
+const VERSION = 48;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -314,14 +333,14 @@ const Q = [
     'Food for good luck|祈求好運的食物|縁起のいい食べ物|lucky;wish;exam;long noodles|Do you eat any food for good luck before exams?'],
  jt:['What food do you eat at Chinese New Year?','Can you cook it?','What is your favorite festival food?'],
  tj:['What does that food taste like?','What do you eat at New Year in Japan?','Do Japanese people eat mooncakes?']},
- {en:'Is there a word, phrase, or well-known thing that people in your country immediately understand?',zh:'在你的國家，有沒有一個詞、一句話或一件大家熟悉的事，只要一提大家就知道在說什麼？',ja:'あなたの国で、言葉・フレーズ・有名な出来事など、聞けばすぐに意味が通じるものはありますか？',
-  o:['A shared cultural belief|大家熟悉的文化觀念|文化的によく知られた考え方|blood type;personality;stars;luck|What is the belief? Why do people know it?',
-     'An internet meme or slang word|網路迷因或流行語|ネットミーム・流行語|meme;social media;young people|What is the exact word or phrase?',
-     'A famous quote or catchphrase|大家熟悉的名言或口頭禪|有名なセリフ・決まり文句|quote;advertisement;movie;popular|Where did this phrase come from?',
-     'A famous event or shared memory|知名事件或共同回憶|有名な出来事・共通の思い出|event;news;memory;everyone knows|What happened? Why do people remember it?',
-     'A nickname or special name|特殊暱稱或名稱|有名なあだ名・特別な呼び名|nickname;person;place;thing|Who or what does this name refer to?'],
-  jt:['What is the exact word, phrase, or event?','What does it mean?','When do people use or mention it?'],
-  tj:['Why do people in Japan ask about blood type?','Do young people still talk about blood type?','What other phrases do Japanese people know?']},
+{en:'Is there a word, phrase, or well-known thing that people in your country immediately understand?',zh:'在你的國家，有沒有一個詞、一句話或一件大家熟悉的事，只要一提大家就知道在說什麼？',ja:'あなたの国で、言葉・フレーズ・有名な出来事など、聞けばすぐに意味が通じるものはありますか？',
+ o:['A shared cultural belief|大家熟悉的文化觀念|文化的によく知られた考え方|blood type;personality;stars;luck|What is the belief? Why do people know it?',
+    'An internet meme or slang word|網路迷因或流行語|ネットミーム・流行語|meme;social media;young people|What is the exact word or phrase?',
+    'A famous quote or catchphrase|大家熟悉的名言或口頭禪|有名なセリフ・決まり文句|quote;advertisement;movie;popular|Where did this phrase come from?',
+    'A famous event or shared memory|知名事件或共同回憶|有名な出来事・共通の思い出|event;news;memory;everyone knows|What happened? Why do people remember it?',
+    'A nickname or special name|特殊暱稱或名稱|有名なあだ名・特別な呼び名|nickname;person;place;thing|Who or what does this name refer to?'],
+ jt:['What is the exact word, phrase, or event?','What does it mean?','When do people use or mention it?'],
+ tj:['Why do people in Japan ask about blood type?','Do young people still talk about blood type?','What other phrases do Japanese people know?']},
 {en:'What kind of teacher do you find annoying or reliable?',zh:'你覺得哪種老師讓人討厭，或值得信賴？',ja:'どんな先生が苦手ですか？どんな先生が信頼できますか？',
  o:['Strict but fair|嚴格但公平|厳しいけど公平|rules;same for everyone;trust|Do you like strict teachers?',
     'Kind and patient|親切有耐心|優しくて忍耐強い|listen;smile;help|Who is your favorite teacher? Why?',
@@ -401,7 +420,7 @@ const PRESET = {
 };
 /* 目前只收到一位日本同學的答案，所以 Room 1–6（以及對應的備用、測試房間）都先用同一份。
    收到其他同學的答案後，依序填入 PRESET[1]～PRESET[5]（= Room 2～6），就會自動取代。 */
-for(let i=1;i<6;i++)if(!PRESET[i])PRESET[i]=PRESET[0]; // DEMO ONLY; replace before real event
+for(let i=1;i<6;i++)if(!PRESET[i])PRESET[i]=PRESET[0];
 
 const SIG = {
  again:{hz:'想要你再說一次 → 慢慢再說一次',he:'wants you to repeat → say it again slowly',jb:'もう一度',zh:'再說一次',en:'Could you say that again, please?',ja:'もう一度言ってほしい → ゆっくりもう一度'},
@@ -409,9 +428,9 @@ const SIG = {
  mean:{hz:'聽不懂意思 → 用簡單的字、手勢或圖片',he:'doesn’t understand a word → use simple words, gestures or pictures',jb:'わからない言葉がある',zh:'聽不懂某個字',en:'What does that mean?',ja:'意味がわからない → 簡単な言葉・ジェスチャー・絵で'},
  ok:{hz:'聽懂了！👍',he:'understood! 👍',jb:'わかった',zh:'我聽懂了',en:'I got it! 👍',ja:'わかった！👍'}
 };
-const PH_ZH=['選題','選擇','猜測','揭曉・說明','聽懂了嗎','分享理由','自由延伸'];
-const PH_EN=['Topic','Choose','Guess','Reveal','Understand','Reasons','Explore'];
-const PH_JA=['話題選び','選ぶ','予想','答え合わせ・説明','理解チェック','理由を聞く','自由に話す'];
+const PH_ZH=['選題','選擇','猜測','揭曉・說明','聽懂了嗎','分享理由','延伸聊天'];
+const PH_EN=['Topic','Choose','Guess','Reveal','Understand?','Reasons','Explore'];
+const PH_JA=['話題選び','選ぶ','予想','答え合わせ・説明','理解チェック','理由を聞く','もっと話す'];
 
 /* ===== 房間 =====
    正式 Room 1–6（r1–r6）、備用 Backup 1–6（b1–b6）、測試 Test 1–6（t1–t6，對應 Room 1–6） */
@@ -434,17 +453,12 @@ function copyText(t,msg){const fb=()=>showText(t);try{navigator.clipboard.writeT
 function showText(t){let m=document.getElementById('modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}
  m.innerHTML=`<div class="mbox"><b>請全選後複製（Ctrl/⌘ + C）</b><textarea readonly>${esc(t)}</textarea><button class="primary" onclick="document.getElementById('modal').remove()">關閉</button></div>`;
  const ta=m.querySelector('textarea');ta.focus();ta.select()}
-function showSyncWarning(message){
- let e=document.getElementById('sync-warning');
- if(!e){e=document.createElement('div');e.id='sync-warning';e.style.cssText='position:fixed;bottom:12px;left:12px;right:12px;max-width:720px;margin:auto;background:#fff0ce;border:2px solid #d58b6f;border-radius:12px;padding:12px 16px;z-index:999;font-size:15px;box-shadow:0 6px 20px #0002';document.body.appendChild(e)}
- e.textContent=message;
-}
 function toast(t){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';document.body.appendChild(el)}el.textContent=t;el.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>el.className='',2200)}
 const preset=(r,q)=>{const sl=slotOf(r);return PRESET[sl]&&PRESET[sl][q]};
 
 /* ===== 狀態與同步 ===== */
 let rooms={}, db=null, loaded=false;
-const KEY='ymw-v43';
+const KEY='ymw-v3';
 const P=new URLSearchParams(location.search);
 const EMBED=P.get('embed')==='1';
 function normId(v){v=String(v||'r1').toLowerCase();if(/^\d+$/.test(v))v='r'+v;return ALL.includes(v)?v:'r1'}
@@ -454,7 +468,7 @@ let me=-1;                                // 台灣學生座位編號（自動�
 let lastCheck=null;                       // 台灣學生剛按的求助鍵（本機顯示用）
 const openDetails=new Set();
 
-function S(r=room){const s=rooms[r]||{};const seats=s.seats||{};return{seats,live:!!s.live,q:s.q??-1,p:s.p||0,hp:s.hp??-1,hg:s.hg??-1,pk:s.pk||{},gs:s.gs||{},help:s.help||{},rt:s.rt??-1,rtok:s.rtok||'',qzOn:!!s.qzOn,qz:s.qz||{},fc:s.fc??-1,sh:s.sh||{},turn:s.turn||0,card:s.card||'',used:s.used||{},rounds:s.rounds||0,done:s.done||{},tv:s.tv||{},ao:s.ao??-1,aqi:s.aqi??-1,asked:s.asked||{},examples:s.examples||{},understand:s.understand||{},depth:s.depth||0,explore:s.explore??-1}}
+function S(r=room){const s=rooms[r]||{};const seats=s.seats||{};return{seats,live:!!s.live,q:s.q??-1,p:s.p||0,hp:s.hp??-1,hg:s.hg??-1,pk:s.pk||{},gs:s.gs||{},help:s.help||{},rt:s.rt??-1,rtok:s.rtok||'',qzOn:!!s.qzOn,qz:s.qz||{},fc:s.fc??-1,sh:s.sh||{},turn:s.turn||0,card:s.card||'',used:s.used||{},rounds:s.rounds||0,done:s.done||{},tv:s.tv||{},und:s.und||{},ex:s.ex??-1,ao:s.ao??-1,aqi:s.aqi??-1,asked:s.asked||{}}}
 function setPath(obj,path,val){const k=path.split('/');let o=obj;for(let i=0;i<k.length-1;i++){if(typeof o[k[i]]!=='object'||o[k[i]]===null)o[k[i]]={};o=o[k[i]]}if(val===null)delete o[k.at(-1)];else o[k.at(-1)]=val}
 function fresh(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return rooms}}
 function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(rooms))}catch(e){}render()}
@@ -488,22 +502,13 @@ function presence(){
 function online(s,i){const x=s.seats['s'+i];if(!x)return false;if(x.on===false)return false;return db?true:(Date.now()-(x.t||0)<25000)}
 function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
 async function init(){
- // Render a usable page immediately; Firebase's first snapshot may take time or fail.
- try{rooms=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){rooms={}}
- loaded=true;
- render();
  if(role==='test'&&TEST_CHOSEN)initTest();
  if(FIREBASE_CONFIG){
   try{
    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js');
    firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();
-   db.ref(BASE+'/rooms').on('value',snap=>{rooms=snap.val()||{};loaded=true;render()}, err=>{
-      // Don't leave the main content blank if database permissions/network fail.
-      console.error('Firebase database read failed:',err);
-      db=null; loaded=true; render();
-      showSyncWarning('Firebase 無法讀取房間資料，已切換為本機試用模式。請確認資料庫規則及網路連線。');
-    });
+   db.ref(BASE+'/rooms').on('value',snap=>{rooms=snap.val()||{};loaded=true;render()});
    db.ref('.info/connected').on('value',snap=>{if(snap.val()===true)presence()});
    if(role==='tw')claim();
    return;
@@ -534,9 +539,9 @@ function quizOf(r,q){const p=preset(r,q);if(!p||!p.quiz)return null;const opts=s
 const ACT={
  go:a=>{const[r,ro]=a.split(',');go(r,ro)},
  kick:a=>{const[r,i]=a.split(',');const s=S(r);
-   const o={};['seats','pk','gs','qz','sh','help','understand','examples'].forEach(k=>o[`${k}/s${i}`]=null);if(s.rt===+i)o.rt=-1;if(s.fc===+i)o.fc=-1;upd(o,r)},
+   const o={};['seats','pk','gs','qz','sh','help'].forEach(k=>o[`${k}/s${i}`]=null);if(s.rt===+i)o.rt=-1;if(s.fc===+i)o.fc=-1;upd(o,r)},
  live:()=>upd({live:true}),
- start:a=>{const q=+a,p=preset(room,q);upd({tv:null,ao:-1,aqi:-1,asked:null,examples:null,understand:null,depth:0,explore:-1,q,p:1,hp:p?p.pick:-1,hg:-1,pk:null,gs:null,help:null,rt:-1,rtok:'',qzOn:false,qz:null,fc:-1,sh:null,turn:0,card:'',used:null,rounds:0})},
+ start:a=>{const q=+a,p=preset(room,q);upd({tv:null,und:null,ex:-1,ao:-1,aqi:-1,asked:null,q,p:1,hp:p?p.pick:-1,hg:-1,pk:null,gs:null,help:null,rt:-1,rtok:'',qzOn:false,qz:null,fc:-1,sh:null,turn:0,card:'',used:null,rounds:0})},
  hpick:a=>upd({hp:+a}),
  hguess:a=>upd({hg:+a}),
  pick:a=>{const s=S();upd({[(s.p===1?'pk/s':'gs/s')+me]:+a})},   // 第1步選答案、第3步猜答案
@@ -553,10 +558,6 @@ const ACT={
  draw:()=>{const s=S();const host=s.turn%(present(s).length+1)===0;const deck=host?Q[s.q].jt.concat(MORE_JT):Q[s.q].tj.concat(MORE_TJ);const pref=host?'j':'t';
    let i=deck.findIndex((_,k)=>!s.used[pref+k]);if(i<0)i=Math.floor(Math.random()*deck.length);upd({card:deck[i],['used/'+pref+i]:true})},
  pass:()=>{const s=S();upd({turn:(s.turn+1)%(present(s).length+1),card:'',rounds:s.rounds+1})},
- saveExample:()=>{const el=activeExampleInput||document.querySelector('.example-input');if(el&&me>=0)upd({['examples/s'+me]:el.value.trim().slice(0,160)})},
- understand:a=>{if(me>=0)upd({['understand/s'+me]:a})},
- setDepth:a=>upd({depth:+a}),
- explore:a=>upd({explore:+a}),
  finish:()=>{const s=S();upd({['done/q'+s.q]:true,q:-1,p:0,tv:null})},
  reset:a=>{wipe([a]);toast(`已重置 ${roomName(a)}`)},
  resetGroup:a=>{const ids=a==='main'?MAIN:a==='backup'?BACKUP:a==='test'?TEST:ALL;const nm={main:'所有正式房間 Room 1–6',backup:'所有備用房間 Backup 1–6',test:'所有測試房間 Test 1–6',all:'全部房間（正式＋備用＋測試）'}[a];
@@ -564,14 +565,14 @@ const ACT={
  goHome:()=>go(room,'home'),
  copy:a=>copyText(a,'已複製連結')
 };
-let armed='',armedUntil=0,activeExampleInput=null;
+let armed='',armedUntil=0;
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
  if(b.dataset.cf){const key=b.dataset.act+'|'+b.dataset.a;
   if(!(armed===key&&Date.now()<armedUntil)){armed=key;armedUntil=Date.now()+4000;const orig=b.innerHTML;b.innerHTML=esc(b.dataset.cf);b.classList.add('armed');
    setTimeout(()=>{if(b.isConnected&&b.classList.contains('armed')){b.innerHTML=orig;b.classList.remove('armed')}},4000);return}
   armed='';}
  const pane=role==='test'&&b.closest('[data-pane]');
- if(pane){activeExampleInput=pane.querySelector('.example-input');withPersona(personas[+pane.dataset.pane],()=>ACT[b.dataset.act](b.dataset.a));activeExampleInput=null;}
+ if(pane)withPersona(personas[+pane.dataset.pane],()=>ACT[b.dataset.act](b.dataset.a));
  else ACT[b.dataset.act](b.dataset.a)});
 document.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.k){d.open?openDetails.add(d.dataset.k):openDetails.delete(d.dataset.k)}},true);
 
@@ -657,8 +658,8 @@ function simulate(){
  personas.forEach((p,idx)=>{if(p.role!=='tw'||p.me<0||idx<2)return;const k='s'+p.me;
   const rnd=()=>order(room,s.q)[Math.floor(Math.random()*7)];
   if(s.p===1&&s.pk[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===1&&S().pk[k]==null)ACT.pick(rnd())}),400+idx*250);
-  if(s.p===3&&s.gs[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===3&&S().gs[k]==null)ACT.pick(Math.random()<.5&&S().hp>=0?S().hp:rnd())}),400+idx*250);
-  const qz=quizOf(room,s.q);if(s.p===5&&qz&&s.qzOn&&s.qz[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().qz[k]==null)ACT.quiz(Math.random()<.7?qz.a:0)}),400+idx*250);
+  if(s.p===2&&s.gs[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===2&&S().gs[k]==null)ACT.pick(Math.random()<.5&&S().hp>=0?S().hp:rnd())}),400+idx*250);
+  if(s.p===4&&s.und[k]==null)setTimeout(()=>withPersona(p,()=>{if(S().p===4&&S().und[k]==null)ACT.und(['all','all','some','none'][Math.floor(Math.random()*4)])}),400+idx*250);
  });
 }
 ACT.addPane=()=>{const n=personas.filter(p=>p.role==='tw').length+1;personas.push(newTw(n));render()};
@@ -1121,6 +1122,61 @@ Could you say that part again, please?|可以再說一次那個部分嗎？|そ�
 Could you say that again, please?|可以再說一次嗎？|もう一度言ってもらえますか？
 Could you speak more slowly, please?|可以說慢一點嗎？|もう少しゆっくり話してもらえますか？
 What does that mean?|那是什麼意思？|それはどういう意味ですか？
+What is the belief? Why do people know it?|是什麼觀念？為什麼大家都知道？|どんな考え？どうしてみんな知ってるの？
+What is the exact word or phrase?|那個詞或句子是什麼？|実際の言葉やフレーズは？
+Where did this phrase come from?|這句話是從哪裡來的？|そのフレーズはどこから来たの？
+What happened? Why do people remember it?|發生了什麼事？為什麼大家都記得？|何があったの？どうしてみんな覚えてるの？
+Who or what does this name refer to?|這個名字指的是誰或什麼？|その名前は誰（何）のこと？
+What is the exact word, phrase, or event?|那個詞、句子或事件到底是什麼？|実際の言葉・フレーズ・出来事は何？
+What does it mean?|是什麼意思？|どういう意味？
+When do people use or mention it?|大家什麼時候會用到或提到？|いつ使ったり話題にしたりするの？
+Why do people in Japan ask about blood type?|日本人為什麼會問血型？|日本人はどうして血液型を聞くの？
+Do young people still talk about blood type?|年輕人現在還會聊血型嗎？|若い人も今、血液型の話をする？
+What other phrases do Japanese people know?|日本人還有哪些大家都知道的話？|日本人がみんな知っている言葉はほかにある？
+stars|星座|星座
+luck|運氣|運
+meme|迷因|ミーム
+social media|社群媒體|SNS
+quote|名言|名言
+advertisement|廣告|CM・広告
+movie|電影|映画
+popular|流行的|人気
+event|事件|出来事
+news|新聞|ニュース
+memory|回憶|思い出
+everyone knows|大家都知道|みんな知ってる
+nickname|綽號|あだ名
+person|人|人
+place|地方|場所
+thing|東西|もの
+No way!|不會吧！|うそでしょ！
+Seriously?|真的假的？|マジで？
+That’s so cool!|好酷！|かっこいい！
+Haha, I get it.|哈哈，我懂。|笑、わかる。
+At my school, ___ .|我們學校 ___。|私の学校では___。
+In Japan, we ___ too.|在日本我們也 ___。|日本でも___します。
+Actually, I ___ .|其實我 ___。|実は私、___。
+Actually, ___ .|其實 ___。|実は___。
+Hmm, let me think.|嗯，讓我想想。|うーん、ちょっと考えさせて。
+Well, ___ .|嗯，___。|えーと、___。
+OK! Who else wants to talk?|好！還有誰想說？|OK！ほかに話したい人いる？
+Let’s hear from someone else.|我們聽聽其他人的。|ほかの人の話も聞こう。
+Nice! Let’s move on.|讚！我們繼續。|いいね！次に行こう。
+One more question, OK?|再問一題可以嗎？|もう一つ聞いてもいい？
+Oh really? Tell me more!|真的嗎？多說一點！|へえ、本当？もっと教えて！
+Sorry! Let me say it again, slowly.|抱歉！我慢慢再說一次。|ごめん！もう一回ゆっくり言うね。
+It’s OK! Take your time. Easy English is fine!|沒關係！慢慢來，簡單英文就好！|大丈夫！ゆっくりでいいよ。簡単な英語でOK！
+Interesting! Can I ask one more thing?|好有趣！我可以再問一個嗎？|面白い！もう一つ聞いてもいい？
+That’s so fun! Let’s hear from someone else too.|好好玩！我們也聽聽別人的。|楽しいね！ほかの人の話も聞こう。
+Me too! Same here!|我也是！一樣！|私も！同じ！
+Wait, really?|等等，真的嗎？|え、本当？
+Thank you! Let’s hear from someone else too.|謝謝！我們也聽聽其他人的。|ありがとう！ほかの人の話も聞きましょう。
+Who else wants to share?|還有誰想分享？|ほかに話したい人はいますか？
+Can I ask one more question?|我可以再問一個問題嗎？|もう一つ質問してもいいですか？
+Thank you! Let’s move on.|謝謝！我們繼續下一個。|ありがとう！次に進みましょう。
+Let me think.|讓我想想。|ちょっと考えさせてください。
+What do you think?|你覺得呢？|どう思いますか？
+Can I ask you a question?|我可以問你一個問題嗎？|質問してもいいですか？
 In some schools in Japan, students with naturally brown hair have to submit a natural hair certificate. I think this rule is stupid.|在日本有些學校，天生頭髮是咖啡色的學生必須交「天生髮色證明書」。我覺得這條規定很蠢。|日本の一部の学校では、生まれつき髪が茶色い生徒は「地毛証明書」を出さなければなりません。このルールはばかげていると思います。
 My father often asks when my school exam is and how it went. I have told him before, but I tell him again and again.|我爸爸常常問我什麼時候考試、考得怎麼樣。我明明說過了，還是要一直說。|父はよく、試験はいつか、どうだったかと聞きます。前に言ったのに、何度も言っています。
 March 3 is Girls’ Day in Japan. Parents make chirashi sushi. On this day, we wish for girls’ growth and happiness.|3 月 3 日是日本的女兒節，爸媽會做散壽司。這一天我們祈求女孩成長、幸福。|3月3日は日本のひな祭りです。親がちらし寿司を作ります。この日は女の子の成長と幸せを願います。
@@ -1163,13 +1219,30 @@ function roomInner(){
         :`<small class="muted">${T(`台灣同學 ${pr.length} 人`,`台湾の生徒 ${pr.length}人`,`${pr.length} Taiwanese students`)}</small>`}</div>
   ${host&&s.live&&pr.length>onN?`<p class="muted" style="margin:6px 0 0">${T('○ 是離線的人。如果沒有回來，可以按 ✕ 刪除，新同學就能加入。','○ はオフラインの人です。戻ってこない場合は ✕ で削除できます（新しい人が入れるようになります）。','○ = offline. If they don’t come back, tap ✕ to remove them so a new student can join.')}</p>`:''}`;
  if(!s.live)return h+lobby(s,host,pr,onN)+'</section>';
- if(s.q<0)return h+topicPick(s,host)+'</section>';
+ if(s.q<0)return h+topicPick(s,host)+'</section>'+(host?hostKit(s):'');
  const q=Q[s.q];
  h+=`<div class="steps">${PH_ZH.slice(1).map((x,i)=>`<span class="${s.p>=i+1?'on':''}">${T(x,PH_JA[i+1],PH_EN[i+1])}</span>`).join('')}</div>
  <div class="tag">Topic ${s.q+1}</div><h2 class="E">${esc(q.en)}</h2><p class="muted qsub">${T(esc(q.zh),esc(q.ja))}</p></section>`;
- h+=`<section class="panel">${[null,p1,p2,p3,p4,p5,p6][s.p](s,q,host)}</section>`;
- if(host)h+=`${hostNavigator(s)}<div class="bar">${B(T('← 上一步','← 前へ','← Back'),'back','','',s.p<=1)}${B(T('結束這題','この話題を終える','Finish this topic'),'finish')}</div>`;
+ h+=`<section class="panel">${[null,p1,p2,p3,pUnd,pAsk,pEx][s.p](s,q,host)}</section>`;
+ if(host)h+=hostKit(s);
+ if(host)h+=`<div class="bar">${B(T('← 上一步','← 前へ','← Back'),'back','','',s.p<=1)}${B(T('結束這題','この話題を終える','Finish this topic'),'finish')}</div>`;
  return h;
+}
+/* 主持人工具箱：任何時候都有話可以說 */
+let kitOpen=true;
+document.addEventListener('toggle',e=>{if(e.target.dataset&&e.target.dataset.kit)kitOpen=e.target.open},true);
+const KIT_LINE=en=>{const t=tr(en);return `<div class="kline"><b class="E">${esc(en)}</b>${t?TL(esc(t[0]),esc(t[1])):''}</div>`};
+function hostKit(s){
+ const quiet=present(s).filter(k=>online(s,k));
+ const rescue=[['對方只回 Yes / No','相手がYes/Noだけ','They only say yes/no','Oh really? Tell me more!'],['對方聽不懂','伝わっていない','They don’t understand','Sorry! Let me say it again, slowly.'],['大家都沒說話','みんな黙っている','Nobody is talking','It’s OK! Take your time. Easy English is fine!'],['你不知道怎麼接','次に何を言うか分からない','You don’t know what to say','Interesting! Can I ask one more thing?'],['有人講很久','一人が長く話している','Someone talks a long time','Thank you! Let’s hear from someone else too.']];
+ return `<details class="kit" data-kit="1" ${kitOpen?'open':''}><summary>${T('🧰 主持人工具箱（隨時都能用）','🧰 司会者の道具箱（いつでも使える）','🧰 Host toolbox (use anytime)')}</summary>
+ <div class="kitgrid">
+  <div><h4>${T('🔥 接話・反應','🔥 リアクション','🔥 React')}</h4>${['Really?','That’s interesting!','Me too!','I see.','That’s surprising!','I didn’t know that!'].map(KIT_LINE).join('')}</div>
+  <div><h4>${T('🙋 說說自己的','🙋 自分の話をする','🙋 Share yours')}</h4>${['In my case, ___ .','At my school, ___ .','In Japan, ___ .','In Japan, we ___ too.'].map(KIT_LINE).join('')}</div>
+  <div><h4>${T('🧯 卡住救援','🧯 困ったとき','🧯 Rescue')}</h4>${rescue.map(r=>`<div class="kline"><small>${T(r[0],r[1],r[2])}</small><b class="E">${esc(r[3])}</b>${tl(r[3])}</div>`).join('')}
+   ${quiet.length?`<div class="kline"><small>${T('想點名安靜的同學','静かな人に話を振りたい','Ask a quiet student')}</small><b class="E">${quiet.map(tw).join(' / ')}, what do you think? Any answer is OK!</b>${TL('（名字），你覺得呢？說什麼都可以！','（名前）、どう思う？何でもOKだよ！')}</div>`:''}</div>
+  <div><h4>${T('⏭ 轉場','⏭ 次へ進む','⏭ Move on')}</h4>${['Who else wants to share?','Let’s hear from someone else.','Can I ask one more question?','Thank you! Let’s move on.'].map(KIT_LINE).join('')}</div>
+ </div></details>`;
 }
 function lobby(s,host,pr,onN){
  if(host)return `<div class="lobby"><h2>${T('等台灣同學進來','台湾のみんなが入るのを待とう','Wait for the Taiwanese students to join')}</h2>
@@ -1211,231 +1284,454 @@ const choseTxt=v=>v!=null?T('✓ 已選。主持人換下一步之前都可以�
 
 /* 2 追問（新）：日本同學看到大家的答案，點選項 → 彈出追問視窗 */
 /* 追問題目：每個選項 3 題，分三種 —— 📖 說經驗、💭 想像、🤔 想法（格式：題號-選項|類型|英|中|日） */
-const FU=(()=>{const m={};`0-0|s|Have you or your friends ever had trouble because of hair rules? What happened?|你或你的朋友有因為頭髮規定惹過麻煩嗎？發生了什麼事？|あなたや友達が髪のルールで困ったことはありますか？何があったの？
-0-0|i|If there were no hair rules, what hairstyle or color would you try?|如果沒有頭髮規定，你想試什麼髮型或髮色？|髪のルールがなかったら、どんな髪型や色にしてみたいですか？
-0-0|o|Why do you think schools make hair rules?|你覺得學校為什麼要訂頭髮規定？|学校はどうして髪のルールを作ると思いますか？
-0-1|s|What is the strangest uniform rule at your school?|你們學校最奇怪的制服規定是什麼？|あなたの学校で一番変な制服のルールは何ですか？
-0-1|i|If you could design your school uniform, what would it look like?|如果可以自己設計制服，你會設計成什麼樣子？|もし制服をデザインできたら、どんな制服にしますか？
-0-1|o|Do you think uniforms are good or bad? Why?|你覺得制服是好還是不好？為什麼？|制服はいいと思いますか、よくないと思いますか？どうして？
-0-2|s|Has a teacher ever taken your phone? What happened?|老師有沒有沒收過你的手機？後來怎麼了？|先生にスマホを取られたことはありますか？そのあとどうなりましたか？
-0-2|i|If you couldn’t use your phone for a week, what would you miss most?|如果一個禮拜不能用手機，你最想念什麼？|一週間スマホが使えなかったら、何が一番さみしいですか？
-0-2|o|What would be a fair phone rule for students?|你覺得對學生來說，怎樣的手機規定才公平？|生徒にとって、どんなスマホのルールなら公平だと思いますか？
-0-3|s|Do you know anyone who has a part-time job? What do they do?|你認識有在打工的人嗎？他做什麼工作？|アルバイトをしている人を知っていますか？どんな仕事ですか？
-0-3|i|If you could work, what job would you choose and why?|如果可以打工，你會選什麼工作？為什麼？|もし働けるなら、どんな仕事を選びますか？どうして？
-0-3|o|Should high school students be allowed to work? Why?|你覺得高中生應該可以打工嗎？為什麼？|高校生はアルバイトをしてもいいと思いますか？どうして？
-0-4|s|Have you ever come home later than your curfew? What happened?|你有沒有超過門禁才回家過？後來怎樣？|門限より遅く帰ったことはありますか？どうなりましたか？
-0-4|i|If you had no curfew for one night, what would you do?|如果有一個晚上沒有門禁，你會做什麼？|一晩だけ門限がなかったら、何をしますか？
-0-4|o|What time do you think is fair to come home? Why?|你覺得幾點回家比較合理？為什麼？|何時に帰るのがちょうどいいと思いますか？どうして？
-1-0|s|What happened the last time you told your parents your score?|上次你跟爸媽說分數的時候，發生了什麼事？|この前、親に点数を伝えたとき、どうなりましたか？
-1-0|i|If your parents never asked about exams, how would you feel?|如果爸媽從來不問考試，你會有什麼感覺？|もし親が試験のことを全然聞かなかったら、どう感じますか？
-1-0|o|Why do you think parents worry so much about exams?|你覺得爸媽為什麼這麼在意考試？|親はどうしてそんなに試験を気にすると思いますか？
-1-1|s|What do you say when you didn’t really study?|你其實沒讀書的時候，都怎麼回答？|本当は勉強していないとき、何と答えますか？
-1-1|i|If you could say anything honestly to your parents, what would you say?|如果可以老實跟爸媽說任何話，你會說什麼？|親に何でも正直に言えるとしたら、何と言いますか？
-1-1|o|Do you study better at home or at school? Why?|你在家還是在學校比較讀得下書？為什麼？|家と学校、どちらのほうが勉強できますか？どうして？
-1-2|s|What did you eat for dinner yesterday?|你昨天晚餐吃了什麼？|昨日の夕食は何を食べましたか？
-1-2|i|If you could cook one dish for your family, what would it be?|如果你可以為家人做一道菜，你會做什麼？|家族に一品料理を作るとしたら、何を作りますか？
-1-2|o|Is “Have you eaten?” a way to say “I care about you” in Taiwan?|在台灣，「吃飽了沒？」是表示「我關心你」的意思嗎？|台湾では「ご飯食べた？」は「あなたを気にかけているよ」という意味ですか？
-1-3|s|What usually makes you come home late?|你通常是因為什麼事比較晚回家？|ふだん、どんなことで帰りが遅くなりますか？
-1-3|i|If you could stay out as late as you want, where would you go?|如果你可以待到多晚都行，你會去哪裡？|何時まででも外にいていいなら、どこに行きますか？
-1-3|o|Do your parents worry too much, or just enough?|你覺得爸媽擔心太多，還是剛剛好？|親は心配しすぎだと思いますか、それともちょうどいいですか？
-1-4|s|Who did you go out with last weekend? What did you do?|你上週末跟誰出去？做了什麼？|先週末は誰と出かけましたか？何をしましたか？
-1-4|i|If you could take your friends anywhere for a day, where would you go?|如果可以帶朋友去任何地方玩一天，你會去哪裡？|友達とどこでも一日行けるなら、どこに行きますか？
-1-4|o|Why do you think parents want to know your friends?|你覺得爸媽為什麼想知道你跟誰出去？|親はどうしてあなたの友達のことを知りたがると思いますか？
-2-0|s|Do you have a special memory from a children’s festival?|你對兒童相關的節日有什麼特別的回憶嗎？|子どものお祭りで、特別な思い出はありますか？
-2-0|i|If you could make a new festival for children, what food would you serve?|如果你可以創一個新的兒童節日，你會準備什麼食物？|子どものための新しいお祭りを作るなら、どんな食べ物を出しますか？
-2-0|o|How do Taiwanese families celebrate children?|台灣的家庭都怎麼為孩子慶祝？|台湾の家族は子どものことをどうやってお祝いしますか？
-2-1|s|What did your family do last New Year?|你們家去年過年做了什麼？|去年のお正月（旧正月）、家族で何をしましたか？
-2-1|i|If you could invite a Japanese friend to your New Year, what would you show them?|如果可以邀日本朋友來你家過年，你會帶他看什麼？|日本の友達を旧正月に招待できたら、何を見せたいですか？
-2-1|o|What is the most important part of New Year for you?|對你來說，過年最重要的是什麼？|あなたにとって、旧正月で一番大切なことは何ですか？
-2-2|s|Where did you have a BBQ last Moon Festival? Who was there?|你去年中秋節在哪裡烤肉？跟誰？|去年の中秋節はどこでバーベキューをしましたか？誰がいましたか？
-2-2|i|If you could put anything on the BBQ, what would you choose?|如果烤肉可以烤任何東西，你會選什麼？|バーベキューで何でも焼けるなら、何を焼きますか？
-2-2|o|Why do you think BBQ became popular at the Moon Festival?|你覺得中秋烤肉為什麼會變得這麼流行？|中秋節にバーベキューをするのが流行ったのはどうしてだと思いますか？
-2-3|s|Can you tell me what your family does on that day?|可以說說你們家那天會做什麼嗎？|その日、あなたの家族は何をするか教えてくれますか？
-2-3|i|If you could ask your ancestors one question, what would you ask?|如果可以問祖先一個問題，你會問什麼？|ご先祖さまに一つ質問できるなら、何を聞きますか？
-2-3|o|Do young people in Taiwan still follow this custom?|台灣的年輕人還會遵守這個習俗嗎？|台湾の若い人は今もこの習慣を守っていますか？
-2-4|s|Have you ever eaten something for luck before a test? Did it work?|你有沒有考試前吃東西求好運？有用嗎？|テストの前に縁起物を食べたことはありますか？効きましたか？
-2-4|i|If you could invent a lucky food, what would it be?|如果你可以發明一種幸運食物，會是什麼？|縁起のいい食べ物を発明するなら、どんなものにしますか？
-2-4|o|Why do you think people believe food can bring luck?|你覺得為什麼大家相信食物能帶來好運？|どうして食べ物が幸運を呼ぶと信じられていると思いますか？
-3-0|s|Has anyone ever guessed your blood type from your personality?|有沒有人從你的個性猜過你的血型？|性格から血液型を当てられたことはありますか？
-3-0|i|Guess my blood type! Why do you think so?|猜猜我的血型！你為什麼這樣猜？|私の血液型を当ててみて！どうしてそう思う？
-3-0|o|Do you think personality can be guessed from small things?|你覺得一個人的個性可以從小地方看出來嗎？|性格は小さなことからわかると思いますか？
-3-1|s|Do you read star sign fortunes? Was one ever right?|你會看星座運勢嗎？有沒有很準過？|星座占いを読みますか？当たったことはありますか？
-3-1|i|Guess my star sign! What makes you think so?|猜猜我的星座！為什麼這樣猜？|私の星座を当ててみて！どうしてそう思う？
-3-1|o|Why do you think star signs are popular with young people?|你覺得星座為什麼在年輕人之間這麼受歡迎？|星座はどうして若い人に人気だと思いますか？
-3-2|s|Can you teach me a popular word and how to use it?|可以教我一個流行語，還有怎麼用嗎？|流行っている言葉と使い方を教えてくれますか？
-3-2|i|If you made a new slang word, what would it mean?|如果你發明一個新的流行語，它會是什麼意思？|新しい流行語を作るなら、どんな意味にしますか？
-3-2|o|Do adults understand your slang?|大人聽得懂你們的流行語嗎？|大人はあなたたちの流行語がわかりますか？
-3-3|s|Can you teach me how Taiwanese friends greet each other?|可以教我台灣朋友之間怎麼打招呼嗎？|台湾の友達同士のあいさつを教えてくれますか？
-3-3|i|If we met in Taiwan, how would you greet me?|如果我們在台灣見面，你會怎麼跟我打招呼？|台湾で会ったら、どうやってあいさつしてくれますか？
-3-3|o|Is greeting different with friends, teachers, and family?|跟朋友、老師、家人打招呼的方式不一樣嗎？|友達・先生・家族で、あいさつは違いますか？
-3-4|s|Who taught you to say it?|是誰教你說這句話的？|それを言うことを誰に教わりましたか？
-3-4|i|If you could teach Japanese people one Chinese phrase, what would it be?|如果可以教日本人一句中文，你會教什麼？|日本人に中国語を一つ教えるなら、何を教えますか？
-3-4|o|Why do you think these words are important?|你覺得這些話為什麼重要？|こういう言葉はどうして大切だと思いますか？
-4-0|s|Tell me about a teacher who was strict but fair.|說說一位嚴格但公平的老師。|厳しいけど公平な先生について教えてください。
-4-0|i|If you were a teacher, would you be strict? Why?|如果你是老師，你會很嚴格嗎？為什麼？|もし先生になったら、厳しくしますか？どうして？
-4-0|o|Why is fairness important to students?|你覺得公平為什麼對學生很重要？|公平であることは、生徒にとってどうして大切だと思いますか？
-4-1|s|Tell me about a time a teacher really helped you.|說說一次老師真的幫到你的經驗。|先生に本当に助けてもらったときのことを教えてください。
-4-1|i|If you could thank one teacher, what would you say?|如果可以向一位老師道謝，你會說什麼？|一人の先生にお礼を言えるなら、何と言いますか？
-4-1|o|Are kind teachers better than strict teachers?|親切的老師比嚴格的老師好嗎？|優しい先生は厳しい先生よりいいと思いますか？
-4-2|s|Which teacher explains things best? How do they do it?|哪位老師講解得最清楚？他是怎麼講的？|一番説明がわかりやすい先生は誰ですか？どうやって説明しますか？
-4-2|i|If you taught a class, what would you teach and how?|如果你來上一堂課，你會教什麼？怎麼教？|もし授業をするなら、何をどうやって教えますか？
-4-2|o|What makes a lesson easy to remember?|怎樣的課讓人比較記得住？|どんな授業だと覚えやすいですか？
-4-3|s|What was the hardest homework you ever had?|你寫過最難的作業是什麼？|今までで一番大変だった宿題は何ですか？
-4-3|i|If you could give your teacher homework, what would it be?|如果你可以出作業給老師，你會出什麼？|先生に宿題を出せるなら、どんな宿題にしますか？
-4-3|o|Do you think homework helps you learn?|你覺得作業有幫助你學習嗎？|宿題は勉強の役に立つと思いますか？
-4-4|s|Tell me about a time you felt a teacher didn’t listen.|說說一次你覺得老師沒有聽你說話的經驗。|先生が話を聞いてくれないと感じたときのことを教えてください。
-4-4|i|If you could give teachers one piece of advice, what would it be?|如果可以給老師一個建議，你會說什麼？|先生に一つアドバイスできるなら、何を言いますか？
-4-4|o|How can students and teachers understand each other better?|學生和老師怎樣才能更了解彼此？|生徒と先生がもっとわかり合うにはどうしたらいいと思いますか？
-5-0|s|How did you become a fan?|你是怎麼變成粉絲的？|どうやってファンになったのですか？
-5-0|i|If you could meet your idol, what would you say?|如果能見到你的偶像，你會說什麼？|推しに会えたら、何と言いますか？
-5-0|o|Why do you think parents don’t understand fans?|你覺得爸媽為什麼不懂追星的人？|親はどうして推し活を理解できないと思いますか？
-5-1|s|What is the best thing you ever got in a game?|你在遊戲裡拿過最棒的東西是什麼？|ゲームで手に入れた一番いいものは何ですか？
-5-1|i|If you had 10,000 yen for games, what would you buy?|如果你有一萬日圓可以花在遊戲上，你會買什麼？|ゲームに1万円使えるなら、何を買いますか？
-5-1|o|Is spending money on games a waste? Why or why not?|你覺得花錢玩遊戲是浪費嗎？為什麼？|ゲームにお金を使うのはむだだと思いますか？どうして？
-5-2|s|What is your favorite thing you bought recently?|你最近買的東西裡最喜歡哪一個？|最近買ったもので一番気に入っているものは何ですか？
-5-2|i|If you could wear anything to school, what would you wear?|如果可以穿任何衣服上學，你會穿什麼？|学校に何でも着ていけるなら、何を着ますか？
-5-2|o|Why do you think fashion is important to young people?|你覺得時尚為什麼對年輕人很重要？|ファッションはどうして若い人にとって大切だと思いますか？
-5-3|s|What is your favorite drink shop? What do you order?|你最喜歡哪家飲料店？都點什麼？|一番好きなドリンクのお店はどこですか？何を頼みますか？
-5-3|i|If you could make your own drink, what would be in it?|如果你可以調一杯自己的飲料，裡面會有什麼？|自分だけのドリンクを作るなら、何を入れますか？
-5-3|o|Why do you think drink shops are so popular in Taiwan?|你覺得台灣的飲料店為什麼這麼受歡迎？|台湾ではどうしてドリンク店がこんなに人気だと思いますか？
-5-4|s|What is the most special item you have? Why?|你最特別的收藏是什麼？為什麼？|一番特別なグッズは何ですか？どうして？
-5-4|i|If you could live in an anime world, which one would you choose?|如果可以住進一個動漫世界，你會選哪一個？|アニメの世界に住めるなら、どの作品を選びますか？
-5-4|o|Why do you think Japanese anime is popular in Taiwan?|你覺得日本動漫為什麼在台灣這麼受歡迎？|日本のアニメはどうして台湾で人気だと思いますか？
-6-0|s|When did you first want to try a part-time job?|你什麼時候開始想打工的？|いつからアルバイトをしてみたいと思いましたか？
-6-0|i|If you got your first paycheck, what would you do with it?|如果你領到第一份薪水，你會拿來做什麼？|初めての給料をもらったら、何に使いますか？
-6-0|o|What do you think you can learn from a part-time job?|你覺得打工可以學到什麼？|アルバイトから何が学べると思いますか？
-6-1|s|Where is the farthest place you have been?|你去過最遠的地方是哪裡？|今まで行った一番遠いところはどこですか？
-6-1|i|If you came to Japan, what would you want to do first?|如果你來日本，你第一件想做的事是什麼？|日本に来たら、まず何をしたいですか？
-6-1|o|What do you think you can learn from traveling?|你覺得旅行可以學到什麼？|旅行から何が学べると思いますか？
-6-2|s|What made you want to learn it?|是什麼讓你想學這個？|どうしてそれを習いたいと思ったのですか？
-6-2|i|If you could learn anything in one day, what would you choose?|如果一天之內可以學會任何東西，你會選什麼？|一日で何でも身につけられるなら、何を選びますか？
-6-2|o|What is stopping you from starting?|是什麼讓你還沒開始？|始められないのはどうしてですか？
-6-3|s|Have you ever been on stage? How did you feel?|你有上過台嗎？那時候感覺怎麼樣？|ステージに立ったことはありますか？どんな気持ちでしたか？
-6-3|i|If you could win any contest, which one would you choose?|如果可以贏得任何一個比賽，你會選哪個？|どんな大会でも優勝できるなら、どれを選びますか？
-6-3|o|Is winning important, or is trying more important?|贏比較重要，還是嘗試比較重要？|勝つことと挑戦すること、どちらが大切だと思いますか？
-6-4|s|Have you ever stayed home alone for a few days? How was it?|你有沒有自己一個人在家好幾天過？感覺怎麼樣？|何日か一人で家にいたことはありますか？どうでしたか？
-6-4|i|If you lived alone, what would your room look like?|如果你一個人住，你的房間會是什麼樣子？|一人暮らしをしたら、どんな部屋にしますか？
-6-4|o|What do you think is the hardest part of living alone?|你覺得一個人住最難的是什麼？|一人暮らしで一番大変なことは何だと思いますか？
-7-0|s|What was the last thing that surprised you on social media?|你最近在社群媒體上看到最驚訝的是什麼？|最近SNSで一番驚いたことは何ですか？
-7-0|i|If social media disappeared tomorrow, what would you do with your time?|如果明天社群媒體消失了，你會怎麼用你的時間？|明日SNSがなくなったら、時間を何に使いますか？
-7-0|o|Do you think social media is good or bad for students?|你覺得社群媒體對學生是好還是壞？|SNSは生徒にとっていいと思いますか、悪いと思いますか？
-7-1|s|What kind of video makes you watch “just one more”?|哪種影片會讓你一直想「再看一個」？|どんな動画だと「あと一本だけ」と見てしまいますか？
-7-1|i|If you made a short video, what would it be about?|如果你拍一支短影片，內容會是什麼？|ショート動画を作るなら、何についての動画にしますか？
-7-1|o|Why do you think short videos are hard to stop watching?|你覺得為什麼短影片很難停下來？|ショート動画はどうしてやめにくいと思いますか？
-7-2|s|What is the longest you have ever played in one day?|你一天玩最久玩了多久？|一日で一番長く遊んだのはどのくらいですか？
-7-2|i|If you could make a game, what would it be like?|如果你可以做一款遊戲，它會是什麼樣子？|ゲームを作れるなら、どんなゲームにしますか？
-7-2|o|Can games teach us anything useful?|你覺得遊戲可以教我們有用的東西嗎？|ゲームから何か役に立つことを学べると思いますか？
-7-3|s|What show did you stay up late to watch?|你為了哪部劇熬夜？|夜ふかしして見たドラマやアニメは何ですか？
-7-3|i|If you could be a character in a show, who would you be?|如果你可以變成劇裡的一個角色，你想當誰？|作品のキャラクターになれるなら、誰になりたいですか？
-7-3|o|Why do you think it is hard to stop at one episode?|你覺得為什麼看一集就很難停？|どうして一話だけでやめるのは難しいと思いますか？
-7-4|s|What is your record for staying in bed on a weekend?|你週末賴床最久的紀錄是多久？|週末に布団から出なかった最長記録は？
-7-4|i|If you had one free day with no alarm, what would you do?|如果有一整天沒有鬧鐘的自由日，你會做什麼？|目覚ましなしの自由な一日があったら、何をしますか？
-7-4|o|Do you think teenagers need more sleep?|你覺得青少年需要更多睡眠嗎？|十代はもっと寝る必要があると思いますか？
-8-0|s|Have you ever said something to AI and then laughed at yourself?|你有沒有跟 AI 說了什麼之後覺得自己很好笑？|AIに何か言って、あとで自分で笑ってしまったことはありますか？
-8-0|i|If AI had a body, would you want to be friends with it?|如果 AI 有身體，你會想跟它當朋友嗎？|AIに体があったら、友達になりたいですか？
-8-0|o|Why do you think people talk to AI like a friend?|你覺得大家為什麼會像跟朋友一樣跟 AI 說話？|人はどうしてAIに友達のように話しかけると思いますか？
-8-1|s|What do you tell AI that you don’t tell people?|你會跟 AI 說哪些不會跟別人說的事？|人には言わないけどAIには話すことはどんなことですか？
-8-1|i|If AI had feelings, do you think it would like you?|如果 AI 有感覺，你覺得它會喜歡你嗎？|AIに気持ちがあったら、あなたのことを好きになると思いますか？
-8-1|o|Is it OK to share feelings with AI? Why?|跟 AI 分享心情可以嗎？為什麼？|AIに気持ちを話すのはいいことだと思いますか？どうして？
-8-2|s|What was the most helpful thing AI did for your homework?|AI 在你的作業上幫過最大的忙是什麼？|AIが宿題で一番役に立ったことは何ですか？
-8-2|i|If AI could take one test for you, which test would you choose?|如果 AI 可以幫你考一場試，你會選哪一場？|AIが一つテストを受けてくれるなら、どのテストにしますか？
-8-2|o|Is using AI for homework OK, or is it cheating?|用 AI 寫作業可以嗎，還是算作弊？|宿題にAIを使うのはいいことですか、それともずるですか？
-8-3|s|What is the coolest thing you have done with AI?|你用 AI 做過最酷的事是什麼？|AIを使ってやった一番すごいことは何ですか？
-8-3|i|If AI could do one job for you, what would it be?|如果可以讓 AI 幫你做一件事，你會選什麼？|AIに一つ仕事を頼めるなら、何を頼みますか？
-8-3|o|Do you think AI will change our future jobs?|你覺得 AI 會改變我們未來的工作嗎？|AIは将来の仕事を変えると思いますか？
-8-4|s|When was the last time you used AI?|你上一次用 AI 是什麼時候？|最後にAIを使ったのはいつですか？
-8-4|i|If you had to use AI every day, what would you use it for?|如果每天都一定要用 AI，你會拿來做什麼？|毎日AIを使わないといけないなら、何に使いますか？
-8-4|o|Do you think people use AI too much?|你覺得大家用 AI 用太多了嗎？|みんなAIを使いすぎだと思いますか？
-9-0|s|What happened? Tell me the story.|發生了什麼事？說說看。|何があったの？話を聞かせて。
-9-0|i|If you were a parent, what manners would you teach first?|如果你當爸媽，你會先教孩子什麼禮貌？|親になったら、まずどんなマナーを教えますか？
-9-0|o|Who should teach manners: parents, teachers, or older brothers and sisters?|你覺得禮貌應該由誰來教：爸媽、老師，還是哥哥姊姊？|マナーは誰が教えるべきだと思いますか？親、先生、それとも兄や姉？
-9-1|s|What rule did they break? How did you tell them?|他違反了什麼規定？你怎麼跟他說的？|どんなルールを破ったの？どうやって伝えましたか？
-9-1|i|If you were the club leader, what rule would you make?|如果你是社長，你會訂什麼規定？|部長になったら、どんなルールを作りますか？
-9-1|o|Is it hard to scold someone younger? Why?|你覺得罵比自己小的人很難嗎？為什麼？|年下を叱るのは難しいと思いますか？どうして？
-9-2|s|What were they doing? What did you say?|他那時在做什麼？你說了什麼？|その人は何をしていたの？何と言いましたか？
-9-2|i|If it happened again, would you do the same thing?|如果再發生一次，你會做一樣的事嗎？|もしまた同じことがあったら、同じようにしますか？
-9-2|o|Do you think scolding can be a way of caring?|你覺得罵人也可以是一種關心嗎？|叱ることも思いやりの一つだと思いますか？
-9-3|s|What did they do that made you angry?|他做了什麼讓你生氣？|その人の何に腹が立ちましたか？
-9-3|i|If you could say it again, how would you say it?|如果可以重來一次，你會怎麼說？|もう一度言えるなら、どう言いますか？
-9-3|o|What is the best way to make someone listen?|怎麼做才最能讓別人聽進去？|人に話を聞いてもらうには、どうするのが一番いいと思いますか？
-9-4|s|Has someone older ever scolded you? What happened?|有沒有比你大的人罵過你？發生了什麼事？|年上の人に叱られたことはありますか？何がありましたか？
-9-4|i|If you saw a younger student doing something wrong, what would you do?|如果你看到學弟妹做錯事，你會怎麼做？|後輩が悪いことをしているのを見たら、どうしますか？
-9-4|o|Why do you think you have never scolded anyone?|你覺得你為什麼從來沒罵過人？|どうして今まで誰も叱ったことがないと思いますか？
-x-5|s|Oh, what is it? Tell me more!|喔，是什麼？多說一點！|へえ、何ですか？もっと教えて！
-x-5|i|Why did you choose it? Tell me the story.|你為什麼選這個？說說背後的故事。|どうしてそれを選んだの？話を聞かせて。
-x-5|o|Do you think Japanese students have the same thing?|你覺得日本學生也有一樣的事嗎？|日本の生徒にも同じことがあると思いますか？
-x-6|s|Really? Never? Why not?|真的嗎？從來沒有？為什麼？|本当に？一度もない？どうして？
-x-6|i|Would you like to try it someday?|你以後想試試看嗎？|いつかやってみたいですか？
-x-6|o|What about your friends?|那你的朋友呢？|友達はどうですか？`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===5)(m[p[0]]=m[p[0]]||[]).push([p[2],p[3],p[4],p[1]])});return m})();
-/* V43: structured conversation help, separately editable by topic and answer index */
-const REASONS = [
- [ ['My school has strict hair rules.','Hair color should not affect learning.','Students should be able to choose their hairstyle.'],['The uniform is uncomfortable.','We have to wear it even when it is hot.','I want more freedom to choose clothes.'],['We cannot use phones during breaks.','Sometimes I need to contact my family.','The rules are too strict.'],['We do not have enough time for a job.','A part-time job can teach us useful skills.','I want to earn some money myself.'],['I have to come home early.','My parents worry too much.','Sometimes I want to spend more time with friends.'] ],
- [ ['My parents ask about my grades a lot.','They ask the same question again and again.','I feel nervous when they ask.'],['They want me to study more.','I already have a lot of homework.','I want some free time.'],['My parents want to make sure I eat.','They ask this every day.','I think it shows they care about me.'],['They worry if I get home late.','I often stay at school for activities.','I have to tell them my plans.'],['They are worried about my safety.','They want to know who my friends are.','Sometimes I want more privacy.'] ],
- [ ['It celebrates children growing up.','Families prepare special food.','It is an important tradition.'],['My family eats together.','We eat special food for the new year.','I enjoy spending time with relatives.'],['We eat mooncakes or have a barbecue.','We enjoy looking at the moon.','It brings families together.'],['We prepare food for our ancestors.','It is a way to remember our family.','My family follows this tradition.'],['People eat it for good luck.','My family believes it brings good things.','It makes special days more meaningful.'] ],
- [ ['Many people know this belief.','People sometimes connect it with personality.','I have heard adults talk about it.'],['My friends use this word online.','It is funny when you know the background.','People share it on social media.'],['People hear it in ads or videos.','Almost everyone knows the line.','It makes people laugh.'],['Many people remember what happened.','People still talk about the event.','It became a shared memory.'],['Many people know who it refers to.','The name is easier to remember.','People use it as a joke.'] ],
- [ ['I like teachers who treat everyone fairly.','Rules can help us learn.','I do not mind strict teachers if they are fair.'],['I feel safe asking questions.','They listen when I need help.','They do not get angry easily.'],['I can understand their lessons.','They use simple examples.','I learn better when they explain slowly.'],['I feel tired after doing so much homework.','I want more time for other subjects.','Sometimes the work is too difficult.'],['I want the teacher to listen to us.','Everyone deserves to be heard.','It feels unfair when nobody listens.'] ],
- [ ['Music makes me happy.','I want to support my favorite singer.','I enjoy collecting CDs or merchandise.'],['Games help me relax.','I enjoy playing with friends.','I like getting better at games.'],['I enjoy fashion.','These things help me express myself.','I like choosing my own style.'],['I like trying new food.','Buying snacks makes me happy.','I enjoy drinks with my friends.'],['I love my favorite characters.','I enjoy collecting special items.','These things are important to me.'] ],
- [ ['I want to earn my own money.','I want to learn about working.','I have not had enough time.'],['I want to visit another culture.','I have never had the chance to go.','I want to make friends abroad.'],['I am interested in something new.','I want to challenge myself.','I have not found a good teacher yet.'],['It looks exciting.','I want to test my skills.','I have not had the chance to join.'],['I want to be more independent.','I want to learn how to take care of myself.','I cannot do it yet.'] ],
- [ ['I always check what my friends post.','It is hard to stop scrolling.','I learn about new trends online.'],['Short videos are easy to watch.','I always want to watch one more.','They are funny and relaxing.'],['Games are fun with friends.','I want to finish the next level.','I lose track of time.'],['The stories are exciting.','I want to know what happens next.','I stay up late watching.'],['I feel tired in the morning.','My bed is too comfortable.','I keep saying five more minutes.'] ],
- [ ['I sometimes say thank you to AI.','I talk to it without thinking.','It feels natural to me.'],['It is easier to share some feelings.','AI is available when I need help.','It can help me organize my thoughts.'],['I use AI to check my homework.','It helps me understand English.','I ask it to explain difficult questions.'],['I use it to find information.','I do not see it as a friend.','I prefer talking with real people.'],['I do not need it very often.','I prefer searching by myself.','I am not used to using AI.'] ],
- [ ['I think manners are important.','I want to help younger children learn.','I worry when they do something rude.'],['Rules help keep things fair.','I want younger students to be careful.','Someone has to explain the rules.'],['I was worried someone might get hurt.','I wanted to keep them safe.','I had to tell them to stop.'],['I had already asked them to stop.','I felt frustrated.','I wanted them to listen.'],['I have never had to do that.','I do not have younger siblings.','I prefer explaining things calmly.'] ]
-];
-const REASON_OTHER=['I have a different answer.','Let me explain my example.','I want to share something else.'];
-const REASON_NONE=['I have not had this experience.','I cannot think of an example right now.','Maybe I will experience it someday.'];
-const EASIER = [
- ['Can you use your phone at school?','What happens if you break the rule?','Which school rule would you change?'],
- ['Do your parents ask this every day?','How do you feel when they ask?','Do your friends hear the same question?'],
- ['What food do you eat?','Who do you celebrate with?','Is there a special meaning behind the food?'],
- ['What is the exact word or phrase?','What does it mean?','When do people say or mention it?'],
- ['Do you like strict teachers?','What makes a teacher helpful?','Do students in Japan and Taiwan expect different things?'],
- ['What do you like to buy?','Why do you like it?','Do your parents spend money on things you do not understand?'],
- ['What would you like to try?','What has stopped you?','When do you hope to try it?'],
- ['Which app do you use most?','How much time do you spend on it?','Have you ever tried using it less?'],
- ['Do you say thank you to AI?','What do you use it for?','Do you use AI differently at school and at home?'],
- ['Do you have younger brothers or sisters?','What happened?','What did you say to them?']
-];
-const SIMPLE_STORIES = {
-  0:[['Some students in Japan have naturally brown hair.','日本有些學生天生是棕色頭髮。'],['Some schools ask for a paper to prove it is their natural color.','有些學校要求他們交一張證明原本髮色的紙。'],['I think that rule is unfair.','我覺得這個規定不公平。']],
-  1:[['My father often asks about my exams.','爸爸常常問我考試的事。'],['He asks when the exam is and how it went.','他問何時考試、考得怎麼樣。'],['I have to answer the same questions many times.','我得回答一樣的問題很多次。']],
-  2:[['March 3 is Girls’ Day in Japan.','三月三日是日本女兒節。'],['Some families make chirashi sushi.','有些家庭會做散壽司。'],['It is a day to wish girls health and happiness.','這一天祝福女孩健康幸福。']],
-  3:[['Some Japanese people ask, “What is your blood type?”','有些日本人會問：你是什麼血型？'],['They sometimes connect blood type with personality.','有時會將血型和個性聯想在一起。'],['For example, some people believe type A people like things to be clean.','例如有人認為 A 型的人喜歡整潔。']],
-  5:[['I bought the same CD several times.','我買了好幾張一模一樣的 CD。'],['Some idols let fans take pictures or shake hands at special events.','有些偶像會在特別活動和粉絲拍照或握手。'],['My mother does not understand why I keep buying CDs.','媽媽不懂我為什麼一直買 CD。']],
-  6:[['I want to try a part-time job.','我想嘗試打工。'],['My school only allows it during vacations.','學校只允許在假期打工。'],['But we still have classes during vacations, so I have no time.','可是放假還要上課，所以我沒時間。']],
-  7:[['I spend a lot of time on social media.','我花很多時間使用社群媒體。'],['It is difficult to stop sometimes.','有時候很難停下來。'],['I also learn about new trends in Japan there.','我也在上面了解日本的新流行。']],
-  8:[['Sometimes I talk to AI without noticing.','有時候我不知不覺就會像聊天一樣跟 AI 說話。'],['I use a school iPad and my phone.','我會用學校的 iPad 和自己的手機。'],['I use these devices differently.','這些裝置的使用方式不太一樣。']],
-  9:[['My younger brother is fourteen.','我弟弟十四歲。'],['He does not hold chopsticks correctly.','他拿筷子的方式不正確。'],['My parents do not say anything, so I teach him.','父母沒有說什麼，所以我教他。']]
-};
-const HOST_RESCUES=[
- ['They only said yes or no.','對方只回答 Yes / No','相手がYes/Noだけ答えた','Could you tell me a little more?','可以多說一點嗎？','もう少し教えてくれますか？'],
- ['They did not understand.','對方聽不懂','相手に伝わらなかった','Let me explain it in a simpler way.','我換個簡單的方式說。','もっと簡単に説明しますね。'],
- ['Nobody is talking.','大家都沒說話','誰も話していない','It is okay. You can choose an answer on your screen.','沒關係，你們可以選螢幕上的答案。','大丈夫です。画面の選択肢から選べます。'],
- ['I do not know how to respond.','我不知道怎麼接話','次に何を言うか分からない','Oh, I see! That is interesting. Can I ask one more thing?','原來如此！很有趣。我可以再問一件事嗎？','なるほど！面白いですね。もう一つ聞いてもいいですか？'],
- ['The topic is almost finished.','這題快聊完了','そろそろ話題を終えたい','Thank you for sharing! Shall we try another topic?','謝謝你們分享！要不要換下一個話題？','話してくれてありがとう！次の話題に進みましょうか？']
-];
-function reasonsFor(q,i){return i===5?REASON_OTHER:i===6?REASON_NONE:(REASONS[q]?.[i]||REASON_OTHER)}
-function reasonHelp(q,i){const o=opt(q,i),rs=reasonsFor(q,i);return `<div class="reason-support"><b>${T('💡 可以直接說的完整理由','💡 そのまま使える理由','💡 Ready-to-say reasons')}</b><div class="say"><b class="E">${i===6?'I have not had this experience.':i===5?'My answer is something else.':`I chose “${esc(o.en)}”.`}</b>${TL(i===6?'我沒有這種經驗。':i===5?'我想分享其他答案。':`我選的是「${esc(o.zh)}」。`,i===6?'この経験はありません。':i===5?'別の答えがあります。':`「${esc(o.ja)}」を選びました。`)}</div>${rs.map(r=>`<div class="reason-line"><span class="E">${esc(r)}</span><button class="mini" data-act="copy" data-a="${esc(r)}">⧉</button></div>`).join('')}<small>${T('挑符合自己的理由說，不必全部照念；也可以分享其他理由。','自分に合う理由だけ話してね。全部読まなくて大丈夫。','Use only what is true for you. You can add your own reason.')}</small></div>`}
-function hostNavigator(s){return `<details class="nav-help" data-k="navigator" ${openDetails.has('navigator')?'open':''}><summary>🧭 ${T('下一句怎麼說？主持人救援','次は何と言う？司会者サポート','What should I say next?')}</summary><div class="navchoices">${HOST_RESCUES.map((x,i)=>`<details><summary>${T(x[1],x[2],x[0])}</summary>${SAY(x[3],x[1],x[2],'Try this line',[x[4],x[5]])}${i===1?simpleExplain(s.q):''}${i===0?`<div class="say"><b class="E">${esc(EASIER[s.q]?.[0]||'Can you give an example?')}</b>${tl(EASIER[s.q]?.[0]||'Can you give an example?')}</div>`:''}</details>`).join('')}</div></details>`}
-function simpleExplain(q){const lines=SIMPLE_STORIES[q];return lines?`<div class="simple-story"><b>${T('把原本答案拆成短句，一句一句說','短い文に分けて一つずつ説明','Say one short sentence at a time')}</b>${lines.map((v,i)=>`<div class="story-line"><strong>${i+1}. <span class="E">${esc(v[0])}</span></strong><small>${esc(v[1])}</small></div>`).join('')}</div>`:''}
-function topic4Example(s,host){if(s.q!==3)return '';const key='s'+me;return host?`<div class="topic4-box"><b>${T('💬 請台灣學生分享真正的詞、句子或事件','💬 台湾のみんなに実際の言葉・出来事を聞こう','💬 Ask for the actual example')}</b>${MC([['What is the exact word, phrase, or event?','那個詞、句子或事件是什麼？','実際にはどんな言葉・出来事ですか？'],['What does it mean?','這是什麼意思？','どんな意味ですか？'],['When do people say or mention it?','人們什麼時候會說或提起它？','いつ使ったり話題にしたりしますか？']])}<p>${Object.entries(s.examples||{}).map(([k,v])=>`<b>${esc(k.toUpperCase())}</b>：${esc(v)}　`).join(' ')}</p></div>`:`<div class="topic4-box"><b>${T('✍️ 分享實際的詞、句子或事件（可以用中文）','✍️ 実際の言葉・セリフ・出来事を入力（中国語OK）','✍️ Type the actual phrase or event (Chinese is fine)')}</b><input class="example-input" data-example="${esc(key)}" maxlength="160" value="${esc(s.examples?.[key]||'')}" placeholder="例如：蛤？是在哈囉？"><p class="muted">${T('輸入之後按「送出例子」，再用簡單英文解釋是什麼意思、何時會使用。','入力して送信し、意味や使う場面を簡単な英語で説明しよう。','Submit the example, then explain its meaning and when people use it.')}</p>${B(T('送出例子','例を送る','Share example'),'saveExample','', 'mini')}<div class="say"><b class="E">It means ... / People say it when ... / It became famous because ...</b>${TL('它的意思是……／人們在……時會說／它因為……而出名。','意味は…／…のときに言います／…で有名になりました。')}</div></div>`}
-const FUTYPE={s:['📖 說說經驗','📖 経験を聞く','📖 Story'],i:['💭 想像一下','💭 想像してみる','💭 Imagine'],o:['🤔 你怎麼想','🤔 考えを聞く','🤔 Opinion']};
-function fuq(q,i){return FU[(i>=5?'x':q)+'-'+i]||[]}
+const FU=(()=>{const m={};`0-0|e|What is the hair rule at your school?|你們學校的頭髮規定是什麼？|あなたの学校の髪のルールは何ですか？
+0-0|p|Have you or your friends ever had a problem with this rule?|你或你的朋友有因為這個規定遇到麻煩嗎？|あなたや友達はこのルールで困ったことがありますか？
+0-0|d|If there were no hair rule for one day, what hairstyle would you try?|如果有一天沒有頭髮規定，你想試什麼髮型？|もし一日だけ髪のルールがなかったら、どんな髪型にしてみたいですか？
+0-0|me|At my school, the hair rule is ___ .|我們學校的頭髮規定是 ___。|私の学校の髪のルールは___です。
+0-1|e|What does your school uniform look like?|你們的制服長什麼樣子？|あなたの学校の制服はどんな感じですか？
+0-1|p|Do you like wearing your uniform? Why or why not?|你喜歡穿制服嗎？為什麼？|制服を着るのは好きですか？どうしてですか？
+0-1|d|If you could design your school uniform, what would it look like?|如果可以自己設計制服，你會設計成什麼樣子？|もし制服を自分でデザインできたら、どんな制服にしますか？
+0-1|me|At my school, we wear ___ .|我們學校穿 ___。|私の学校では___を着ます。
+0-2|e|When can you use your phone at school?|在學校什麼時候可以用手機？|学校ではいつスマホを使えますか？
+0-2|p|What happens if a teacher sees your phone in class?|上課時被老師看到手機會怎樣？|授業中に先生にスマホを見られたらどうなりますか？
+0-2|d|If you could use your phone all day at school, what would you do with it?|如果在學校整天都能用手機，你會拿來做什麼？|もし学校で一日中スマホを使えたら、何をしますか？
+0-2|me|At my school, we can use phones ___ .|我們學校 ___ 可以用手機。|私の学校では___スマホを使えます。
+0-3|e|Can students have part-time jobs in Taiwan?|台灣的學生可以打工嗎？|台湾の生徒はアルバイトができますか？
+0-3|p|What job would you like to try? Why?|你想試試什麼工作？為什麼？|どんな仕事をしてみたいですか？どうしてですか？
+0-3|d|If you could get paid for one hobby, which hobby would you choose?|如果你的一個興趣可以賺錢，你會選哪一個？|もし趣味でお金をもらえるなら、どの趣味を選びますか？
+0-3|me|At my school, part-time jobs are ___ .|我們學校打工是 ___ 的。|私の学校では、アルバイトは___です。
+0-4|e|What time do you have to come home?|你幾點前要回家？|何時までに家に帰らなければいけませんか？
+0-4|p|What happens if you come home late?|如果你晚回家會怎樣？|遅く帰るとどうなりますか？
+0-4|d|If you had no curfew for one night, what would you do with your friends?|如果有一個晚上沒有門禁，你想跟朋友做什麼？|もし一晩だけ門限がなかったら、友達と何をしたいですか？
+0-4|me|My curfew is ___ .|我的門禁是 ___。|私の門限は___です。
+1-0|e|How often do your parents ask about exams?|你爸媽多常問考試的事？|親はどのくらい試験のことを聞きますか？
+1-0|p|How do you feel when they ask about your score?|他們問分數時你有什麼感覺？|点数を聞かれたとき、どんな気持ちですか？
+1-0|d|After an exam, what do you do to relax?|考完試後，你會做什麼放鬆？|試験のあと、何をしてリラックスしますか？
+1-0|me|My parents ask about exams ___ .|我爸媽 ___ 會問考試的事。|私の親は___試験のことを聞きます。
+1-1|e|Where do you usually study?|你通常在哪裡讀書？|ふだんどこで勉強しますか？
+1-1|p|How many hours do you study at home?|你在家讀幾個小時的書？|家で何時間勉強しますか？
+1-1|d|Do you study better alone or with friends?|你自己讀書還是跟朋友一起讀比較有效？|一人で勉強するのと友達とするのと、どちらが集中できますか？
+1-1|me|I usually study at ___ for ___ hours.|我通常在 ___ 讀 ___ 小時。|私はふだん___で___時間勉強します。
+1-2|e|Who usually cooks at your home?|你家通常誰煮飯？|家ではいつも誰が料理しますか？
+1-2|p|What is your favorite food that your family makes?|家人做的菜你最喜歡哪一道？|家族が作る料理で一番好きなものは何ですか？
+1-2|d|How do you show your friends that you care about them?|你會怎麼讓朋友知道你關心他？|友達のことを大切に思っているとき、どうやって伝えますか？
+1-2|me|In Japan, parents often ask ___ .|在日本，爸媽常常問 ___。|日本では、親はよく___と聞きます。
+1-3|e|What time do you usually get home?|你通常幾點到家？|ふだん何時に家に帰りますか？
+1-3|p|What do you usually do after school?|你放學後通常做什麼？|放課後はふだん何をしますか？
+1-3|d|When you go out, do you tell your parents where you are? How?|你出門時會跟爸媽說你在哪裡嗎？怎麼說？|出かけるとき、親にどこにいるか伝えますか？どうやって？
+1-3|me|I usually get home at ___ .|我通常 ___ 到家。|私はふだん___に家に帰ります。
+1-4|e|Where do you usually go with your friends?|你通常和朋友去哪裡？|友達とよくどこに行きますか？
+1-4|p|What did you do with your friends last weekend?|你上週末和朋友做了什麼？|先週末、友達と何をしましたか？
+1-4|d|Have your parents met your best friend? What did they say?|你爸媽見過你最好的朋友嗎？他們說了什麼？|親はあなたの親友に会ったことがありますか？何と言っていましたか？
+1-4|me|I usually go to ___ with my friends.|我通常和朋友去 ___。|私はよく友達と___に行きます。
+2-0|e|Is there a special day for children in Taiwan?|台灣有為孩子慶祝的特別節日嗎？|台湾には子どものための特別な日がありますか？
+2-0|p|What did your family do on that day when you were small?|小時候那天你們家會做什麼？|小さいころ、その日に家族で何をしましたか？
+2-0|d|What special day from your childhood do you remember well?|小時候哪個特別的日子你記得很清楚？|子どものころの特別な日で、よく覚えている日はありますか？
+2-0|me|On Girls’ Day or Children’s Day, my family ___ .|女兒節或兒童節時，我家會 ___。|ひな祭りやこどもの日には、うちでは___。
+2-1|e|What food do you eat at New Year?|過年時你們吃什麼？|お正月（旧正月）には何を食べますか？
+2-1|p|What do you usually do during the New Year holiday?|過年假期你通常做什麼？|お正月の休みにはふだん何をしますか？
+2-1|d|What is your favorite thing to do at New Year?|過年時你最喜歡做什麼？|お正月に一番好きなことは何ですか？
+2-1|me|At New Year, my family eats ___ .|過年時我們家會吃 ___。|お正月、うちでは___を食べます。
+2-2|e|What do people eat at the Moon Festival?|中秋節大家吃什麼？|中秋節にはみんな何を食べますか？
+2-2|p|Who do you spend the Moon Festival with?|你中秋節都和誰一起過？|中秋節は誰と過ごしますか？
+2-2|d|What is your favorite thing to do with your family on this day?|這一天你最喜歡跟家人做什麼？|この日に家族とすることで、一番好きなことは何ですか？
+2-2|me|In Japan, we look at the moon and eat ___ .|在日本，我們會賞月、吃 ___。|日本では、月を見ながら___を食べます。
+2-3|e|What food do you prepare for your ancestors?|你們會為祖先準備什麼食物？|ご先祖さまにどんな食べ物を用意しますか？
+2-3|p|What does your family do on that day?|那天你們家會做什麼？|その日、あなたの家族は何をしますか？
+2-3|d|When you are older, which tradition would you like to keep?|等你長大後，你想保留哪個傳統？|大人になったら、どの伝統を続けたいですか？
+2-3|me|In Japan, we have Obon. My family ___ .|日本有盂蘭盆節，我們家會 ___。|日本にはお盆があって、うちでは___。
+2-4|e|What food is lucky in Taiwan?|在台灣什麼食物代表好運？|台湾で縁起のいい食べ物は何ですか？
+2-4|p|Have you eaten something for luck before a test?|你考試前有吃過求好運的東西嗎？|テストの前に縁起のいいものを食べたことはありますか？
+2-4|d|Do you have a lucky food or a lucky item? What is it?|你有幸運食物或幸運物嗎？是什麼？|ラッキーな食べ物やお守りはありますか？何ですか？
+2-4|me|In Japan, students eat ___ before exams for luck.|在日本，學生考試前會吃 ___ 求好運。|日本では、受験生が試験の前に___を食べます。
+3-0|e|What is the belief? Can you explain it?|是什麼觀念？可以說明一下嗎？|どんな考え方ですか？説明してくれますか？
+3-0|p|Do you believe it? Why or why not?|你相信嗎？為什麼？|あなたは信じていますか？どうしてですか？
+3-0|d|Do you and your friends use it a lot? When?|你和朋友常用它嗎？什麼時候用？|友達とよく使いますか？どんなときですか？
+3-0|me|In Japan, many people talk about blood type. I am type ___ .|在日本很多人會聊血型，我是 ___ 型。|日本では血液型の話をよくします。私は___型です。
+3-1|e|What is the word or phrase?|那個詞或句子是什麼？|その言葉やフレーズは何ですか？
+3-1|p|What does it mean, and when do you use it?|它是什麼意思？你什麼時候會用？|どんな意味ですか？いつ使いますか？
+3-1|d|Have you ever used it in a funny way? What happened?|你有用它鬧過笑話嗎？發生了什麼？|それを面白い使い方をしたことがありますか？何がありましたか？
+3-1|me|In Japan, a popular word now is ___ . It means ___ .|在日本，現在流行的詞是 ___，意思是 ___。|今日本で流行っている言葉は___です。意味は___です。
+3-2|e|What is the line? Can you say it?|那句話是什麼？可以說說看嗎？|そのセリフは何ですか？言ってみてくれますか？
+3-2|p|Where is it from? A show, an ad, or a person?|它出自哪裡？節目、廣告，還是某個人？|どこから来ましたか？番組、CM、それとも誰かの言葉？
+3-2|d|When do you say it in your daily life?|你平常什麼時候會說它？|ふだん、どんなときに言いますか？
+3-2|me|In Japan, everyone knows the line “___” .|在日本，大家都知道「___」這句話。|日本では「___」というセリフをみんな知っています。
+3-3|e|What happened? Can you tell me simply?|發生了什麼事？可以簡單說說嗎？|何があったのですか？簡単に教えてくれますか？
+3-3|p|How old were you, and where were you then?|那時你幾歲？在哪裡？|そのとき何歳で、どこにいましたか？
+3-3|d|How did you feel when it happened?|那件事發生時你有什麼感覺？|それが起きたとき、どんな気持ちでしたか？
+3-3|me|In Japan, everyone remembers ___ .|在日本，大家都記得 ___。|日本では、みんな___を覚えています。
+3-4|e|What is the nickname? Who or what is it?|是什麼暱稱？指的是誰或什麼？|そのあだ名は何ですか？誰（何）のことですか？
+3-4|p|Why does it have that name?|為什麼會叫這個名字？|どうしてその名前なのですか？
+3-4|d|Do you have a nickname too? How did you get it?|你也有綽號嗎？怎麼來的？|あなたにもあだ名はありますか？どうしてその名前になりましたか？
+3-4|me|In Japan, people call ___ “___” .|在日本，大家把 ___ 叫做「___」。|日本では___を「___」と呼びます。
+4-0|e|Do you have a teacher like that?|你有這樣的老師嗎？|そういう先生はいますか？
+4-0|p|What does that teacher do that feels fair?|那位老師做了什麼讓你覺得公平？|その先生のどんなところが公平だと感じますか？
+4-0|d|Has a teacher ever helped you in a way you still remember?|有沒有哪位老師幫過你，讓你到現在還記得？|今でも覚えている、先生に助けてもらったことはありますか？
+4-0|me|My favorite teacher is ___ because ___ .|我最喜歡的老師是 ___，因為 ___。|私の好きな先生は___です。なぜなら___からです。
+4-1|e|Which subject does that teacher teach?|那位老師教哪一科？|その先生は何の教科の先生ですか？
+4-1|p|Can you tell me about a time a teacher helped you?|可以說說一次老師幫你的經驗嗎？|先生に助けてもらったときのことを教えてくれますか？
+4-1|d|Do you like kind teachers or strict teachers more?|你比較喜歡溫柔的老師還是嚴格的老師？|優しい先生と厳しい先生、どちらが好きですか？
+4-1|me|A teacher once helped me when ___ .|有一次 ___ 的時候，老師幫了我。|___とき、先生が助けてくれました。
+4-2|e|Which class is the easiest to understand?|哪一堂課最好懂？|一番わかりやすい授業はどれですか？
+4-2|p|What does that teacher do to make it clear?|那位老師怎麼讓課變得好懂？|その先生はどうやってわかりやすくしていますか？
+4-2|d|What is one lesson you still remember?|有哪一堂課你到現在還記得？|今でも覚えている授業はありますか？
+4-2|me|My easiest class is ___ because ___ .|我覺得最好懂的課是 ___，因為 ___。|一番わかりやすい授業は___です。なぜなら___からです。
+4-3|e|How many hours of homework do you have a day?|你一天大約有幾小時的作業？|一日に何時間くらい宿題がありますか？
+4-3|p|Which subject gives the most homework?|哪一科作業最多？|どの教科の宿題が一番多いですか？
+4-3|d|Which homework do you like most, and which do you like least?|你最喜歡和最不喜歡哪一種作業？|一番好きな宿題と一番苦手な宿題は何ですか？
+4-3|me|I have about ___ hours of homework every day.|我每天大約有 ___ 小時的作業。|毎日だいたい___時間宿題があります。
+4-4|e|Does this happen often?|這種情況常發生嗎？|それはよくありますか？
+4-4|p|What do you do when a teacher does not listen?|老師不聽的時候你怎麼辦？|先生が話を聞いてくれないとき、どうしますか？
+4-4|d|Is there a teacher you can talk to easily? What do you talk about?|有沒有你可以輕鬆聊天的老師？你們都聊什麼？|気軽に話せる先生はいますか？どんなことを話しますか？
+4-4|me|I like teachers who ___ .|我喜歡會 ___ 的老師。|___してくれる先生が好きです。
+5-0|e|Who is your favorite singer or idol?|你最喜歡哪位歌手或偶像？|一番好きな歌手やアイドルは誰ですか？
+5-0|p|How did you become a fan?|你是怎麼變成粉絲的？|どうやってファンになりましたか？
+5-0|d|What do your parents say about the things you like?|爸媽對你喜歡的東西會說什麼？|あなたが好きなものについて、親は何と言いますか？
+5-0|me|My favorite is ___ . I bought ___ .|我最喜歡 ___，我買過 ___。|私の推しは___です。___を買いました。
+5-1|e|What game do you play now?|你現在玩什麼遊戲？|今どんなゲームをしていますか？
+5-1|p|Do you spend money on games? What do you buy?|你會花錢在遊戲上嗎？買什麼？|ゲームにお金を使いますか？何を買いますか？
+5-1|d|Have you ever spent money on a game? What did you buy?|你有在遊戲上花過錢嗎？買了什麼？|ゲームにお金を使ったことはありますか？何を買いましたか？
+5-1|me|I play ___ . I usually play for ___ .|我玩 ___，通常玩 ___。|私は___をしています。だいたい___遊びます。
+5-2|e|Where do you usually buy clothes?|你通常在哪裡買衣服？|服はふだんどこで買いますか？
+5-2|p|What is your favorite thing you bought recently?|你最近買的東西中最喜歡哪個？|最近買ったもので一番気に入っているものは何ですか？
+5-2|d|What clothes or style do you like these days?|你最近喜歡什麼衣服或風格？|最近どんな服やスタイルが好きですか？
+5-2|me|I usually buy clothes at ___ .|我通常在 ___ 買衣服。|私はよく___で服を買います。
+5-3|e|What drink or snack do you buy most?|你最常買什麼飲料或零食？|一番よく買う飲み物やおやつは何ですか？
+5-3|p|How often do you buy it?|你多久買一次？|どのくらいの頻度で買いますか？
+5-3|d|What is your usual drink order?|你平常都點什麼飲料？|いつも頼む飲み物は何ですか？
+5-3|me|In Japan, I often buy ___ at the convenience store.|在日本，我常在便利商店買 ___。|日本ではコンビニでよく___を買います。
+5-4|e|Which anime do you like?|你喜歡哪部動畫？|どのアニメが好きですか？
+5-4|p|What is your favorite item? Why is it special?|你最喜歡的周邊是什麼？為什麼特別？|一番好きなグッズは何ですか？どうして特別なのですか？
+5-4|d|Which anime would you recommend to me?|你會推薦我看哪部動漫？|おすすめのアニメはありますか？
+5-4|me|I like ___ . My favorite character is ___ .|我喜歡 ___，最喜歡的角色是 ___。|私は___が好きで、好きなキャラクターは___です。
+6-0|e|What job do you want to try?|你想試試什麼工作？|どんな仕事をしてみたいですか？
+6-0|p|What stops you from trying it now?|是什麼讓你現在還不能試？|今それができないのはどうしてですか？
+6-0|d|What job would you like to try someday?|你以後想試試什麼工作？|いつかやってみたい仕事は何ですか？
+6-0|me|I want to work at ___ because ___ .|我想在 ___ 打工，因為 ___。|___で働いてみたいです。なぜなら___からです。
+6-1|e|Which country do you want to visit? Why?|你想去哪個國家？為什麼？|どの国に行きたいですか？どうしてですか？
+6-1|p|Have you traveled abroad before? Where?|你出過國嗎？去哪裡？|海外旅行をしたことはありますか？どこですか？
+6-1|d|Where would you like to travel with your friends?|你想跟朋友去哪裡旅行？|友達とどこに旅行したいですか？
+6-1|me|I want to go to ___ because ___ .|我想去 ___，因為 ___。|___に行きたいです。なぜなら___からです。
+6-2|e|What do you want to learn?|你想學什麼？|何を習いたいですか？
+6-2|p|Why haven’t you started yet?|你為什麼還沒開始？|どうしてまだ始めていないのですか？
+6-2|d|What is something new you want to learn this year?|今年你想學什麼新東西？|今年新しく学びたいことは何ですか？
+6-2|me|I want to learn ___ someday.|我有一天想學 ___。|いつか___を習いたいです。
+6-3|e|What competition or event do you want to join?|你想參加什麼比賽或活動？|どんな大会やイベントに出たいですか？
+6-3|p|Have you ever been on stage? How did you feel?|你上過台嗎？感覺怎麼樣？|ステージに立ったことはありますか？どんな気持ちでしたか？
+6-3|d|Which competition or event do you remember most? How did you feel?|你最記得哪一場比賽或活動？當時感覺如何？|一番覚えている大会やイベントは何ですか？どんな気持ちでしたか？
+6-3|me|I joined a ___ competition once. It was ___ .|我參加過 ___ 比賽，感覺 ___。|___の大会に出たことがあります。___でした。
+6-4|e|Can you cook?|你會煮飯嗎？|料理はできますか？
+6-4|p|Have you ever stayed home alone for a few days?|你有自己一個人在家好幾天過嗎？|何日か一人で家にいたことはありますか？
+6-4|d|If you lived alone, what would be the hardest thing for you?|如果你一個人住，對你來說最難的是什麼？|もし一人暮らしをしたら、何が一番大変だと思いますか？
+6-4|me|If I lived alone, I would ___ every day.|如果我一個人住，我每天會 ___。|一人暮らしなら、毎日___します。
+7-0|e|Which app do you use most?|你最常用哪個 App？|一番よく使うアプリは何ですか？
+7-0|p|How many hours a day do you use it?|你一天用幾個小時？|一日に何時間使いますか？
+7-0|d|Which app do you use most? What do you watch or post?|你最常用哪個 app？都看什麼或發什麼？|一番よく使うアプリは何ですか？何を見たり投稿したりしますか？
+7-0|me|I use ___ about ___ hours a day.|我一天用 ___ 大約 ___ 小時。|私は___を一日___時間くらい使います。
+7-1|e|What kind of short videos do you watch?|你看哪種短影片？|どんなショート動画を見ますか？
+7-1|p|When do you usually watch them?|你通常什麼時候看？|ふだんいつ見ますか？
+7-1|d|What kind of short videos do you watch most?|你最常看哪種短影片？|どんな短い動画をよく見ますか？
+7-1|me|I often watch ___ videos.|我常看 ___ 的影片。|私はよく___の動画を見ます。
+7-2|e|What game do you play these days?|你最近玩什麼遊戲？|最近どんなゲームをしていますか？
+7-2|p|Do you play alone or with friends?|你自己玩還是跟朋友玩？|一人で遊びますか、友達と遊びますか？
+7-2|d|What game are you playing these days?|你最近在玩什麼遊戲？|最近どんなゲームをしていますか？
+7-2|me|I play ___ . I usually play for ___ .|我玩 ___，通常玩 ___。|私は___をしています。だいたい___遊びます。
+7-3|e|What are you watching now?|你現在在看什麼？|今何を見ていますか？
+7-3|p|Have you ever stayed up late to watch it?|你有熬夜看過嗎？|夜ふかしして見たことはありますか？
+7-3|d|What series would you recommend to me?|你會推薦我看哪部劇？|おすすめのドラマはありますか？
+7-3|me|I’m watching ___ now. It is about ___ .|我現在在看 ___，內容是 ___。|今___を見ています。___の話です。
+7-4|e|What time do you get up on weekends?|你週末幾點起床？|週末は何時に起きますか？
+7-4|p|Have you ever been late because you stayed in bed?|你有因為賴床遲到過嗎？|布団から出られなくて遅刻したことはありますか？
+7-4|d|How many hours do you usually sleep? Is it enough for you?|你通常睡幾個小時？對你來說夠嗎？|ふだん何時間寝ますか？それで足りていますか？
+7-4|me|On weekends, I get up at ___ .|週末我 ___ 起床。|週末は___に起きます。
+8-0|e|Which AI do you use?|你用哪個 AI？|どのAIを使っていますか？
+8-0|p|What do you usually talk to AI about?|你通常跟 AI 聊什麼？|AIとふだん何について話しますか？
+8-0|d|Have you ever talked to AI just for fun? What did you talk about?|你有只是好玩跟 AI 聊天過嗎？聊了什麼？|遊びでAIと話したことはありますか？何を話しましたか？
+8-0|me|I use ___ . I sometimes talk to it about ___ .|我用 ___，有時會跟它聊 ___。|私は___を使っていて、ときどき___について話します。
+8-1|e|When do you usually talk to AI?|你通常什麼時候跟 AI 聊？|ふだんいつAIと話しますか？
+8-1|p|Is it easier to talk to AI than to people? Why?|跟 AI 說話比跟人說話容易嗎？為什麼？|人よりAIのほうが話しやすいですか？どうしてですか？
+8-1|d|When you have a problem, who do you talk to: friends, family, or AI?|你有煩惱時會找誰說：朋友、家人還是 AI？|悩みがあるとき、誰に話しますか？友達、家族、それともAIですか？
+8-1|me|When I feel stressed, I usually ___ .|我壓力大的時候通常會 ___。|ストレスを感じたとき、私はよく___。
+8-2|e|Which subject do you use AI for?|你用 AI 做哪一科的功課？|どの教科でAIを使いますか？
+8-2|p|When did AI help you the most?|AI 什麼時候幫你最多？|AIが一番役に立ったのはいつですか？
+8-2|d|What school work do you use AI for?|你會用 AI 做哪些學校的事？|学校のどんなことにAIを使いますか？
+8-2|me|At my school, we use AI for ___ .|我們學校會用 AI 來 ___。|私の学校では、AIを___に使います。
+8-3|e|What do you use AI for?|你用 AI 做什麼？|AIを何に使いますか？
+8-3|p|What is the most useful thing AI did for you?|AI 幫你做過最有用的事是什麼？|AIがしてくれた一番役に立ったことは何ですか？
+8-3|d|What job do you want in the future? Do you think AI can do it too?|你以後想做什麼工作？你覺得 AI 也做得到嗎？|将来どんな仕事をしたいですか？AIにもできると思いますか？
+8-3|me|I use AI to ___ .|我用 AI 來 ___。|私はAIを___ために使います。
+8-4|e|Why don’t you use AI very much?|你為什麼不太用 AI？|どうしてAIをあまり使わないのですか？
+8-4|p|Does your school allow students to use AI?|你們學校允許學生用 AI 嗎？|あなたの学校では、生徒がAIを使ってもいいですか？
+8-4|d|How many times a day do you use AI?|你一天大概用幾次 AI？|一日に何回くらいAIを使いますか？
+8-4|me|I use AI ___ .|我 ___ 用 AI。|私はAIを___使います。
+9-0|e|Who was it? A brother, sister, or cousin?|是誰？弟弟、妹妹還是表弟妹？|誰でしたか？弟、妹、それともいとこ？
+9-0|p|What did they do, and what did you say?|他做了什麼？你說了什麼？|その人は何をして、あなたは何と言いましたか？
+9-0|d|In your family, who taught you the most about manners?|在你家，誰教你最多禮貌？|家族の中で、誰が一番マナーを教えてくれましたか？
+9-0|me|I have a younger ___ . Sometimes I tell them ___ .|我有一個 ___，有時候我會跟他說 ___。|私には___がいて、ときどき___と言います。
+9-1|e|Was it in your club or in class?|是在社團還是在班上？|部活でのことですか、クラスでのことですか？
+9-1|p|What rule did they break, and how did you tell them?|他違反了什麼規定？你怎麼跟他說的？|どんなルールを破って、どうやって伝えましたか？
+9-1|d|Have you ever told a younger student they were wrong? How did it go?|你有跟學弟妹說過他們做錯了嗎？結果怎樣？|後輩にまちがいを伝えたことはありますか？どうなりましたか？
+9-1|me|In Japan, seniors and juniors in clubs ___ .|在日本，社團的學長姐和學弟妹 ___。|日本の部活では、先輩と後輩は___。
+9-2|e|What were they doing?|他那時在做什麼？|その人は何をしていましたか？
+9-2|p|What happened after you said something?|你說了之後發生什麼事？|あなたが言ったあと、どうなりましたか？
+9-2|d|Have you ever been scolded and later felt thankful? What happened?|你有被罵過但後來很感謝的經驗嗎？發生了什麼？|怒られたけど、あとで感謝したことはありますか？何がありましたか？
+9-2|me|Once, I told someone to stop because ___ .|有一次我叫人停下來，因為 ___。|一度、___ので「やめて」と言いました。
+9-3|e|How many times did you tell them?|你說了幾次？|何回言いましたか？
+9-3|p|How did you feel, and what happened in the end?|你那時感覺怎樣？最後結果如何？|どんな気持ちでしたか？最後はどうなりましたか？
+9-3|d|Do you listen more to friends or to adults?|你比較會聽朋友的話還是大人的話？|友達と大人、どちらの話をよく聞きますか？
+9-3|me|When someone does not listen, I usually ___ .|別人不聽的時候，我通常會 ___。|話を聞いてくれないとき、私はよく___。
+9-4|e|Do you have younger brothers or sisters?|你有弟弟妹妹嗎？|弟や妹はいますか？
+9-4|p|Has an older person ever scolded you? What happened?|有比你大的人罵過你嗎？發生了什麼事？|年上の人に叱られたことはありますか？何がありましたか？
+9-4|d|If you saw a younger student doing something wrong, what would you do?|如果你看到學弟妹做錯事，你會怎麼做？|もし後輩が悪いことをしていたら、どうしますか？
+9-4|me|I sometimes tell ___ to ___ .|我有時會叫 ___ 要 ___。|私はときどき___に___ように言います。
+x-5|e|What is your answer? Can you explain it?|你的答案是什麼？可以說明嗎？|あなたの答えは何ですか？説明してくれますか？
+x-5|p|Do you have an example from your life?|你有生活中的例子嗎？|生活の中の例はありますか？
+x-5|d|Is there something like this in your life too?|你的生活中也有類似的事嗎？|あなたの生活にも似たことはありますか？
+x-5|me|That is new to me. In Japan, ___ .|這對我來說很新鮮。在日本，___。|初めて聞きました。日本では___。
+x-6|e|Is there someone in your family or class who has this experience?|你家人或同學中有人有這個經驗嗎？|家族やクラスに、この経験がある人はいますか？
+x-6|p|Do your friends have this experience?|你的朋友有這種經驗嗎？|友達にはこの経験がありますか？
+x-6|d|Would you like to try it someday? Why?|你以後想試試看嗎？為什麼？|いつかやってみたいですか？どうしてですか？
+x-6|me|For me, ___ .|對我來說，___。|私の場合は、___。`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===5)(m[p[0]]=m[p[0]]||[]).push([p[2],p[3],p[4],p[1]])});return m})();
+const FUTYPE={e:['🟢 簡單','🟢 かんたん','🟢 Easy'],p:['🔵 個人經驗','🔵 自分の経験','🔵 Personal'],d:['🟠 說說想法','🟠 気持ち・アイデア','🟠 Your ideas'],me:['🙋 換我說','🙋 自分の話','🙋 My turn']};
+/* 台灣同學可以直接說的完整理由（每個選項 3 句） */
+const RS=(()=>{const m={};`0-0|My school has strict hair rules.|我們學校的頭髮規定很嚴格。|私の学校は髪のルールが厳しいです。
+0-0|Hair color should not affect learning.|髮色不應該影響學習。|髪の色は勉強に関係ないはずです。
+0-0|Students should be able to choose their hairstyle.|學生應該可以自己選髮型。|生徒は髪型を自分で選べるべきです。
+0-1|The uniform is uncomfortable.|制服穿起來不舒服。|制服は着心地が悪いです。
+0-1|We have to wear it even when it is hot.|天氣很熱也一定要穿。|暑いときでも着なければなりません。
+0-1|I want more freedom to choose clothes.|我想要更自由地選衣服。|服をもっと自由に選びたいです。
+0-2|We cannot use phones during breaks.|下課也不能用手機。|休み時間もスマホを使えません。
+0-2|Sometimes I need to contact my family.|有時候我需要聯絡家人。|家族に連絡が必要なときがあります。
+0-2|The rules are too strict.|規定太嚴格了。|ルールが厳しすぎます。
+0-3|We do not have enough time for a job.|我們沒有足夠的時間打工。|アルバイトをする時間が足りません。
+0-3|A part-time job can teach us useful skills.|打工可以學到有用的技能。|アルバイトで役に立つスキルが学べます。
+0-3|I want to earn some money myself.|我想自己賺一點錢。|自分でお金を稼ぎたいです。
+0-4|I have to come home early.|我必須很早回家。|早く帰らなければなりません。
+0-4|My parents worry too much.|我爸媽太擔心了。|親が心配しすぎです。
+0-4|Sometimes I want to spend more time with friends.|有時候我想多跟朋友相處。|ときどき友達ともっと一緒にいたいです。
+1-0|My parents ask about my grades a lot.|我爸媽很常問我的成績。|親はよく成績のことを聞きます。
+1-0|They ask the same question again and again.|他們一直問一樣的問題。|同じ質問を何度もします。
+1-0|I feel nervous when they ask.|他們問的時候我會緊張。|聞かれると緊張します。
+1-1|They want me to study more.|他們希望我多讀書。|もっと勉強してほしいと思っています。
+1-1|I already have a lot of homework.|我已經有很多作業了。|もう宿題がたくさんあります。
+1-1|I want some free time.|我想要一些自由時間。|自由な時間がほしいです。
+1-2|My parents want to make sure I eat.|爸媽想確定我有吃飯。|親は私がちゃんと食べているか確かめたいです。
+1-2|They ask this every day.|他們每天都問。|毎日聞かれます。
+1-2|I think it shows they care about me.|我覺得這表示他們關心我。|私のことを気にかけている証拠だと思います。
+1-3|They worry if I get home late.|我晚回家他們會擔心。|帰りが遅いと心配します。
+1-3|I often stay at school for activities.|我常常留在學校參加活動。|活動でよく学校に残ります。
+1-3|I have to tell them my plans.|我必須告訴他們我的計畫。|予定を伝えなければなりません。
+1-4|They are worried about my safety.|他們擔心我的安全。|私の安全を心配しています。
+1-4|They want to know who my friends are.|他們想知道我的朋友是誰。|私の友達が誰か知りたがっています。
+1-4|Sometimes I want more privacy.|有時候我想要多一點隱私。|ときどきもっとプライバシーがほしいです。
+2-0|It celebrates children growing up.|它是慶祝孩子長大。|子どもの成長をお祝いします。
+2-0|Families prepare special food.|家人會準備特別的食物。|家族が特別な料理を用意します。
+2-0|It is an important tradition.|這是很重要的傳統。|大切な伝統です。
+2-1|My family eats together.|我們全家一起吃飯。|家族みんなで食べます。
+2-1|We eat special food for the new year.|我們過年吃特別的食物。|新年には特別な料理を食べます。
+2-1|I enjoy spending time with relatives.|我喜歡跟親戚一起度過。|親戚と過ごすのが楽しいです。
+2-2|We eat mooncakes or have a barbecue.|我們會吃月餅或烤肉。|月餅を食べたり、バーベキューをしたりします。
+2-2|We enjoy looking at the moon.|我們喜歡賞月。|月を見るのを楽しみます。
+2-2|It brings families together.|它讓家人團聚。|家族が集まります。
+2-3|We prepare food for our ancestors.|我們為祖先準備食物。|ご先祖さまのために食べ物を用意します。
+2-3|It is a way to remember our family.|這是紀念家人的方式。|家族をしのぶ方法です。
+2-3|My family follows this tradition.|我們家遵守這個傳統。|うちの家族はこの伝統を守っています。
+2-4|People eat it for good luck.|大家吃它是為了求好運。|幸運のために食べます。
+2-4|My family believes it brings good things.|我家人相信它會帶來好事。|家族はいいことが起こると信じています。
+2-4|It makes special days more meaningful.|它讓特別的日子更有意義。|特別な日がもっと意味のあるものになります。
+3-0|Many people know this belief.|很多人知道這個觀念。|多くの人がこの考え方を知っています。
+3-0|People sometimes connect it with personality.|大家有時會把它和個性聯想在一起。|性格と結びつけることがあります。
+3-0|I have heard adults talk about it.|我聽過大人聊這個。|大人が話しているのを聞いたことがあります。
+3-1|My friends use this word online.|我的朋友在網路上會用這個詞。|友達がネットでこの言葉を使います。
+3-1|It is funny when you know the background.|知道背景就會覺得很好笑。|背景を知っていると面白いです。
+3-1|People share it on social media.|大家會在社群媒體上分享。|みんなSNSでシェアします。
+3-2|People hear it in ads or videos.|大家在廣告或影片裡聽過。|CMや動画で聞きます。
+3-2|Almost everyone knows the line.|幾乎每個人都知道這句話。|ほとんどの人がそのセリフを知っています。
+3-2|It makes people laugh.|它會讓人發笑。|みんなを笑わせます。
+3-3|Many people remember what happened.|很多人記得發生了什麼。|多くの人が何があったか覚えています。
+3-3|People still talk about the event.|大家現在還會聊這件事。|今でもその出来事が話題になります。
+3-3|It became a shared memory.|它變成大家共同的回憶。|みんなの共通の思い出になりました。
+3-4|Many people know who it refers to.|很多人知道它在說誰。|多くの人が誰のことかわかります。
+3-4|The name is easier to remember.|這個名字比較好記。|その名前のほうが覚えやすいです。
+3-4|People use it as a joke.|大家拿它來開玩笑。|冗談として使います。
+4-0|I like teachers who treat everyone fairly.|我喜歡對每個人都公平的老師。|みんなを公平に扱う先生が好きです。
+4-0|Rules can help us learn.|規則可以幫助我們學習。|ルールは勉強の助けになります。
+4-0|I do not mind strict teachers if they are fair.|只要公平，我不介意嚴格的老師。|公平なら、厳しい先生でもかまいません。
+4-1|I feel safe asking questions.|我可以安心地問問題。|安心して質問できます。
+4-1|They listen when I need help.|我需要幫忙時他們會聽我說。|助けが必要なとき、話を聞いてくれます。
+4-1|They do not get angry easily.|他們不容易生氣。|すぐに怒りません。
+4-2|I can understand their lessons.|我聽得懂他們的課。|その先生の授業はわかります。
+4-2|They use simple examples.|他們會用簡單的例子。|簡単な例を使います。
+4-2|I learn better when they explain slowly.|他們解釋慢一點，我學得比較好。|ゆっくり説明してくれるとよくわかります。
+4-3|I feel tired after doing so much homework.|寫了那麼多作業我很累。|宿題が多くて疲れます。
+4-3|I want more time for other subjects.|我想要多一點時間給其他科目。|ほかの教科にもっと時間を使いたいです。
+4-3|Sometimes the work is too difficult.|有時候作業太難了。|ときどき宿題が難しすぎます。
+4-4|I want the teacher to listen to us.|我希望老師聽我們說話。|先生に私たちの話を聞いてほしいです。
+4-4|Everyone deserves to be heard.|每個人都應該被傾聽。|みんな話を聞いてもらうべきです。
+4-4|It feels unfair when nobody listens.|沒人聽的時候感覺很不公平。|誰も聞いてくれないと不公平に感じます。
+5-0|Music makes me happy.|音樂讓我很開心。|音楽を聞くと幸せになります。
+5-0|I want to support my favorite singer.|我想支持我最喜歡的歌手。|好きな歌手を応援したいです。
+5-0|I enjoy collecting CDs or merchandise.|我喜歡收集 CD 或周邊。|CDやグッズを集めるのが好きです。
+5-1|Games help me relax.|遊戲讓我放鬆。|ゲームでリラックスできます。
+5-1|I enjoy playing with friends.|我喜歡跟朋友一起玩。|友達と遊ぶのが楽しいです。
+5-1|I like getting better at games.|我喜歡在遊戲裡越來越強。|ゲームが上手になるのが好きです。
+5-2|I enjoy fashion.|我喜歡時尚。|ファッションが好きです。
+5-2|These things help me express myself.|這些東西幫助我表達自己。|自分らしさを表現できます。
+5-2|I like choosing my own style.|我喜歡選自己的風格。|自分のスタイルを選ぶのが好きです。
+5-3|I like trying new food.|我喜歡嘗試新食物。|新しい食べ物を試すのが好きです。
+5-3|Buying snacks makes me happy.|買零食讓我很開心。|おやつを買うと幸せになります。
+5-3|I enjoy drinks with my friends.|我喜歡跟朋友一起喝飲料。|友達と飲み物を楽しむのが好きです。
+5-4|I love my favorite characters.|我很愛我喜歡的角色。|好きなキャラクターが大好きです。
+5-4|I enjoy collecting special items.|我喜歡收集特別的東西。|特別なグッズを集めるのが好きです。
+5-4|These things are important to me.|這些東西對我很重要。|これらは私にとって大切です。
+6-0|I want to earn my own money.|我想自己賺錢。|自分でお金を稼ぎたいです。
+6-0|I want to learn about working.|我想了解工作是什麼樣子。|働くことについて学びたいです。
+6-0|I have not had enough time.|我一直沒有足夠的時間。|十分な時間がありませんでした。
+6-1|I want to experience another culture.|我想體驗其他文化。|ほかの文化を体験したいです。
+6-1|I have never had the chance to go.|我一直沒機會去。|行く機会がありませんでした。
+6-1|I want to make friends abroad.|我想在國外交朋友。|海外で友達を作りたいです。
+6-2|I am interested in something new.|我對新的事物有興趣。|新しいことに興味があります。
+6-2|I want to challenge myself.|我想挑戰自己。|自分に挑戦したいです。
+6-2|I have not found a good teacher yet.|我還沒找到好老師。|まだいい先生が見つかっていません。
+6-3|It looks exciting.|看起來很刺激。|わくわくしそうです。
+6-3|I want to test my skills.|我想試試自己的能力。|自分の力を試したいです。
+6-3|I have not had the chance to join.|我還沒有機會參加。|参加する機会がありませんでした。
+6-4|I want to be more independent.|我想更獨立。|もっと自立したいです。
+6-4|I want to learn how to take care of myself.|我想學會照顧自己。|自分のことを自分でできるようになりたいです。
+6-4|I cannot do it yet.|我現在還做不到。|今はまだできません。
+7-0|I always check what my friends post.|我總是會看朋友發了什麼。|友達の投稿をいつもチェックします。
+7-0|It is hard to stop scrolling.|很難停止滑手機。|スクロールをやめるのが難しいです。
+7-0|I learn about new trends online.|我在網路上知道新的流行。|ネットで新しい流行を知ります。
+7-1|Short videos are easy to watch.|短影片很容易看。|ショート動画は気軽に見られます。
+7-1|I always want to watch one more.|我總是想再看一支。|いつももう一本見たくなります。
+7-1|They are funny and relaxing.|它們很好笑又很放鬆。|面白くてリラックスできます。
+7-2|Games are fun with friends.|跟朋友玩遊戲很好玩。|友達とゲームをすると楽しいです。
+7-2|I want to finish the next level.|我想破下一關。|次のステージをクリアしたいです。
+7-2|I lose track of time.|我會忘了時間。|時間を忘れてしまいます。
+7-3|The stories are exciting.|故事很精彩。|ストーリーがわくわくします。
+7-3|I want to know what happens next.|我想知道接下來會怎樣。|次にどうなるか知りたいです。
+7-3|I stay up late watching.|我會熬夜看。|夜ふかしして見てしまいます。
+7-4|I feel tired in the morning.|我早上很累。|朝は疲れています。
+7-4|My bed is too comfortable.|我的床太舒服了。|ベッドが気持ちよすぎます。
+7-4|I keep saying “five more minutes.”|我一直說「再五分鐘」。|「あと5分」と言い続けてしまいます。
+8-0|I sometimes say thank you to AI.|我有時候會跟 AI 說謝謝。|ときどきAIに「ありがとう」と言います。
+8-0|I talk to it without thinking.|我不知不覺就會跟它說話。|何も考えずに話しかけてしまいます。
+8-0|It feels natural to me.|對我來說很自然。|私にとっては自然なことです。
+8-1|It is easier to share some feelings.|有些心情比較容易說出來。|気持ちによっては話しやすいです。
+8-1|AI is available when I need help.|我需要幫忙時 AI 隨時都在。|助けが必要なとき、AIはいつでも使えます。
+8-1|It can help me organize my thoughts.|它可以幫我整理想法。|考えを整理するのに役立ちます。
+8-2|I use AI to check my homework.|我用 AI 檢查作業。|宿題のチェックにAIを使います。
+8-2|It helps me understand English.|它幫我理解英文。|英語を理解するのに役立ちます。
+8-2|I ask it to explain difficult questions.|我請它解釋難的題目。|難しい問題を説明してもらいます。
+8-3|I use it to find information.|我用它來找資料。|情報を探すのに使います。
+8-3|I do not see it as a friend.|我不把它當朋友。|友達だとは思っていません。
+8-3|I prefer talking with real people.|我比較喜歡跟真人說話。|本当の人と話すほうが好きです。
+8-4|I do not need it very often.|我不太常需要它。|あまり必要ありません。
+8-4|I prefer searching by myself.|我比較喜歡自己找。|自分で調べるほうが好きです。
+8-4|I am not used to using AI.|我不習慣用 AI。|AIを使うのに慣れていません。
+9-0|I think manners are important.|我覺得禮貌很重要。|マナーは大切だと思います。
+9-0|I want to help younger children learn.|我想幫助比較小的孩子學習。|年下の子が学ぶのを助けたいです。
+9-0|I worry when they do something rude.|他們做沒禮貌的事時我會擔心。|失礼なことをすると心配になります。
+9-1|Rules help keep things fair.|規則能讓事情公平。|ルールがあると公平になります。
+9-1|I want younger students to be careful.|我希望學弟妹小心一點。|後輩に気をつけてほしいです。
+9-1|Someone has to explain the rules.|總要有人說明規則。|誰かがルールを説明しないといけません。
+9-2|I was worried someone might get hurt.|我擔心有人會受傷。|誰かがけがをするのが心配でした。
+9-2|I wanted to keep them safe.|我想保護他們的安全。|安全でいてほしかったです。
+9-2|I had to tell them to stop.|我必須叫他們停下來。|やめるように言わなければなりませんでした。
+9-3|I had already asked them to stop.|我已經叫他們停過了。|もうやめるように言っていました。
+9-3|I felt frustrated.|我覺得很挫折。|イライラしました。
+9-3|I wanted them to listen.|我希望他們聽話。|聞いてほしかったです。
+9-4|I have never had to do that.|我從來不需要那樣做。|そうする必要がありませんでした。
+9-4|I do not have younger siblings.|我沒有弟弟妹妹。|弟や妹がいません。
+9-4|I prefer explaining things calmly.|我比較喜歡冷靜地說明。|落ち着いて説明するほうが好きです。
+x-5|I have a different answer.|我有不一樣的答案。|違う答えがあります。
+x-5|Let me explain my example.|讓我說說我的例子。|私の例を説明させてください。
+x-5|I want to share something else.|我想分享別的事。|ほかのことをシェアしたいです。
+x-6|I have not had this experience.|我沒有這種經驗。|この経験はありません。
+x-6|I cannot think of an example right now.|我現在想不到例子。|今は例が思いつきません。
+x-6|Maybe I will experience it someday.|也許有一天我會經歷。|いつか経験するかもしれません。`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===4)(m[p[0]]=m[p[0]]||[]).push([p[1],p[2],p[3]])});return m})();
+const reasons=(q,i)=>RS[(i>=5?'x':q)+'-'+i]||[];
+/* 日本同學答案的短句版（目前依照片上的答案，題號 → 3 句） */
+const ST=(()=>{const m={};`0|Some students in Japan have naturally brown hair.|日本有些學生天生是咖啡色頭髮。|日本には生まれつき髪が茶色い生徒がいます。
+0|Some schools ask for a paper to prove it.|有些學校要求交一張證明。|一部の学校は、それを証明する書類を求めます。
+0|I think that rule is unfair.|我覺得這個規定不公平。|そのルールは不公平だと思います。
+1|My father often asks about my exams.|爸爸常常問我考試的事。|父はよく試験のことを聞きます。
+1|He asks when the exam is and how it went.|他問什麼時候考、考得怎麼樣。|試験はいつか、どうだったかを聞きます。
+1|I answer the same questions many times.|我要回答一樣的問題很多次。|同じ質問に何度も答えます。
+2|March 3 is Girls’ Day in Japan.|3 月 3 日是日本的女兒節。|3月3日は日本のひな祭りです。
+2|Some families make chirashi sushi.|有些家庭會做散壽司。|ちらし寿司を作る家族もいます。
+2|We wish for girls’ health and happiness.|我們祝福女孩健康幸福。|女の子の健康と幸せを願います。
+3|Many Japanese people talk about blood type.|很多日本人會聊血型。|多くの日本人は血液型の話をします。
+3|Some people connect blood type with personality.|有些人把血型和個性聯想在一起。|血液型と性格を結びつける人もいます。
+3|For example, type A people are said to like things clean.|例如，大家說 A 型的人愛乾淨。|たとえば、A型の人はきれい好きだと言われます。
+5|I bought the same CD several times.|我買了好幾張一樣的 CD。|同じCDを何枚も買いました。
+5|With a CD, fans can take photos or shake hands with idols.|買 CD 就可以和偶像拍照或握手。|CDを買うと、アイドルと写真を撮ったり握手したりできます。
+5|My mother does not understand why.|我媽媽不懂為什麼。|母はその理由がわかりません。
+6|I want to try a part-time job.|我想試試打工。|アルバイトをしてみたいです。
+6|My school allows it only during vacations.|我們學校只准放假時打工。|学校は長期休みだけ許可しています。
+6|But we have classes in vacations, so I have no time.|但放假還要上課，所以我沒時間。|でも休みにも授業があるので、時間がありません。
+7|I spend a lot of time on social media.|我花很多時間在社群媒體上。|SNSにたくさん時間を使います。
+7|It is hard to stop.|很難停下來。|やめるのが難しいです。
+7|I learn about new trends in Japan there.|我在上面知道日本的新流行。|そこで日本の新しい流行を知ります。
+8|Sometimes I talk to AI without noticing.|有時我會不知不覺跟 AI 說話。|ときどき無意識にAIに話しかけます。
+8|I use a school iPad and my phone.|我會用學校的 iPad 和自己的手機。|学校のiPadと自分のスマホを使います。
+8|I use them in different ways.|我用它們的方式不一樣。|使い方を分けています。
+9|My younger brother is fourteen.|我弟弟十四歲。|弟は14歳です。
+9|He does not hold chopsticks correctly.|他拿筷子的方式不對。|箸を正しく持てません。
+9|My parents do not say anything, so I teach him.|爸媽都不說，所以我來教他。|親は何も言わないので、私が教えています。`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===4)(m[p[0]]=m[p[0]]||[]).push([p[1],p[2],p[3]])});return m})();
+/* 延伸聊天：每題三種方向（簡單／個人經驗／說說想法） */
+const EX=(()=>{const m={};`0|e|Which school rule do you think is good? Why?|你覺得哪一條校規是好的？為什麼？|いいと思う校則はありますか？どうしてですか？
+0|p|Have you ever broken a rule by mistake? What happened?|你有不小心違反過規定嗎？發生了什麼事？|うっかりルールを破ったことはありますか？何がありましたか？
+0|d|Is there a rule at your school that might surprise us?|你們學校有沒有會讓我們驚訝的規定？|あなたの学校に、私たちがびっくりしそうなルールはありますか？
+1|e|What question do you want your parents to ask you?|你希望爸媽問你什麼問題？|親にどんな質問をしてほしいですか？
+1|p|What do you talk about with your family at dinner?|你們家吃晚餐時都聊什麼？|夕食のとき、家族と何を話しますか？
+1|d|What does your family worry about most for you?|你家人最擔心你什麼？|家族はあなたのどんなことを一番心配していますか？
+2|e|What is your favorite festival food?|你最喜歡哪種節日食物？|一番好きな行事の食べ物は何ですか？
+2|p|Can you tell me about a festival you remember well?|可以說說一個你印象深刻的節日嗎？|よく覚えている行事について教えてくれますか？
+2|d|Which festival in Japan would you like to try? Why?|你想體驗日本的哪個節日？為什麼？|日本のどの行事を体験してみたいですか？どうしてですか？
+3|e|Can you teach me one Chinese word that everyone knows?|可以教我一個大家都知道的中文詞嗎？|みんなが知っている中国語を一つ教えてくれますか？
+3|p|When did you first hear it?|你第一次聽到是什麼時候？|初めて聞いたのはいつですか？
+3|d|Do you think people in Japan would understand it? Why?|你覺得日本人聽得懂嗎？為什麼？|日本の人にも伝わると思いますか？どうしてですか？
+4|e|What makes a teacher easy to talk to?|怎樣的老師比較好說話？|どんな先生だと話しやすいですか？
+4|p|Can you tell me about your favorite class?|可以說說你最喜歡的一堂課嗎？|一番好きな授業について教えてくれますか？
+4|d|If you were a teacher, what kind of teacher would you be?|如果你是老師，你會當怎樣的老師？|もし先生になったら、どんな先生になりたいですか？
+5|e|What do you want to buy next?|你下一個想買什麼？|次に何を買いたいですか？
+5|p|What is the best thing you have ever bought?|你買過最棒的東西是什麼？|今まで買った中で一番よかったものは何ですか？
+5|d|What is something cheap that makes you happy?|有什麼便宜但讓你很開心的東西？|安いけど幸せになれるものは何ですか？
+6|e|What do you want to do this winter vacation?|這個寒假你想做什麼？|この冬休みに何をしたいですか？
+6|p|What is one thing you tried for the first time this year?|今年你第一次嘗試的事是什麼？|今年初めて挑戦したことは何ですか？
+6|d|What is one new thing you want to try with your friends?|你想跟朋友一起嘗試什麼新事物？|友達と一緒に挑戦してみたいことは何ですか？
+7|e|What is trendy in Taiwan now?|台灣現在流行什麼？|今台湾で何が流行っていますか？
+7|p|Have you ever tried to use your phone less? What happened?|你有試過少用手機嗎？結果如何？|スマホを使う時間を減らそうとしたことはありますか？どうなりましたか？
+7|d|What do you like to do in your free time?|你空閒時喜歡做什麼？|ひまなとき、何をするのが好きですか？
+8|e|What do you use AI for most?|你最常用 AI 做什麼？|AIを一番何に使いますか？
+8|p|Has AI ever surprised you? How?|AI 有讓你驚訝過嗎？怎麼說？|AIに驚かされたことはありますか？どんなふうに？
+8|d|What do you hope AI can help you with someday?|你希望有一天 AI 能幫你做什麼？|いつかAIに何を手伝ってほしいですか？
+9|e|Do you have brothers or sisters?|你有兄弟姊妹嗎？|きょうだいはいますか？
+9|p|Who taught you good manners?|誰教你好的禮貌？|誰にマナーを教わりましたか？
+9|d|What do you do when a younger student asks you for help?|學弟妹找你幫忙時，你會怎麼做？|後輩に助けを求められたら、どうしますか？`.split('\n').forEach(l=>{const p=l.split('|');if(p.length===5)(m[p[0]]=m[p[0]]||[]).push([p[2],p[3],p[4],p[1]])});return m})();
+function fuq(q,i){return (FU[(i>=5?'x':q)+'-'+i]||[]).filter(f=>f[3]!=='me')}
+function fume(q,i){return (FU[(i>=5?'x':q)+'-'+i]||[]).find(f=>f[3]==='me')}
 ACT.aopen=a=>upd({ao:+a,aqi:-1});
 ACT.aq=a=>{const s=S();upd({aqi:+a,['asked/o'+s.ao]:true})};
 ACT.aclose=()=>{const s=S();upd({['asked/o'+s.ao]:true,ao:-1,aqi:-1})};
-ACT.revealNow=()=>upd({p:4,ao:-1,aqi:-1});
+
 function pAsk(s,q,host){
  const ord=order(room,s.q),who=i=>present(s).filter(k=>s.pk['s'+k]===i),ao=s.ao??-1;
  if(host){
-  let h=MC([['Thank you, everyone! Now I want to know more about your answers.','謝謝大家！現在我想多了解你們的答案。','みなさん、ありがとう！みなさんの答えについて、もっと知りたいです。'],['Let me ask you some questions.','我來問你們幾個問題。','いくつか質問させてね。']]);
+  let h=MC([['Thank you for your answers! Now I want to hear your reasons.','謝謝大家的答案！現在我想聽聽你們的理由。','答えてくれてありがとう！次はみんなの理由を聞きたいです。'],['I will ask you one by one. You can use the sentences on your screen.','我會一個一個問，你們可以用螢幕上的句子。','一人ずつ聞きます。画面の文を使ってもいいですよ。']]);
+  const notAsked=present(s).filter(k=>{const v=s.pk['s'+k];return v!=null&&!s.asked['o'+v]&&ao!==v});
+  if(notAsked.length)h+=`<div class="notyet"><b>${T('👀 還沒被問到的人','👀 まだ聞いていない人','👀 Not asked yet')}</b> ${notAsked.map(k=>B(`${tw(k)} → ${L(ord.indexOf(s.pk['s'+k]))}`,'aopen',s.pk['s'+k],'mini')).join(' ')}<small>${T('點一下直接打開他選的答案','タップでその人の答えを開く','Tap to open their answer')}</small></div>`;
+  else if(present(s).length&&Object.keys(s.asked).length)h+=`<div class="notyet done">${T('✅ 每個人都問到了！可以再多聊，或進入下一步。','✅ 全員に聞けたよ！もっと話してもいいし、次へ進んでもOK。','✅ Everyone has been asked! Keep chatting or move on.')}</div>`;
   let pop='';if(ao>=0){const o=opt(s.q,ao),ws=who(ao),names=ws.map(tw).join(', '),mine=s.hp===ao;
    pop=`<div class="popup" style="grid-column:1/-1"><div class="bar" style="justify-content:space-between"><div><div class="tag">${T('正在問的選項','質問中の選択肢','Asking about')}</div><h3 style="margin:2px 0"><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</h3></div>${B(T('問完了，關閉 ✕','質問おわり・閉じる ✕','Done, close ✕'),'aclose','','mini')}</div>
-    ${mine?`<div class="secret">${T('🤫 你也選這個（台灣同學看不到）','🤫 あなたもこれを選んだ（台湾の人には見えません）','🤫 You chose this too (they can’t see it)')}</div>`:''}
+    ${mine?`<div class="secret">${T('🇯🇵 你也選了這個！可以說：Me too!','🇯🇵 あなたもこれを選んだ！Me too! と言おう','🇯🇵 You chose this too! Say: Me too!')}</div>`:''}
     <b>${T('① 先問理由','① まず理由を聞く','① First, ask why')}</b>${ws.length?SAY(`${names}, you chose “${esc(o.en)}”. Why did you choose it?`,'先問選這個的人理由','まず、これを選んだ人に理由を聞こう','First ask why they chose it',[`${names}，你選了「${esc(o.zh)}」。為什麼選這個？`,`${names}、「${esc(o.ja)}」を選んだね。どうしてそれを選んだの？`])
       :SAY(`Nobody chose “${esc(o.en)}”. Is it not common in Taiwan?`,'沒人選的選項也可以問','誰も選ばなかった選択肢も聞いてみよう','You can ask about options nobody chose',[`沒有人選「${esc(o.zh)}」。在台灣不常見嗎？`,`「${esc(o.ja)}」は誰も選ばなかったね。台湾ではあまりないの？`])}
-    <b>${T('② 接著挑一題問（點一下，對方畫面也會出現這題）','② 次に一つ選んで質問（タップすると相手の画面にも出ます）','② Then pick a question (tap to show it on their screen)')}</b>
+    <b>${T('② 再挑一題問下去（點一下，對方畫面也會出現這題）','② 続けて一つ選んで聞こう（タップすると相手の画面にも出ます）','② Then pick a follow-up (tap to show it on their screen)')}</b>
     ${fuq(s.q,ao).map((f,k)=>`<button class="fq ${s.aqi===k?'active':''}" data-act="aq" data-a="${k}"><span class="ftype">${T(...FUTYPE[f[3]])}</span><b class="E">${esc(f[0])}</b>${TL(esc(f[1]),esc(f[2]))}</button>`).join('')}
-    <b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','Me too!','That’s interesting!','I see.','Wow!','In Japan, ___ .'],'blank')}
-    ${mine?`<div class="revealbox">${B(T('🙋 我也選這個！現在公布','🙋 私もこれ！今すぐ発表する','🙋 Me too! Reveal now'),'revealNow','','warn','','再按一次：跳過猜答案，直接公布？')}<small class="muted">${T('會跳過「猜答案」直接公布。想保留懸念就不要按。','「予想」を飛ばして発表します。ドキドキを残すなら押さないでね。','This skips the guessing step.')}</small></div>`:''}
+    ${(()=>{const m=fume(s.q,ao);return m?`<b>${T('③ 🙋 換你說說自己的（台灣同學會很想聽！）','③ 🙋 自分の話もしよう（台湾のみんなも聞きたいはず！）','③ 🙋 Share your own story (they want to hear it!)')}</b><div class="say share"><b class="E">${esc(m[0])}</b>${TL(esc(m[1]),esc(m[2]))}<small class="ins">${T('說完可以接：What about you?','言ったあと：What about you?','Then ask: What about you?')}</small></div>`:''})()}
+    <b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','That’s interesting!','Me too!','I see.','That’s surprising!','Oh really? Tell me more!'],'blank')}
    </div>`;}
   const chosen=ord.filter(i=>who(i).length).sort((a,b)=>who(b).length-who(a).length),empty=ord.filter(i=>!who(i).length);
   h+=`<div class="howto"><b>${T('這一步要做什麼？','このステップでやること','What to do now')}</b>
@@ -1444,35 +1740,79 @@ function pAsk(s,q,host){
    <h3>${T('有人選的答案（點一下開始追問）','選ばれた答え（タップして質問）','Answers people chose (tap to ask)')}</h3>
    <div class="grid">${chosen.map(i=>{const k=ord.indexOf(i);const o=opt(s.q,i),ws=who(i);return `<button class="opt acard ${ao===i?'active':''} ${ws.length?'':'empty'}" data-act="aopen" data-a="${i}">
      <strong>${L(k)}. <span class="E">${esc(o.en)}</span></strong><small class="sub">${T(esc(o.zh),esc(o.ja))}</small>
-     <span class="whos">${ws.length?ws.map(x=>`<i>${tw(x)}</i>`).join(''):`<span class="muted">${T('沒人選','誰も選ばず','nobody')}</span>`}${s.hp===i?'<span class="sec">🤫</span>':''}${s.asked['o'+i]?'<span class="okm">✓</span>':''}</span></button>${ao===i?pop:''}`}).join('')}</div>
+     <span class="whos">${ws.length?ws.map(x=>`<i>${tw(x)}</i>`).join(''):`<span class="muted">${T('沒人選','誰も選ばず','nobody')}</span>`}${s.hp===i?'<span class="sec">🇯🇵</span>':''}${s.asked['o'+i]?'<span class="okm">✓</span>':''}</span></button>${ao===i?pop:''}`}).join('')}</div>
    ${empty.length?`<details data-k="empty" ${openDetails.has('empty')||empty.includes(ao)?'open':''}><summary>${T(`沒人選的答案（${empty.length}）── 也可以問「為什麼沒人選？」`,`誰も選ばなかった答え（${empty.length}）──「どうして誰も選ばなかったの？」と聞いてもOK`,`Answers nobody chose (${empty.length}) — you can ask why`)}</summary>
     <div class="grid">${empty.map(i=>{const o=opt(s.q,i),k=ord.indexOf(i);return `<button class="opt acard empty ${ao===i?'active':''}" data-act="aopen" data-a="${i}"><strong>${L(k)}. <span class="E">${esc(o.en)}</span></strong><small class="sub">${T(esc(o.zh),esc(o.ja))}</small>${s.hp===i?'<span class="whos"><span class="sec">🤫</span></span>':''}</button>${ao===i?pop:''}`}).join('')}</div></details>`:''}
-   ${B(T('問完了 → 下一步：猜猜我的答案 ▶','質問おわり → 次へ：私の答えを予想 ▶','Done → Next: Guess my answer ▶'),'next','','primary')}`;
+   ${B(T('理由都聽完了 → 下一步：延伸聊天 ▶','理由を聞き終わった → 次へ：もっと話す ▶','Done → Next: Explore ▶'),'next','','primary')}`;
   return h;
  }
  const v=s.pk['s'+me],o=v!=null?opt(s.q,v):null;
  let h=`<div class="say"><b class="E">The Japanese student will ask you questions.</b>${TL('日本同學會問大家問題，被問到就回答！','日本の生徒が質問します。聞かれたら答えよう！')}</div>
   ${o?`<p class="muted">${T('你選的是：','あなたの答え：','You chose:')} <b><span class="E">${esc(o.en)}</span>${TL(esc(o.zh),esc(o.ja))}</b></p>`:''}`;
- if(ao<0)return h+`<h3>${T('等日本同學挑一個選項來問…','日本の生徒が選択肢を選ぶのを待とう…','Waiting for the host to pick an option…')}</h3>${chips(['I chose ___ because ___ .','For example, ___ .','In Taiwan, ___ .'],'blank')}${checkBtns()}`;
+ if(ao<0)return h+`<h3>${T('等日本同學挑一個選項來問…','日本の生徒が選択肢を選ぶのを待とう…','Waiting for the host to pick an option…')}</h3>${v!=null?reasonBox(s.q,v):''}${checkBtns()}`;
  const ao_=opt(s.q,ao),cur=s.aqi>=0?fuq(s.q,ao)[s.aqi]:null,asked=v===ao;
  h+=`<div class="popup ${asked?'me':''}"><div class="tag">${T('日本同學正在問這個選項','日本の生徒が質問中の選択肢','Now asking about')}</div><h3 style="margin:2px 0"><span class="E">${esc(ao_.en)}</span>${TL(esc(ao_.zh),esc(ao_.ja))}</h3>
   ${asked?`<div class="callout">${T('🎤 你選的就是這個！日本同學在問你','🎤 あなたが選んだ答えです！質問されています','🎤 That’s your answer! You’re being asked')}</div>`:`<p class="muted">${T('👂 仔細聽，也可以補充一句','👂 よく聞いて、一言そえてもOK','👂 Listen, and add a line if you like')}</p>`}
   ${cur?`<div class="say"><small>${T('日本同學的問題：','質問：','The question:')}</small><b class="E">${esc(cur[0])}</b>${cur[1]?TL(esc(cur[1]),esc(cur[2])):''}</div>`:asked?`<div class="say"><small>${T('日本同學可能會問：','こう聞かれるかも：','They may ask:')}</small><b class="E">Why did you choose it?</b>${TL('你為什麼選這個？','どうしてそれを選んだの？')}</div>`:''}
-  ${asked?`<b>${T('回答用的句子','答えるための文','Sentences to answer')}</b>${chips(v===5?['My answer is ___ .','It is ___ .','For example, ___ .']:v===6?['I have never ___ .','Because ___ .','Maybe someday, I want to ___ .']:[[`I chose “${o.en}” because ___ .`,`我選「${o.zh}」，因為 ___。`,`「${o.ja}」を選びました。なぜなら___からです。`],'For example, ___ .','In Taiwan, ___ .','In my case, ___ .'],'blank')}<b>${T('提示字','ヒント','Hints')}</b>${chips(ao_.w)}<b>${T('說完反問 🔁','聞き返そう 🔁','Ask back 🔁')}</b>${chips(['What about you?','Is it the same in Japan?'],'blank')}`
-    :chips(['Me too!','Really?','In my case, ___ .','I chose ___ because ___ .'],'blank')}
+  ${asked?`${reasonBox(s.q,v)}<b>${T('回答用的句子','答えるための文','Sentences to answer')}</b>${chips(v===5?['My answer is ___ .','It is ___ .','For example, ___ .']:v===6?['I have never ___ .','Because ___ .','Maybe someday, I want to ___ .']:[[`I chose “${o.en}” because ___ .`,`我選「${o.zh}」，因為 ___。`,`「${o.ja}」を選びました。なぜなら___からです。`],'Let me think.','For example, ___ .','In Taiwan, ___ .','In my case, ___ .'],'blank')}<b>${T('提示字','ヒント','Hints')}</b>${chips(ao_.w)}<b>${T('說完反問 🔁','聞き返そう 🔁','Ask back 🔁')}</b>${chips(['What about you?','Is it the same in Japan?'],'blank')}`
+    :chips(['Me too!','Really?','That’s interesting!','In my case, ___ .'],'blank')}
  </div>${checkBtns()}`;
  return h;
 }
 
+/* 完整理由框（台灣同學看） */
+function reasonBox(q,v){const rs=reasons(q,v);if(!rs.length)return '';
+ return `<div class="reasons"><b>${T('💡 可以直接說的理由（選一句最像你的）','💡 そのまま言える理由（自分に近いものを選ぼう）','💡 Reasons you can say (pick the one closest to you)')}</b>${rs.map(r=>`<div class="rline"><b class="E">${esc(r[0])}</b>${TL(esc(r[1]),esc(r[2]))}</div>`).join('')}<small class="muted">${T('也可以說自己的理由。','自分の理由を言ってもOK。','You can also say your own reason.')}</small></div>`}
+/* 日本答案短句版（主持人看） */
+function storyBox(q){const st=ST[q];if(!st)return '';
+ return `<div class="story"><b>${T('🗣 用短句一句一句說（可以照這個順序）','🗣 短い文で一つずつ話そう（この順番でOK）','🗣 Say it in short sentences, one by one')}</b>${st.map((l,i)=>`<div class="rline"><b class="E">${i+1}. ${esc(l[0])}</b>${TL(esc(l[1]),esc(l[2]))}</div>`).join('')}</div>`}
+/* 4 聽懂了嗎：聽懂／部分聽懂／還不懂（不點名重述） */
+const UNDL={all:['✅ 聽懂了','✅ わかった','✅ I got it'],some:['🟡 懂一部分','🟡 一部わかった','🟡 Some of it'],none:['🔴 還不太懂','🔴 まだよくわからない','🔴 Not yet']};
+ACT.und=a=>{if(me>=0)upd({['und/s'+me]:a})};
+function pUnd(s,q,host){
+ const pr=present(s);
+ if(host){
+  const vals=pr.map(i=>[i,s.und['s'+i]]),need=vals.some(([,v])=>v==='some'||v==='none'),allOk=vals.length&&vals.every(([,v])=>v==='all');
+  return `${MC([['Did you understand my answer? Please tap a button on your screen.','聽懂我的答案了嗎？請按螢幕上的按鈕。','私の答え、わかりましたか？画面のボタンを押してください。']])}
+   <div class="undgrid">${vals.map(([i,v])=>`<div class="ucell ${v||''}"><b>${tw(i)}</b><span>${v?T(...UNDL[v]):'…'}</span></div>`).join('')}</div>
+   ${need?`<h3>${T('有人還沒完全聽懂 → 用短句再說一次','まだよくわからない人がいる → 短い文でもう一度','Someone needs help → say it again in short sentences')}</h3>${SAY('No problem. Let me explain it another way.','先說這句，再用下面的短句','この一言のあと、下の短い文で説明しよう','Say this, then use the short sentences below',['沒問題，我換個方式說。','大丈夫です。別の言い方で説明しますね。'])}${storyBox(s.q)}`
+     :allOk?`<p class="ok">${T('大家都聽懂了！可以進入下一步。','みんなわかった！次へ進もう。','Everyone understood! Move on.')}</p>`:''}
+   <h3>${T('台灣同學的求助訊號','台湾のみんなからのサイン','Help signals')}</h3>${helpPanel(s)}
+   ${B(T('下一步：聽聽大家的理由 ▶','次へ：みんなの理由を聞く ▶','Next: Hear their reasons ▶'),'next','','primary')}`;
+ }
+ const v=s.und['s'+me];
+ return `<h3>${T('👂 你聽懂日本同學的答案了嗎？','👂 日本の生徒の答え、わかりましたか？','👂 Did you understand the answer?')}</h3>
+  <p class="muted">${T('不是考試，照實選就好。','テストではありません。正直に選んでね。','This is not a test. Just choose honestly.')}</p>
+  <div class="undbtns">${[['all','I got it!','我聽懂了！','わかった！'],['some','I understood some of it.','我懂一部分。','一部わかった。'],['none','I don’t understand yet.','我還不太懂。','まだよくわからない。']].map(x=>B(`<b class="E">${UNDL[x[0]][2].slice(0,2)} ${x[1]}</b>${TL(UNDL[x[0]][0].slice(0,2)+' '+x[2],UNDL[x[0]][1].slice(0,2)+' '+x[3])}`,'und',x[0],`opt ${v===x[0]?'active':''}`)).join('')}</div>
+  ${v==='some'||v==='none'?`<div class="say"><small>${T('請大聲說：','声に出して言おう：','Say it out loud:')}</small><b class="E">Could you explain it in a simpler way, please?</b>${TL('可以用更簡單的方式說明嗎？','もっと簡単に説明してもらえますか？')}</div>`:''}
+  <h3>${T('聽不懂某個字？','わからない言葉がある？','A word you don’t know?')}</h3>${checkBtns()}`;
+}
+/* 6 延伸聊天：主持人選方向，不強制輪流抽卡 */
+ACT.exp=a=>upd({ex:+a});
+function pEx(s,q,host){
+ const ex=EX[s.q]||[],cur=s.ex>=0?ex[s.ex]:null,v=s.pk['s'+me];
+ if(host)return `${MC([['Thank you for sharing your reasons!','謝謝大家分享理由！','理由を話してくれてありがとう！'],['Do you want to talk a little more, or try another topic?','你們想再多聊一點，還是換下一題？','もう少し話しますか？それとも次の話題にしますか？']])}
+  <h3>${T('🧭 想多聊的話，選一個方向問（可以問好幾個，也可以都不問）','🧭 もっと話すなら、方向を選んで聞こう（いくつ聞いてもいいし、聞かなくてもOK）','🧭 To keep talking, pick a direction (ask any or none)')}</h3>
+  ${ex.map((f,k)=>`<button class="fq ${s.ex===k?'active':''}" data-act="exp" data-a="${k}"><span class="ftype">${T(...FUTYPE[f[3]])}</span><b class="E">${esc(f[0])}</b>${TL(esc(f[1]),esc(f[2]))}</button>`).join('')}
+  ${cur?`<b>${T('問完之後，也說說日本的情況','聞いたあと、日本のことも話そう','After asking, share about Japan too')}</b>${chips(['In Japan, ___ .','In my case, ___ .','At my school, ___ .','What do you think?'],'blank')}`:''}
+  <div class="decide"><div>${SAY('Thank you, everyone! Shall we choose the next topic?','聊夠了就說這句','話し終わったらこう言おう','When you are done, say this',['謝謝大家！我們來選下一題好嗎？','みんなありがとう！次の話題を選びましょうか？'])}</div>
+   ${B(T('結束這題，選下一題 ▶','この話題を終えて次を選ぶ ▶','Finish and choose the next topic ▶'),'finish','','primary')}</div>`;
+ return `<h3>${T('💬 延伸聊天','💬 もっと話そう','💬 Keep talking')}</h3>
+  ${cur?`<div class="say"><small>${T('日本同學的問題：','質問：','The question:')}</small><b class="E">${esc(cur[0])}</b>${TL(esc(cur[1]),esc(cur[2]))}</div>
+   <b>${T('回答用的句子','答えるための文','Sentences to answer')}</b>${chips(['I think ___ because ___ .','In my case, ___ .','For example, ___ .','In Taiwan, ___ .'],'blank')}
+   <b>${T('說完反問 🔁','聞き返そう 🔁','Ask back 🔁')}</b>${chips(['What about you?','Is it the same in Japan?'],'blank')}`
+   :`<p class="muted">${T('日本同學會決定要不要再多聊，或換下一題。你也可以主動問他：','日本の生徒が、もっと話すか次の話題にするか決めます。あなたから聞いてもOK：','The host decides whether to keep talking. You can also ask:')}</p>${chips(['What about you?','Is it the same in Japan?','Can I ask you a question?'],'blank')}`}
+  ${checkBtns()}`;
+}
 /* 1 選擇 */
 function p1(s,q,host){
  if(host)return `${MC([['Let’s start! Please look at your screen.','開始囉！請看你們的螢幕。','始めましょう！画面を見てください。'],['Scroll down, and you can see the answers A to G.','往下滑，就可以看到 A 到 G 的答案。','下にスクロールすると、AからGの答えが見えます。'],['Please choose your own answer. There is no right or wrong answer.','請選你自己的答案。沒有對錯喔。','自分の答えを選んでください。正解はありません。']])}
   <p class="muted">${T('你自己也偷偷選一個答案（台灣同學看不到）。','あなたも自分の答えをこっそり選んでね（台湾の人には見えません）。','Secretly choose your own answer too (they can’t see it).')}</p>
-  ${slotOf(room)>0?`<div class="notice">⚠ ${T('試用資料：Room 2–6 暫時沿用 Room 1 的日本答案，正式活動前必須替換。','デモデータ：Room 2–6 はRoom 1 の答えを仮使用中。正式利用前に変更してください。','DEMO: Rooms 2–6 currently reuse Room 1 answers. Replace before live use.')}</div>`:''}${preset(room,s.q)?`<div class="notice">${T('已經選好你事先寫的答案，可以更改。','事前に書いた答えが選ばれています。変えてもOK。','Your prepared answer is already selected. You can change it.')}</div>`:''}
-  ${optGrid(s,'hpick',s.hp,true)}${s.q===3?topic4Example(s,true):''}<h3>${T('作答狀況','回答状況','Answer status')}</h3><p>${status(s,s.pk)}</p>
-  ${B(T('下一步：猜日本答案 ▶','次へ：日本の答えを予想 ▶','Next: Guess the host ▶'),'next','','primary',s.hp<0)}`;
+  ${preset(room,s.q)?`<div class="notice">${T('已經選好你事先寫的答案，可以更改。','事前に書いた答えが選ばれています。変えてもOK。','Your prepared answer is already selected. You can change it.')}</div>`:''}
+  ${optGrid(s,'hpick',s.hp,true)}<h3>${T('作答狀況','回答状況','Answer status')}</h3><p>${status(s,s.pk)}</p>
+  ${B(T('下一步：猜猜我的答案 ▶','次へ：私の答えを予想 ▶','Next: Guess my answer ▶'),'next','','primary',s.hp<0)}`;
  const v=s.pk['s'+me];
- return `<h3>${T('選出「你自己」的答案','「自分の」答えを選ぼう','Choose YOUR own answer')}</h3><p class="muted">${T('沒有對錯。等一下要說說為什麼喔。','正解はありません。あとで理由を話します。','No right or wrong. You will explain why later.')}</p>${SCROLL()}${optGrid(s,'pick',v,false)}${s.q===3?topic4Example(s,false):''}
+ return `<h3>${T('選出「你自己」的答案','「自分の」答えを選ぼう','Choose YOUR own answer')}</h3><p class="muted">${T('沒有對錯。等一下要說說為什麼喔。','正解はありません。あとで理由を話します。','No right or wrong. You will explain why later.')}</p>${SCROLL()}${optGrid(s,'pick',v,false)}
   <p>${choseTxt(v)}</p>`;
 }
 /* 2 猜測 */
@@ -1486,7 +1826,7 @@ function p2(s,q,host){
 }
 /* 3 揭曉・說明 */
 function p3(s,q,host){
- const ans=opt(s.q,s.hp<0?6:s.hp),maj=majority(s),hgRight=maj.includes(s.hg);
+ const ans=opt(s.q,s.hp),maj=majority(s),hgRight=maj.includes(s.hg);
  let h=`<div class="big"><div class="tag">🇯🇵 ${T('日本同學的答案','日本の生徒の答え','Answer')}</div><h2 class="E">${esc(ans.en)}</h2><p class="muted qsub">${T(esc(ans.zh),esc(ans.ja))}</p></div>`;
  if(host){
   const p=preset(room,s.q);
@@ -1496,10 +1836,10 @@ function p3(s,q,host){
    ${s.hg<0||!maj.length?'':SAY(hgRight?`I guessed right! Most of you chose “${esc(label(s,maj[0]))}”.`:`I guessed “${esc(label(s,s.hg))}”, but most of you chose “${esc(label(s,maj[0]))}”!`,
      hgRight?'你也猜對了！':'你猜錯了，說說你的驚訝！',hgRight?'あなたの予想も当たり！':'あなたの予想は外れ。驚いた気持ちを伝えよう',hgRight?'Your guess was right too!':'Your guess was wrong. Share your surprise!',hgRight?[`我猜對了！你們大部分人選「${esc(opt(s.q,maj[0]).zh)}」。`,`当たった！みんなの多くは「${esc(opt(s.q,maj[0]).ja)}」を選んだね。`]:[`我猜「${esc(opt(s.q,s.hg).zh)}」，但你們大部分人選「${esc(opt(s.q,maj[0]).zh)}」！`,`私は「${esc(opt(s.q,s.hg).ja)}」と予想したけど、みんなの多くは「${esc(opt(s.q,maj[0]).ja)}」を選んだね！`])}
    <h3>${T('② 說說你的答案','② 自分の答えを話そう','② Talk about your answer')}</h3>${MC([['Now, I will tell you about my answer. Please listen carefully.','現在我來說說我的答案，請仔細聽。','では、私の答えについて話します。よく聞いてください。'],['If you don’t understand, please tap the button on your screen.','聽不懂的話，請按螢幕上的按鈕。','わからなかったら、画面のボタンを押してね。']])}<p class="muted">${T('台灣同學的畫面不會出現你的句子。不要用唸的，看著關鍵字用自己的話說。','台湾の画面には答えの文は出ません。読まずに、キーワードを見ながら自分の言葉で話そう。','Your sentences are NOT on the Taiwanese screens. Don’t read—look at the keywords and speak in your own words.')}</p>
-   ${p?`<b>${T('你的筆記','あなたのメモ','Your notes')}</b>${chips(p.notes.split(';'))}`:''}<b>${T('可以用的關鍵字','使えるキーワード','Useful keywords')}</b>${chips(ans.w)}
+   ${p?`<b>${T('你的筆記','あなたのメモ','Your notes')}</b>${chips(p.notes.split(';'))}`:''}${storyBox(s.q)}<b>${T('可以用的關鍵字','使えるキーワード','Useful keywords')}</b>${chips(ans.w)}
    <b>${T('句子開頭','文の始め方','Sentence starters')}</b>${chips([s.hp>=5?'My answer is ___ .':[`I chose “${ans.en}”.`,`我選了「${ans.zh}」。`,`「${ans.ja}」を選びました。`],'In Japan, ___ .','For example, ___ .','I think ___ because ___ .'],'blank')}
    ${p?`<details data-k="line" ${openDetails.has('line')?'open':''}><summary>${T('卡住的時候才打開：你寫的句子','こまったときだけ：自分が書いた文','Only if stuck: your written sentence')}</summary><p><span class="E">${esc(p.line)}</span>${tl(p.line)}</p></details>`:''}
-   <h3>${T('用短句講故事（必要時可以逐句解釋）','短い文で説明する（必要なら一文ずつ）','Explain in short, clear sentences')}</h3>${simpleExplain(s.q)}<div class="optional-fu"><b>${T('對方還聽不懂時','まだ伝わらないとき','If someone is still confused')}</b>${SAY('Let me say that in a simpler way.','換簡單的方式解釋','もっと簡単な言い方に変えよう','Try simpler words',['我換簡單的方式說。','もっと簡単に説明しますね。'])}</div>${hostNavigator(s)}<h3>${T('③ 台灣同學的訊號','③ 台湾のみんなからのサイン','③ Signals from Taiwanese students')}</h3>${helpPanel(s)}${B(T('下一步：聽懂了嗎 ▶','次へ：聞き取りチェック ▶','Next: Listening check ▶'),'next','','primary')}`;
+   <h3>${T('③ 台灣同學的訊號','③ 台湾のみんなからのサイン','③ Signals from Taiwanese students')}</h3>${helpPanel(s)}${B(T('下一步：聽懂了嗎 ▶','次へ：聞き取りチェック ▶','Next: Listening check ▶'),'next','','primary')}`;
   return h;
  }
  const g=s.gs['s'+me];
@@ -1521,22 +1861,26 @@ function checkBtns(){
 }
 /* 4 聽懂了嗎 */
 function p4(s,q,host){
- const people=present(s);
+ const ans=opt(s.q,s.hp),qz=quizOf(room,s.q);
  if(host){
-  const values=people.map(i=>({i,v:s.understand['s'+i]}));
-  return `${MC([['Did you understand my story? Please choose a button on your screen.','聽懂我的故事了嗎？請按螢幕上的按鈕。','私の話は分かりましたか？画面のボタンを選んでください。']])}<div class="understand-grid">${values.map(x=>`<div class="who">${tw(x.i)}：${x.v==='all'?'✅ I got it!':x.v==='some'?'🟡 Some parts':x.v==='none'?'🔴 Not yet':'…'}</div>`).join('')}</div>
-  ${values.some(x=>x.v==='some'||x.v==='none')?`<h3>${T('有人還沒完全懂，先換簡單方式說','まだ分からない人がいるので、簡単に言い換えよう','Some students need a simpler explanation')}</h3>${SAY('No problem. Let me explain it another way.','換一個說法','違う言い方で説明しよう','Try again',['沒問題，我換個說法。','大丈夫です。別の言い方で説明します。'])}${simpleExplain(s.q)}`:''}
-  ${hostNavigator(s)}<h3>${T('台灣學生的求助訊號','台湾の生徒からのサイン','Help signals')}</h3>${helpPanel(s)}
-  ${B(T('下一步：聽聽台灣學生的理由 ▶','次へ：台湾の理由を聞く ▶','Next: Hear Taiwanese reasons ▶'),'next','','primary')}
-  <details><summary>${T('選用：原本的聽力小測驗','任意：聞き取りクイズ','Optional original listening quiz')}</summary><p>${T('這個版本將測驗改成選用，優先確認學生是不是真的聽懂，而不是考他們。','クイズは任意です。まず理解できたか確認しましょう。','Quiz is optional. Understanding matters more than scoring.')}</p></details>`;
+  let h=`${MC([['Thank you for listening! Let’s check.','謝謝你們聽我說！我們來確認一下。','聞いてくれてありがとう！確認してみましょう。']])}<h3>${T('請一位同學說說你剛剛講了什麼','だれか一人に、あなたの話をまとめてもらおう','Ask someone to sum up what you said')}</h3>${B(T('🎲 隨機點一位','🎲 ランダムで一人指名','🎲 Pick someone at random'),'retell','','primary')}`;
+  if(s.rt>=0)h+=`${SAY(`${tw(s.rt)}, can you tell me what I said?`,`${tw(s.rt)} 的畫面會出現提示。聽完後按下面的按鈕。`,`${tw(s.rt)} の画面にヒントが出ます。聞き終わったら↓`,`Hints appear on ${tw(s.rt)}’s screen. After listening, tap below.`,[`${tw(s.rt)}，你可以說說我剛剛講了什麼嗎？`,`${tw(s.rt)}、私が言ったことを言ってみてくれる？`])}
+   <div class="bar">${B('<span class="E">That’s right! 👍</span>'+tl('That’s right! 👍'),'rtok','ok',s.rtok==='ok'?'active':'')}${B('<span class="E">Almost! Let me say it again.</span>'+tl('Almost! Let me say it again.'),'rtok','again',s.rtok==='again'?'active':'')}</div>
+   ${s.rtok==='again'?`<p class="muted">${T('再說一次，短一點、慢一點。之後也可以再點一位。','もう一度、短く、ゆっくり話そう。そのあと、もう一人指名してもOK。','Say it again—shorter and slower. You can pick another person after.')}</p>`:''}`;
+  if(qz){h+=`<h3>${T('小測驗（會出現在所有台灣同學畫面）','クイズ（台湾全員の画面に出ます）','Quiz (shown on all Taiwanese screens)')}</h3>`+(s.qzOn
+    ?`<p><span class="E">${esc(qz.q)}</span>${tl(qz.q)}</p><p>${present(s).map(i=>{const v=s.qz['s'+i];return `${tw(i)} ${v==null?'…':v===qz.a?'<span class="ok">✓</span>':'<span class="ng">✗</span>'}`}).join('　')}</p><p class="muted">${T('有人答錯的話，再說明一次。','✗の人がいたら、もう一度説明しよう。','If anyone got ✗, explain again.')}</p>`
+    :B(T('出題','クイズを出す','Start quiz'),'quizOn'))}
+  return h+`<h3>${T('訊號','サイン','Signals')}</h3>${helpPanel(s)}`+B(T('下一步：繼續聊 ▶','次へ：もっと話そう ▶','Next: Keep talking ▶'),'next','','primary');
  }
- const v=s.understand['s'+me];
- return `<h3>${T('👂 聽懂日本學生的故事了嗎？','👂 日本の生徒の話は分かりましたか？','👂 Did you understand the story?')}</h3>
- <p class="muted">${T('不需要用英文重述，也不是考試。照實選就好。','英語で言い直す必要はありません。テストではありません。','No retelling or test. Just choose honestly.')}</p>
- <div class="understand-grid">
- ${[['all','✅ I got it!','我聽懂了！','分かった！'],['some','🟡 I got some of it.','我只懂一部分。','一部だけ分かった。'],['none','🔴 I am still confused.','我還是不太懂。','まだよく分からない。']].map(x=>B(`<b class="E">${x[1]}</b>${TL(x[2],x[3])}`,'understand',x[0],v===x[0]?'active':'')).join('')}</div>
- ${v==='some'||v==='none'?`<div class="say"><b class="E">Could you explain it in a simpler way, please?</b>${TL('可以換個簡單的方式說嗎？','もっと簡単に説明してくれますか？')}</div>`:''}
- <h3>${T('聽不懂某個字？也能使用求助按鈕','言葉が分からないときのボタン','Need help with a word?')}</h3>${checkBtns()}`;
+ let h='';
+ if(s.rt===me)h+=`<h3>${T('🎤 換你！用一句話說出日本同學剛剛說的內容','🎤 あなたの番！日本の生徒が話したことを一文で言おう','🎤 Your turn! Say what the Japanese student said in one sentence')}</h3>${chips(['So, in Japan, ___ .','You said ___ .','Is that right?'],'blank')}<b>${T('提示字','ヒント','Hints')}</b>${chips(ans.w)}`;
+ else if(s.rt>=0)h+=`<h3>${T(`👂 聽 ${tw(s.rt)} 說`,`👂 ${tw(s.rt)} の話を聞こう`,`👂 Listen to ${tw(s.rt)}`)}</h3><p class="muted">${T(`${tw(s.rt)} 卡住的話，可以幫忙補一個字。`,`${tw(s.rt)} が困ったら、一言助けてあげよう。`,`If ${tw(s.rt)} gets stuck, help with a word.`)}</p>`;
+ else h+=`<h3>${T('等日本同學點人…','日本の生徒が指名するのを待とう…','Waiting for the host to pick someone…')}</h3><p class="muted">${T('可能會點到你喔！先想想剛剛聽到了什麼。','あなたかも！聞いたことを思い出そう。','It might be you! Think about what you heard.')}</p>`;
+ if(s.rt>=0&&s.rtok)h+=`<p>${s.rtok==='ok'?`<span class="ok">👍 That’s right!</span>${tl('That’s right! 👍')}`:`<span class="ng">${T('日本同學會再說一次，仔細聽！','もう一度話してくれるよ。よく聞こう！','The host will say it again—listen carefully!')}</span>`}</p>`;
+ if(qz&&s.qzOn){const v=s.qz['s'+me];
+  h+=`<h3>${T('小測驗：','クイズ：','Quiz:')} <span class="E">${esc(qz.q)}</span>${tl(qz.q)}</h3><div class="grid">${qz.o.map((o,i)=>B(`<span class="E">${esc(o)}</span>`+tl(o),'quiz',i,`opt ${v===i?(i===qz.a?'right':'active'):''}`,v!=null)).join('')}</div>`;
+  if(v!=null)h+=v===qz.a?`<p class="ok">${T('✓ 答對了！','✓ 正解！','✓ Correct!')}</p>`:`<div class="say"><small>${T('答錯了沒關係，請大聲問：','まちがえても大丈夫。声に出して聞こう：','That’s OK! Ask out loud:')}</small><b class="E">Could you say that part again, please?</b>${tl('Could you say that part again, please?')}</div>`;}
+ return h+`<h3>${T('聽不懂？','わからない？','Didn’t understand?')}</h3>${checkBtns()}`;
 }
 /* 5 換你說 */
 function p5(s,q,host){
@@ -1550,16 +1894,17 @@ function p5(s,q,host){
    if(v==null)h+=SAY(`${n}, what do you think?`,'問他的想法','考えを聞こう','Ask what they think.',[`${n}，你覺得呢？`,`${n}はどう思う？`]);
    else if(v===s.hp)h+=SAY(`${n}, we chose the same answer! Why did you choose it?`,'答案一樣！問他理由','同じ答え！理由を聞こう','Same answer! Ask why.',[`${n}，我們選的一樣！你為什麼選這個？`,`${n}、同じ答えだね！どうしてそれを選んだの？`])+more;
    else if(v===5)h+=SAY(`${n}, you chose “Something else”. What is it? Tell me!`,'選「其他」的人，問他是什麼','その他を選んだ人。何か聞こう','They chose “Something else”—ask what it is.',[`${n}，你選了「其他」。是什麼？告訴我！`,`${n}、「その他」を選んだね。何？教えて！`]);
-   else if(v===6)h+=SAY(`${n}, no experience? That is okay. Have you seen someone else do this?`,'沒有經驗的人，問他為什麼','経験がない人。理由を聞こう','No experience—ask why.',[`${n}，沒有經驗？為什麼？以後想試試看嗎？`,`${n}、経験なし？どうして？いつかやってみたい？`]);
+   else if(v===6)h+=SAY(`${n}, no experience? Why not? Would you like to try it someday?`,'沒有經驗的人，問他為什麼','経験がない人。理由を聞こう','No experience—ask why.',[`${n}，沒有經驗？為什麼？以後想試試看嗎？`,`${n}、経験なし？どうして？いつかやってみたい？`]);
    else h+=SAY(`${n}, you chose “${esc(o.en)}”! Tell me about it.`,'答案不一樣！問清楚一點','違う答え！くわしく聞こう','Different answer! Ask for details.',[`${n}，你選了「${esc(o.zh)}」！說說看。`,`${n}、「${esc(o.ja)}」を選んだね！教えて。`])+more;
    h+=`<b>${T('邊聽邊回應','聞きながらリアクション','React while listening')}</b>${chips(['Really?','Me too!','That’s interesting!','I see.','Wow!','In Japan, ___ .'],'blank')}${B(T('這位結束・下一位 ▶','この人おわり・次の人 ▶','Done · Next person ▶'),'shared','','primary')}`;
   }else h+=`<p class="ok">${T('大家都說完了！','全員話しました！','Everyone has spoken!')}</p>`;
-  return h+`${s.q===3?topic4Example(s,true):''}${hostNavigator(s)}<h3>${T('訊號','サイン','Signals')}</h3>${helpPanel(s)}`+B(T('下一步：繼續聊 ▶','次へ：もっと話そう ▶','Next: Keep talking ▶'),'next');
+  return h+`<h3>${T('訊號','サイン','Signals')}</h3>${helpPanel(s)}`+B(T('下一步：繼續聊 ▶','次へ：もっと話そう ▶','Next: Keep talking ▶'),'next');
  }
  const v=s.pk['s'+me];
  if(s.fc===me&&v!=null){const o=opt(s.q,v);
   return `<h3>${T('🎤 換你說！','🎤 あなたの番！','🎤 Your turn!')}</h3><div class="big"><div class="tag">${T('你選的是','あなたが選んだ答え','You chose')}</div><h2 class="E">${esc(o.en)}</h2><p class="muted tri3 qsub">${T(esc(o.zh),esc(o.ja))}</p></div>
-  ${reasonHelp(s.q,v)}${s.q===3?topic4Example(s,false):''}
+  <b>${T('句子開頭','文の始め方','Sentence starters')}</b>${chips(v===5?['My answer is ___ .','It is ___ .','For example, ___ .','In Taiwan, ___ .']:v===6?['I have never ___ .','Because ___ .','Maybe someday, I want to ___ .']:[[`I chose “${o.en}” because ___ .`,`我選「${o.zh}」，因為 ___。`,`「${o.ja}」を選びました。なぜなら___からです。`],'For example, ___ .','In Taiwan, ___ .','In my family, ___ .'],'blank')}
+  <b>${T('提示字','ヒント','Hints')}</b>${chips(o.w)}
   <h3>${T('說完後，反問日本同學 🔁','話したら、日本の生徒に聞き返そう 🔁','Then ask the Japanese student back 🔁')}</h3>${chips(v===5?['What about you?','Is it the same in Japan?']:v===6?['What about you?','Have you ever ___ ?']:['What about you?','Is it the same in Japan?',[`Do you have ${o.w[0]} in Japan?`,`日本也有「${(tr(o.w[0])||[o.w[0]])[0]}」嗎？`,`日本にも「${(tr(o.w[0])||[,o.w[0]])[1]}」はありますか？`]],'blank')}
   <p class="muted">${T('想不到要說什麼？可以用 AI 查單字，但要用「說」的告訴對方。','言葉が出てこない？AIで単語を調べてもいいけど、相手には口で伝えよう。','Stuck? You may look up words with AI, but tell your partner by speaking.')}</p>`;}
  const who=s.fc>=0?tw(s.fc):'';
@@ -1569,18 +1914,22 @@ function p5(s,q,host){
 }
 /* 6 繼續聊 */
 function p6(s,q,host){
- const qs=EASIER[s.q]||[];
- if(host){return `${MC([['Thank you for sharing your reasons!','謝謝你們說明自己的理由！','理由を話してくれてありがとう！'],['We can talk a little more, or try a new topic.','我們可以繼續聊一點，或換一題。','もう少し話しても、次の話題に進んでもいいよ。']])}
- <h3>${T('🧭 要往哪個方向聊？由日本主持人決定','🧭 次に何を話す？司会者が選ぼう','🧭 The host chooses the next direction')}</h3>
- <div class="host-easy">${qs.map((x,i)=>`<button class="${s.explore===i?'active':''}" data-act="explore" data-a="${i}"><small>${['🟢 Easy · 簡單','🔵 Personal · 個人經驗','🟠 Deeper · 深入'][i]}</small><br><b class="E">${esc(x)}</b>${tl(x)}</button>`).join('')}</div>
- ${s.q===3?`${MC([['Can you share the exact word, phrase, or event?','可以分享實際的詞、句子或事件嗎？','実際の言葉・出来事を教えてくれますか？'],['What does it mean? When do people mention it?','它是什麼意思？大家什麼時候會提到？','どんな意味？いつ話題にしますか？']])}${topic4Example(s,true)}`:''}
- ${s.explore>=0?SAY(qs[s.explore],'這題可以問，不必全部問','この質問を聞いてみよう。全部は必要ありません。','Ask this if you want.',tr(qs[s.explore])):''}
- ${hostNavigator(s)}<h3>${T('要結束這題時','この話題を終えるとき','When you finish this topic')}</h3>
- ${MC([['Thank you, everyone! I enjoyed hearing your answers. Shall we choose another topic?','謝謝大家！聽你們的答案很有趣。要不要換一題？','みなさんありがとう！話を聞けて楽しかったです。次の話題に進みましょうか？']])}
- ${B(T('結束這題，選下一題 ▶','この話題を終えて次を選ぶ ▶','Finish and choose another topic ▶'),'finish','','primary')}`;}
- return `<h3>${T('繼續聊天（自由選用）','もっと話そう（自由参加）','Keep talking (optional)')}</h3>
- ${s.explore>=0?`<div class="say"><b class="E">${esc(qs[s.explore])}</b>${tl(qs[s.explore])}</div>${reasonHelp(s.q,s.pk['s'+me]??6)}`:`<p class="muted">${T('主持人可以選擇下一個延伸問題，也可以直接結束這題。','司会者が次の質問を選ぶか、そのまま話題を終えます。','The host can choose a question or move on.')}</p>`}
- ${s.q===3?topic4Example(s,false):''}${checkBtns()}`;
+ const pr=present(s),t=s.turn%(pr.length+1),holder=t===0?'host':'s'+pr[t-1],mine=host?holder==='host':holder==='s'+me;
+ const name=t===0?'🇯🇵 Host':'🇹🇼 '+tw(pr[t-1]);
+ let h=`<div class="bar" style="justify-content:space-between"><h3>${T('💬 輪流問問題','💬 順番に質問','💬 Take turns asking')}</h3><span class="tag">${T(`第 ${s.rounds} 回合`,`${s.rounds} ラウンド`,`rounds ${s.rounds}`)}</span></div>
+  <p>${T('現在輪到：','今の番：','Now:')}<b>${name}</b></p>`;
+ if(host)h=MC([['Let’s talk more! We will take turns asking questions.','我們再多聊一點！大家輪流問問題。','もっと話しましょう！順番に質問します。'],['When it’s your turn, tap the button and ask the question on the card.','輪到你的時候，按按鈕，問卡片上的問題。','自分の番になったら、ボタンを押してカードの質問をしてね。']])+h;
+ if(s.card)h+=`<div class="card"><small>${esc(name)} ${T('問：','の質問：','asks:')}</small><span class="E">${esc(s.card)}</span>${tl(s.card)}</div>`;
+ if(mine){
+  h+=s.card?`<p>${T('↑ 大聲把這個問題問出來，聽完回應一句！','↑ 声に出して質問しよう。答えを聞いたらリアクション！','↑ Ask this out loud, then react to the answer!')}</p>${chips(['Really?','Me too!','That’s interesting!','Why?'],'blank')}${B(T('換下一個人 ▶','次の人へ ▶','Next person ▶'),'pass','','primary')}`
+   :B(T('🎴 抽一張問題卡','🎴 カードを引く','🎴 Draw a card'),'draw','','primary');
+ }else{
+  h+=s.card?`<p>${T('↓ 用這些句子回答','↓ このヒントを使って答えよう','↓ Answer with these')}</p>${chips(host?['In Japan, ___ .','In my case, ___ .','For example, ___ .','What about you?']:['In Taiwan, ___ .','In my case, ___ .','For example, ___ .','What about you?'],'blank')}`
+   :`<p class="muted">${T('等對方抽卡…','カードを引くのを待っています…','Waiting for a card…')}</p>`;
+ }
+ if(host)h+=`<p class="muted">${T('聊得起來的話，不抽卡也可以，自由聊！','話が続いたら、カードは引かなくてもOK。自由に話そう。','If the conversation flows, no need to draw—just talk!')}</p>`+B(T('跳過，下一個人','次の人へ（スキップ）','Skip to next person'),'pass')
+  +`<h3>${T('要結束這一題時','この話題を終えるとき','When you finish this topic')}</h3>`+MC([['Thank you, everyone! That was fun. Let’s choose the next topic!','謝謝大家！很好玩。我們來選下一題吧！','みなさん、ありがとう！楽しかったです。次の話題を選びましょう！']])+B(T('結束這題，選下一題 ▶','この話題を終えて、次を選ぶ ▶','Finish and choose the next topic ▶'),'finish','','primary');
+ return h;
 }
 applyLang();
 document.querySelectorAll('.hv').forEach(e=>e.textContent='version '+VERSION);
