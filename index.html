@@ -222,6 +222,7 @@ button.mini{padding:4px 10px;font-size:13px}
 #modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:100}
 .mbox{background:#fff;border-radius:16px;padding:16px;width:min(720px,92vw);display:flex;flex-direction:column;gap:10px}
 .mbox textarea{height:50vh;font:13px/1.5 ui-monospace,monospace;border:1px solid #d9d3c4;border-radius:10px;padding:10px}
+.conn{font-size:13px;color:#8a7a5c}.conn.on{color:#2f8a4e;font-weight:700}
 </style>
 </head>
 <body>
@@ -247,7 +248,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 36;   // 每次修改 +1
+const VERSION = 37;   // 每次修改 +1
 
 /* ===== 題庫 =====
    選項格式：英文|中文|日文|關鍵字（用 ; 分隔）|日本同學可以追問選這個選項的人的問題
@@ -575,7 +576,7 @@ function home(){
   <button data-act="enterAs" data-a="host" ${no?'disabled':''}><div><b>🇯🇵 司会 · Host</b><span>日本の生徒・会話をリードする<br>日本同學・主持人</span></div><em>→</em></button>
   <button data-act="enterAs" data-a="tw" ${no?'disabled':''}><div><b>🇹🇼 台灣同學 · Taiwan</b><span>進入後自動編號<br>Your number is assigned automatically</span></div><em>→</em></button>
  </div></div>
- <div class="homefoot"><span>${db?'● Live':'○ Demo mode'}</span><span class="bar">${B('Test rooms · 測試房間','go','t1,test','linkish')}${B('Teacher’s desk · 教師總覽','go','r1,teacher','linkish')}</span></div>`;
+ <div class="homefoot"><span class="conn ${db?'on':''}">${db?'🟢 已連線・接続中・Live（Firebase）':'🟡 單機試用・デモ・Demo mode'}</span><span class="bar">${B('Test rooms · 測試房間','go','t1,test','linkish')}${B('Teacher’s desk · 教師總覽','go','r1,teacher','linkish')}</span></div>`;
 }
 
 /* --- 測試房間：同一個畫面同時操作日本主持人與多台台灣裝置（不用 iframe，任何瀏覽器都能用） --- */
