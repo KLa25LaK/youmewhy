@@ -278,7 +278,7 @@ body.lang-zh .kline .tl,body.lang-ja .kline .tl{font-size:15px;font-weight:700;c
 </style>
 </head>
 <body>
-<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 59</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
+<header><button class="homebtn" data-act="goHome" data-a="" data-cf="再按一次回主畫面 · もう一度押す">⌂ 主畫面 · Home</button><h1>You, Me &amp; Why <span class="ver hv">version 60</span></h1><small>日本 宮城縣 岩ヶ崎高等學校 × 台灣 基隆 中山高中　｜　Choose · Guess · Listen · Talk</small></header>
 <main id="app"></main>
 <script>
 /* ===== 設定 =====
@@ -300,7 +300,7 @@ const FIREBASE_CONFIG = {
 };
 */
 const BASE = 'youmewhy';
-const VERSION = 59;
+const VERSION = 60;
 const TEST_CHOSEN = (new URLSearchParams(location.search).get('r')||'').toLowerCase().startsWith('t');   // 測試房間：先選房間才進入
 const TEACHER_PW_HASH = 'c9658fcd6f3f7116860f0b3f0dff0015333b8a28607eb6361ee34689e3be3c45';   // 教師總覽密碼的 SHA-256（不直接寫出密碼）   // 每次修改 +1
 
@@ -477,6 +477,10 @@ const cleanName=value=>String(value??'').trim().slice(0,40);
 function enteredName(device,r=room){
  try{return cleanName(sessionStorage.getItem('ymw-name:'+nameKey(device,r)))}catch(e){return ''}
 }
+function forgetName(device){
+ try{sessionStorage.removeItem('ymw-name:'+nameKey(device))}catch(e){}
+ nameDrafts.delete('join:'+nameKey(device));
+}
 function rememberName(device,name){
  try{sessionStorage.setItem('ymw-name:'+nameKey(device),name)}catch(e){}
 }
@@ -645,7 +649,7 @@ function render(){
  if(!loaded)return;
  if(inPersona){pendingRender=true;return}
  // 台灣同學的座位被刪除（或房間被重置）時，自動重新取得號碼
- if(role==='tw'&&me>=0&&!claiming){const x=rooms[room]?.seats?.['s'+me];if(!x||x.d!==devId()){me=-1;claim();return}}
+ if(role==='tw'&&me>=0&&!claiming){const x=rooms[room]?.seats?.['s'+me];if(!x||x.d!==devId()){me=-1;forgetName(devId())}}
  let h='';
  if(role==='home')h=home();
  else if(role==='teacher')h=tOK()?teacher():teacherLogin();
@@ -729,7 +733,9 @@ ACT.rmPane=()=>{const p=personas.at(-1);if(!p||p.role!=='tw')return;personas.pop
  if(p.me>=0&&rooms[room]?.seats?.['s'+p.me]?.d===p.dev)upd({[`seats/s${p.me}/on`]:false});else render()};
 function testView(){
  // 每台台灣裝置確認自己還有座位；被刪除或房間被重置時自動重新取號
- personas.forEach(p=>{if(p.role!=='tw'||p.claiming)return;const x=rooms[room]?.seats?.['s'+p.me];if(p.me<0||!x||x.d!==p.dev){p.me=-1;p.lc=null;claimP(p)}});
+ personas.forEach(p=>{if(p.role!=='tw'||p.claiming)return;const x=rooms[room]?.seats?.['s'+p.me];
+  if(p.me>=0&&(!x||x.d!==p.dev)){p.me=-1;p.lc=null;p.joinName='';forgetName(p.dev)}
+  else if(p.me<0&&p.joinName)claimP(p)});
  const panes=personas.map((p,i)=>{const nm=p.role==='host'?p.label:`🇹🇼 ${p.label}${p.me>=0?' → '+tw(p.me):''}`;
    return `<div class="pane ${p.role}" data-pane="${i}"><div class="pl">${nm}</div><div class="inner" data-scroll="p${i}">${withPersona(p,roomView)}</div></div>`}).join('');
  const cols=Math.min(personas.length,4);setTimeout(simulate,0);
